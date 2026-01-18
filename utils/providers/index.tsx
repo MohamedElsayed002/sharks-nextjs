@@ -1,5 +1,6 @@
 import { NextIntlClientProvider, useLocale, useMessages, useNow, useTimeZone } from "next-intl"
 import { Toaster } from "sonner"
+import ReactQueryProvider from "./query-provider"
 
 interface Props {
     children: React.ReactNode
@@ -19,8 +20,10 @@ export default function Providers({ children }: Props) {
             now={now}
             locale={locale}
         >
-            {children}
-            <Toaster />
+            <ReactQueryProvider>
+                {children}
+                <Toaster />
+            </ReactQueryProvider>
         </NextIntlClientProvider>
     )
 }
