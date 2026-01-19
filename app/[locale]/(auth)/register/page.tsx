@@ -23,19 +23,22 @@ import {
 } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
 
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters long"),
-  phone: z.string().min(10, "Phone number must be at least 10 characters long"),
-  location: z.string().min(2, "Location must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-  gender: z.enum(["Male", "Female"], { message: "Please select your gender" }),
-});
+
 
 const Register = () => {
   const { mutate, isLoading, error } = useRegister();
 
   const t = useTranslations()
+
+  const formSchema = z.object({
+    name: z.string().min(2, t("nameMin")),
+    phone: z.string().min(10, t("phoneMin")),
+    location: z.string().min(2, t("locationMin")),
+    email: z.string().email(t("emailInvalid")),
+    password: z.string().min(8, t("passwordMin")),
+    gender: z.enum(["Male", "Female"], { message: t("genderRequired") }),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,10 +62,10 @@ const Register = () => {
         <div className="border border-slate-800 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl p-8 space-y-6">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-semibold tracking-tight text-white">
-              Create your account
+              {t("create-your-account")}
             </h1>
             <p className="text-sm text-muted-foreground">
-              Join Shark and start managing your account in a few seconds.
+              {t("register-description")}
             </p>
           </div>
 
@@ -73,10 +76,10 @@ const Register = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full name</FormLabel>
+                    <FormLabel className="text-white">{t("full-name")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="John Doe"
+                        placeholder={t("full-name-placeholder")}
                         className="text-white"
                         autoComplete="name"
                         {...field}
@@ -93,13 +96,13 @@ const Register = () => {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone number</FormLabel>
+                      <FormLabel className="text-white">{t("phone-number")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Your phone number with country code no."
+                          placeholder={t("phone-number-placeholder")}
                           type="tel"
                           autoComplete="tel"
-                          className="text-white"
+                          className="text-white rtl:text-right"
                           {...field}
                         />
                       </FormControl>
@@ -113,10 +116,10 @@ const Register = () => {
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Location</FormLabel>
+                      <FormLabel className="text-white">{t("location")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Jeddah, Saudi"
+                          placeholder={t("location-placeholder")}
                           autoComplete="address-level2"
                           className="text-white"
                           {...field}
@@ -133,7 +136,7 @@ const Register = () => {
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gender</FormLabel>
+                    <FormLabel className="text-white">{t("gender")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -144,8 +147,8 @@ const Register = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="">
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Male">{t("male")}</SelectItem>
+                        <SelectItem value="Female">{t("female")}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -158,7 +161,7 @@ const Register = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-white">{t("email")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -178,7 +181,7 @@ const Register = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-white">{t("password")}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -206,7 +209,7 @@ const Register = () => {
                 className="w-full mt-2 bg-blue-500"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Create account"}
+                {isLoading ? t("creating-account") : t("create-account")}
               </Button>
             </form>
           </Form>

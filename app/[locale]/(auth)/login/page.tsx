@@ -14,15 +14,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
-const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-});
+
 
 const LoginPage = () => {
   const { mutate, isLoading, error } = useLogin();
+  const t = useTranslations()
 
+  const formSchema = z.object({
+    email: z.string().email(t("emailInvalid")),
+    password: z.string().min(8, t("passwordMin")),
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,25 +47,24 @@ const LoginPage = () => {
       <div className="w-full max-w-md">
         <div className="border border-slate-800 bg-slate-900/70 backdrop-blur-xl rounded-2xl shadow-2xl p-8 space-y-6">
           <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-semibold tracking-tight text-white">Welcome back</h1>
+            <h1 className="text-3xl font-semibold tracking-tight text-white">{t("welcome-back")}</h1>
             <p className="text-sm text-muted-foreground">
-              Sign in to continue to your Shark account.
+              {t("sign-in-description")}
             </p>
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-white">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-white">{t("email")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
                         placeholder="name@example.com"
-                        className="text-white"
                         autoComplete="email"
                         {...field}
                       />
@@ -77,7 +79,7 @@ const LoginPage = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -103,7 +105,7 @@ const LoginPage = () => {
                 className="w-full mt-2 bg-blue-500"
                 disabled={isLoading}
               >
-                {isLoading ? "Logging in..." :"Login"}
+                {isLoading ? t("logging") : t("login")}
               </Button>
             </form>
           </Form>
