@@ -12,7 +12,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("access_token"); 
     if (token) {
-      fetch(`http://localhost:3000/user/me`, { 
+      fetch(`https://shark-nestjs.vercel.app/user/me`, { 
         headers: {
             Authorization: `Bearer ${token}`
         }
