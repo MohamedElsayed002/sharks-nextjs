@@ -16,7 +16,7 @@ export default function useLogin() {
             throw new Error(result.message)
         },
         onSuccess: (data) => {
-            console.log('data',data.access_token)
+            localStorage.setItem("access_token",data.access_token)
             toast.success("Login successful")
         },
         onError: (error) => {

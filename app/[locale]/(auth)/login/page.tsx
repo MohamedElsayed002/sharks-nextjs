@@ -14,12 +14,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 
 const LoginPage = () => {
   const { mutate, isLoading, error } = useLogin();
+  const locale = useLocale()
+  const router = useRouter()
   const t = useTranslations()
 
   const formSchema = z.object({
@@ -36,8 +40,8 @@ const LoginPage = () => {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     mutate(data, {
-      onSuccess: (res) => {
-        console.log("Login success", res);
+      onSuccess: () => {
+        router.push(`/${locale}`)
       },
     });
   };
@@ -64,7 +68,7 @@ const LoginPage = () => {
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="name@example.com"
+                        placeholder="name@example.com" 
                         autoComplete="email"
                         {...field}
                       />
@@ -109,6 +113,10 @@ const LoginPage = () => {
               </Button>
             </form>
           </Form>
+          <div className="text-white -mt-2">
+            <p>{t("no-account")}<Link className="underline text-blue-500" href="register">{t("register")}</Link></p>
+            <Link className="underline text-blue-500" href="forgot-password">{t("forgot-password")}</Link>
+          </div>
         </div>
       </div>
     </div>

@@ -11,11 +11,11 @@ export async function LoginAction({email,password}: LoginProp) {
         headers: {
             "Content-Type": "application/json"
         },
+        credentials: "include",
         body: JSON.stringify({email,password})
     })
 
     const payload: LoginResponse = await response.json()
-
 
     return payload
 
