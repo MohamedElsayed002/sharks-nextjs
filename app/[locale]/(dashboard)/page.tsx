@@ -1,5 +1,11 @@
 "use client"
 
+import Footer from "@/components/home/footer";
+import { Hero } from "@/components/home/hero";
+import { HeroCTA } from "@/components/home/hero-cta";
+import { Services } from "@/components/home/services";
+import { TrustProtection } from "@/components/home/trust-protection";
+import { WhySharkMarket } from "@/components/home/why-shark-market";
 import { useAuthStore } from "@/context/user";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
@@ -30,9 +36,12 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <h1>Dashboard Page</h1>
-      <h1>{t('hello')}</h1>
-      {user?.email}
+      <Hero/>
+      <Services/>
+      <WhySharkMarket/>
+      <TrustProtection/>
+      <HeroCTA/>
+      <Footer/>
     </div>
   );
 };
