@@ -54,5 +54,14 @@
   "reset-password": "استعد كلمه السر",
   "new-password": "الباسورد الجديد",
   "new-password-again": "الباسورد الجديد تاكيد",
-  "submit": "حفظ"
+  "submit": "حفظ",
+  "english": "الانجليزيه",
+  "arabic": "العربيه",
+  "login-register": "تسجيل الدخول / تسجيل",
+  "home": "الصفحه الرئيسيه",
+  "browse-listing": "تصفح العروض",
+  "find-partner": "بحث عن شريك",
+  "pricing": "الاسعار",
+  "blog": "مدونه",
+  "logout": "تسجيل الخروج"
 }

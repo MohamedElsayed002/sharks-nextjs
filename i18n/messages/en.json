@@ -54,5 +54,14 @@
   "reset-password": "Reset Password",
   "new-password": "New Password",
   "new-password-again": "Recheck new password",
-  "submit": "Submit"
+  "submit": "Submit",
+  "english": "English",
+  "arabic": "Arabic",
+  "login-register": "Login / Register",
+    "home": "Home",
+  "browse-listing": "Browse Listing",
+  "find-partner": "Find Partner",
+  "pricing": "Pricing",
+  "blog": "Blog",
+  "logout": "Logout"
 }
