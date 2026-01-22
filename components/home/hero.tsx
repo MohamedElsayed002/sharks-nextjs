@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 
 const searchSchema = z.object({
   query: z.string().min(2, "Please enter at least 2 characters"),
@@ -26,7 +27,7 @@ const categories = [
 
 export const Hero = () => {
   const [activeCategory, setActiveCategory] = useState("SaaS")
-
+  const t = useTranslations()
   const {
     register,
     handleSubmit,
@@ -45,14 +46,13 @@ export const Hero = () => {
       className="flex flex-col items-center justify-center px-4 pt-24 text-center"
     >
       {/* Heading */}
-      <h1 className="max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl">
-        Buy, Sell, and Invest in <br />
-        <span className="block">Profitable Online Businesses</span>
+      <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
+        {t("hero-title")}
       </h1>
 
       {/* Subtitle */}
       <p className="mt-4 max-w-2xl text-muted-foreground">
-        The most trusted marketplace for verified digital assets in the Middle East
+        {t("hero-description")}
       </p>
 
       {/* Search */}
@@ -62,15 +62,15 @@ export const Hero = () => {
       >
         <div className="relative">
           <Input
-            placeholder="Search for SaaS, E-commerce, Content websites..."
+            placeholder={t("search-placeholder")}
             {...register("query")}
             className="h-12 rounded-full px-5"
           />
           <Button
             type="submit"
-            className="absolute right-1 top-1 h-10 rounded-full px-6"
+            className="absolute ltr:right-1 rtl:left-1 top-1 h-10 rounded-full px-6"
           >
-            Search
+            {t("search")}
           </Button>
         </div>
 

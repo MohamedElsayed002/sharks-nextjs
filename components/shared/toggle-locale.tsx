@@ -34,12 +34,12 @@ export default function LocaleToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger aria-label="Toggle Language" className="outline-none">
         {locale === "en" ? (
-          <div className="flex items-center gap-2 rounded-md border border-yellow-700 p-1 ">
+          <div className="flex items-center gap-2 rounded-md border px-3 py-1.5 ">
             <h1>EN</h1>
             {/* <Image className="object-cover" src={USAImage} width={30} height={30} alt="USA Flag" /> */}
           </div>
         ) : (
-          <div className="flex items-center gap-2 rounded-md border border-yellow-700 p-1 ">
+          <div className="flex items-center gap-2 rounded-md border  px-3 py-1.5 ">
             <h1>العربيه</h1>
             {/* <Image className="object-cover" src={EgyImage} width={30} height={30} alt="Egypt Flag" /> */}
           </div>

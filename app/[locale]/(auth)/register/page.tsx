@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 
 
@@ -212,6 +213,9 @@ const Register = () => {
               </Button>
             </form>
           </Form>
+          <div className="text-white -mt-2">
+            <p>{t("already-account")}<Link className="underline text-blue-500" href="login">{" "}{t("login")}</Link></p>
+          </div>
         </div>
       </div>
     </div>

@@ -30,6 +30,10 @@ export const metadata: Metadata = {
     description: "Shark Store - Your One-Stop Shop for Everything Shark!",
 };
 
+// export function generateStaticParams() {
+//   return routing.locales.map(locale => ({ locale }));
+// }
+
 export default async function LocaleLayout(props: LayoutProps) {
   const { locale } = await props.params
   const { children } = props

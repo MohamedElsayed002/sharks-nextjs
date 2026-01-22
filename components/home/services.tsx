@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ServiceItem {
   id: string;
@@ -54,6 +55,8 @@ const items: ServiceItem[] = [
 ];
 
 const CardItem: React.FC<{ item: ServiceItem }> = ({ item }) => {
+
+
   return (
     <article className="relative">
       {/* gradient header */}
@@ -92,16 +95,19 @@ const CardItem: React.FC<{ item: ServiceItem }> = ({ item }) => {
 };
 
 export const Services = () => {
+
+  const t = useTranslations()
+  const locale = useLocale()
   return (
     <section className="py-12 my-14">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col md:flex-row gap-5 justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-semibold">News, Stories & Growth</h2>
-            <p className="text-sm text-slate-500">Read the latest news, growth stories, and practical insights in the digital business market.</p>
+            <h2 className="text-2xl font-semibold">{t("service-title")}</h2>
+            <p className="text-sm text-slate-500">{t("service-description")}</p>
           </div>
           <div>
-            <Link href="#" className="inline-block bg-slate-900 text-white text-sm px-4 py-2 rounded-full shadow">Read latest news & stories</Link>
+            <Link href={`/${locale}/browse-listing`} className="inline-block mt-0 md:mt-5 bg-slate-900 text-white text-sm px-4 py-2 rounded-full shadow">{t("service-button")}</Link>
           </div>
         </div>
 
