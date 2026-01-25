@@ -44,7 +44,7 @@ export const Navbar = () => {
     { id: 2, title: t("browse-listing"), href: "browse-listing" },
     { id: 3, title: t("find-partner"), href: "find-partner" },
     { id: 4, title: t("pricing"), href: "pricing" },
-    { id: 5, title: t("blog"), href: "blog" },
+    // { id: 5, title: t("blog"), href: "blog" },
   ]
 
 
@@ -98,7 +98,16 @@ export const Navbar = () => {
               <DropdownMenuGroup>
                 {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
                 <DropdownMenuItem>
+                  <Link href={`/${locale}/user/admin`}>Admin</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
                   <Link href={`/${locale}/user/profile`}>{t("profile")}</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/${locale}/user/onboarding`}>Onboarding</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={`/${locale}/add-service`}>Add Service</Link>
                 </DropdownMenuItem>
                 {/* <DropdownMenuItem>Billing</DropdownMenuItem> */}
               </DropdownMenuGroup>
