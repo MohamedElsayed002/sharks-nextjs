@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -10,6 +10,9 @@ import { ChevronLeft, ChevronRight, Check } from "lucide-react"
 import { BasicInfo } from "./basic-info"
 import { FinancialInfo } from "./financial-info"
 import { UploadImage } from "./image-upload"
+import { toast } from "sonner"
+import Confetti from "react-confetti"
+
 
 
 export const formSchema = z.object({
@@ -45,6 +48,10 @@ export const CreateService = () => {
     const locale = useLocale()
     const t = useTranslations()
 
+    const [showConfetti, setShowConfetti] = useState(false)
+    const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
+    const confettiTimerRef = useRef<number | null>(null)
+
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
@@ -70,7 +77,35 @@ export const CreateService = () => {
     })
 
     const onSubmit = async (data: FormSchema) => {
-        console.log(data)
+
+        const token = localStorage.getItem('access_token')
+
+        try {
+            const response = await fetch('/api/create-service', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ token, data })
+            })
+
+            const responseData = await response.json()
+            if (!responseData.success) {
+                throw new Error(responseData.message)
+            }
+
+            console.log(responseData)
+            toast.success("Service created successfully")
+            setShowConfetti(true)
+            confettiTimerRef.current = window.setTimeout(() => {
+                setShowConfetti(false)
+                confettiTimerRef.current = null
+            }, 5000)
+
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : "An error occurred"
+            toast.error(errorMessage)
+        }
     }
 
     const validateStep = async (step: number): Promise<boolean> => {
@@ -117,8 +152,34 @@ export const CreateService = () => {
     const totalSteps = 3
     const progress = (currentStep / totalSteps) * 100
 
+    useEffect(() => {
+        // set initial window size for Confetti
+        const setSize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+        setSize()
+        window.addEventListener("resize", setSize)
+        return () => window.removeEventListener("resize", setSize)
+    }, [])
+
+    useEffect(() => {
+        return () => {
+            // cleanup confetti timer if component unmounts
+            if (confettiTimerRef.current) {
+                clearTimeout(confettiTimerRef.current)
+            }
+        }
+    }, [])
+
     return (
         <div className="min-h-screen relative overflow-hidden">
+
+            {/* Confetti */}
+            {showConfetti && (
+                <Confetti
+                    width={windowSize.width}
+                    height={windowSize.height}
+                    numberOfPieces={2000}
+                />
+            )}
 
             {/* Animation */}
             <div className='absolute inset-0 opacity-30'>
@@ -184,9 +245,9 @@ export const CreateService = () => {
 
                         {/* Step Content */}
                         <div className="min-h-[400px]">
-                            {currentStep === 1 && <BasicInfo form={form}/>}
-                            {currentStep === 2 && <FinancialInfo form={form}/>}
-                            {currentStep === 3 && <UploadImage form={form}/>}
+                            {currentStep === 1 && <BasicInfo form={form} />}
+                            {currentStep === 2 && <FinancialInfo form={form} />}
+                            {currentStep === 3 && <UploadImage form={form} />}
                         </div>
 
                         {/* Navigation buttons */}
@@ -208,7 +269,7 @@ export const CreateService = () => {
                                     onClick={handleNext}
                                     className="bg-blue-500 text-white"
                                 >
-                                    Next 
+                                    Next
                                     <ChevronRight className="w-4 h-4 ml-2" />
                                 </Button>
                             ) : (
