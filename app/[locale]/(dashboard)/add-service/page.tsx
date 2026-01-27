@@ -1,10 +1,8 @@
-
+import { CreateService } from "@/components/create-service"
 
 const Page = () => {
     return (
-        <div className="min-h-screen grid place-items-center">
-            Add Service
-        </div>
+        <CreateService/>
     )
 }
 
