@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     // const { imageUrl,token ,category, isProfitable, details,averageMonthlyRevenue,averageMonthlyExpenses,netProfit,incomeSources,revenueProofs } = await req.json()
     const body = await req.json()
     console.log(body.data)
-    const response = await fetch(`http://localhost:3000/services`,{
+    const response = await fetch(`${process.env.BASE_URL}/services`,{
         method: "POST",
         headers: {
             "Content-Type": "application/json",
