@@ -1,5 +1,3 @@
-
-
 interface Services {
     category: string 
     createdAt: string 

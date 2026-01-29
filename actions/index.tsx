@@ -12,6 +12,18 @@ export const getSingleReviewService = async (id: string) => {
     return data
 }
 
+export const getVerifiedServices = async () => {
+    const response = await fetch(`${process.env.BASE_URL}/services/verified-services`)
+    const data = await response.json()
+    return data
+}
+
+export const getAllUsers = async () => {
+    const response = await fetch(`${process.env.BASE_URL}/user/all-users`)
+    const data = await response.json()
+    return data
+}
+
 export const updateServiceStatus = async(id: string,verification: boolean) => {
     const response = await fetch(`${process.env.BASE_URL}/services/update-service-verification/${id}`,{
         method: "PATCH",
