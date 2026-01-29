@@ -81,26 +81,27 @@ export const CreateService = () => {
         const token = localStorage.getItem('access_token')
 
         try {
-            const response = await fetch('/api/create-service', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ token, data })
-            })
+            console.log(data)
+            // const response = await fetch('/api/create-service', {
+            //     method: 'POST',
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({ token, data })
+            // })
 
-            const responseData = await response.json()
-            if (!responseData.success) {
-                throw new Error(responseData.message)
-            }
+            // const responseData = await response.json()
+            // if (!responseData.success) {
+            //     throw new Error(responseData.message)
+            // }
 
-            console.log(responseData)
-            toast.success("Service created successfully")
-            setShowConfetti(true)
-            confettiTimerRef.current = window.setTimeout(() => {
-                setShowConfetti(false)
-                confettiTimerRef.current = null
-            }, 5000)
+            // console.log(responseData)
+            // toast.success("Service created successfully")
+            // setShowConfetti(true)
+            // confettiTimerRef.current = window.setTimeout(() => {
+            //     setShowConfetti(false)
+            //     confettiTimerRef.current = null
+            // }, 5000)
 
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : "An error occurred"

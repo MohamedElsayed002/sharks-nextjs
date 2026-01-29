@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { AlertCircle, CheckCircle2, Clock, DollarSign, FileText } from "lucide-react"
+import { AlertCircle, CheckCircle2, Clock, DollarSign } from "lucide-react"
 import { useLocale } from "next-intl"
 
 
@@ -26,7 +26,6 @@ export const ApprovalServices = () => {
         queryFn: getPendingServices
     })
 
-    console.log(data)
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -36,11 +35,6 @@ export const ApprovalServices = () => {
             hour: '2-digit',
             minute: '2-digit'
         })
-    }
-
-    const getServiceTitle = (service: Services) => {
-        const englishDetail = service.details.find(d => d.lang === 'en')
-        return englishDetail?.title || service.details[0]?.title || 'Untitled Service'
     }
 
     const handleReview = (serviceId: string) => {
@@ -153,7 +147,7 @@ export const ApprovalServices = () => {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex flex-col gap-1">
-                                            {!service.isProfitable && (
+                                            {service.isProfitable && (
                                                 <Badge 
                                                     variant="secondary" 
                                                     className="w-fit flex items-center gap-1 bg-green-300" 
@@ -162,7 +156,7 @@ export const ApprovalServices = () => {
                                                     Profitable
                                                 </Badge>
                                             )}
-                                            {!service.platformVerificationRequested && (
+                                            {service.platformVerificationRequested && (
                                                 <Badge 
                                                     variant="default" 
                                                     className="w-fit flex items-center gap-1"
@@ -177,7 +171,7 @@ export const ApprovalServices = () => {
                                         <div className="flex items-center gap-1">
                                             <FileText className="h-4 w-4 text-muted-foreground" />
                                             <span className="text-sm">
-                                                {service.revenueProofs.fileUrl} file
+                                                {service.revenueProofs[0].fileUrl} file
                                             </span>
                                         </div>
                                     </TableCell> */}

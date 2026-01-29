@@ -9,6 +9,7 @@ interface Services {
         description: string
     }[]
     incomeSources: string[]
+    imageUrl: string
     isProfitable: boolean
     owner: string 
     platformVerificationRequested: boolean
@@ -17,7 +18,7 @@ interface Services {
         fileId: string 
         fileType: string 
         source: string 
-    }
+    }[]
     updatedAt: string 
     verificationLevel: string 
     _id: string

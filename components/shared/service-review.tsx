@@ -3,7 +3,7 @@
 import { getSingleReviewService } from "@/actions"
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { notFound, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -22,13 +22,14 @@ import {
 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import Image from "next/image"
 
 export const ServiceReview = ({ id }: { id: string }) => {
     const router = useRouter()
     const [adminNotes, setAdminNotes] = useState("")
 
     const { data: service, error, isLoading } = useQuery<Services>({
-        queryKey: ['review-service'],
+        queryKey: ['review-service',id],
         queryFn: () => getSingleReviewService(id)
     })
 
@@ -44,6 +45,10 @@ export const ServiceReview = ({ id }: { id: string }) => {
         })
     }
 
+
+    if(!service.category) {
+        return <h1>Service Not found</h1>
+    }
 
     console.log(service)
 
@@ -212,8 +217,19 @@ export const ServiceReview = ({ id }: { id: string }) => {
                         </Card>
                     )}
 
+                    {service.imageUrl && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Cover Image Service</CardTitle>
+                                <CardContent className="mx-auto mt-5">
+                                    <Image src={service.imageUrl} width={700} height={500} alt={service.details[0].title} />
+                                </CardContent>
+                            </CardHeader>
+                        </Card>
+                    )}
+
                     {/* Revenue Proofs */}
-                    {service.revenueProofs && !!service.revenueProofs && (
+                    {service.revenueProofs && service.revenueProofs.length > 0 && (
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
@@ -227,17 +243,17 @@ export const ServiceReview = ({ id }: { id: string }) => {
                             <CardContent>
                                 <div className="space-y-3">
                                     <div
-                                        key={service.revenueProofs.fileId}
+                                        key={service.revenueProofs[0].fileId}
                                         className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
                                     >
                                         <div className="flex items-center gap-3">
                                             <FileText className="h-5 w-5 text-muted-foreground" />
                                             <div>
                                                 <p className="font-medium text-sm">
-                                                    {service.revenueProofs.source}
+                                                    {service.revenueProofs[0].source}
                                                 </p>
                                                 <p className="text-xs text-muted-foreground">
-                                                    {service.revenueProofs.fileType}
+                                                    {service.revenueProofs[0].fileType}
                                                 </p>
                                             </div>
                                         </div>
@@ -248,7 +264,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                                 asChild
                                             >
                                                 <a
-                                                    href={service.revenueProofs.fileUrl}
+                                                    href={service.revenueProofs[0].fileUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >
@@ -262,7 +278,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                                 asChild
                                             >
                                                 <a
-                                                    href={service.revenueProofs.fileUrl}
+                                                    href={service.revenueProofs[0].fileUrl}
                                                     download
                                                 >
                                                     <Download className="h-4 w-4" />
@@ -356,7 +372,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                             <Separator />
                             <div className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">Revenue Proofs</span>
-                                <span className="font-medium">{!!service.revenueProofs || 0}</span>
+                                <span className="font-medium">{service.revenueProofs.length || 0}</span>
                             </div>
                         </CardContent>
                     </Card>
