@@ -1,11 +1,7 @@
-
+import { Admin } from "@/components/admin"
 
 const Page = () => {
-    return (
-        <div className="min-h-screen gird place-items-center">
-            <h1>Admin</h1>
-        </div>
-    )
+  return <Admin/>
 }
 
 export default Page
