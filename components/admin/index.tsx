@@ -13,9 +13,9 @@ export const Admin = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-12 gap-4">
             {/* First div */}
             <div className="bg-blue-500 border p-10 col-span-12 lg:col-span-3">
-                <div onClick={() => setActiveNavbar("approval")}>Approve</div>
-                <div onClick={() => setActiveNavbar("all-users")}>All Users</div>
-                <div onClick={() => setActiveNavbar("all-services")}>All Services</div>
+                <div onClick={() => setActiveNavbar("approval")}>Pending Services</div>
+                <div onClick={() => setActiveNavbar("all-users")}>Approved Services</div>
+                <div onClick={() => setActiveNavbar("all-services")}>All Users</div>
             </div>
 
             {/* Second div */}

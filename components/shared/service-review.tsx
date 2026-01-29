@@ -1,7 +1,7 @@
 "use client"
 
-import { getSingleReviewService } from "@/actions"
-import { useQuery } from "@tanstack/react-query"
+import { getSingleReviewService, updateServiceStatus } from "@/actions"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { notFound, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -23,14 +23,30 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import { toast } from "sonner"
 
 export const ServiceReview = ({ id }: { id: string }) => {
     const router = useRouter()
     const [adminNotes, setAdminNotes] = useState("")
+    const queryClient = useQueryClient()
 
     const { data: service, error, isLoading } = useQuery<Services>({
-        queryKey: ['review-service',id],
+        queryKey: ['review-service', id],
         queryFn: () => getSingleReviewService(id)
+    })
+
+    const { mutate: updateStatus, isPending } = useMutation({
+        mutationFn: async ({ id, verification }: { id: string; verification: boolean }) => {
+            updateServiceStatus(id, verification)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['review-service', id] })
+            queryClient.invalidateQueries({ queryKey: ["pending-services"] })
+            toast.success("Service status updated successfully")
+        },
+        onError: (error) => {
+            console.log(error)
+        }
     })
 
     if (!service) return
@@ -46,11 +62,22 @@ export const ServiceReview = ({ id }: { id: string }) => {
     }
 
 
-    if(!service.category) {
+
+
+    if (!service.category) {
         return <h1>Service Not found</h1>
     }
 
-    console.log(service)
+
+    const handleApprove = () => {
+        if (!service._id) return
+        updateStatus({ id: service._id, verification: true })
+    }
+
+    const handleReject = () => {
+        if (!service?._id) return
+        updateStatus({ id: service._id, verification: false })
+    }
 
 
 
@@ -120,7 +147,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                         {service.isProfitable ? 'Profitable' : 'Not Profitable'}
                                     </span>
                                 </div>
-                                {service.platformVerificationRequested && (
+                                {!service.platformVerificationRequested && (
                                     <Badge variant="default">
                                         Verification Requested
                                     </Badge>
@@ -323,7 +350,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                         <CardContent className="space-y-4">
                             <Button
                                 className="w-full"
-                                // onClick={handleApprove}
+                                onClick={handleApprove}
                                 disabled={isLoading}
                             >
                                 <CheckCircle2 className="h-4 w-4 mr-2" />
