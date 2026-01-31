@@ -91,5 +91,38 @@
   "hero-cta-desc": "Create your account and explore verified listings.",
   "hero-cta-button": "Start Free / Create Account",
   "profile": "Profile",
-  "hello": "Hello,"
+  "hello": "Hello,",
+  "browseListing": {
+    "search-by-title": "Search by title",
+    "search-placeholder": "Search listings...",
+    "filters": "Filters",
+    "clear-all": "Clear All",
+    "category": "Category",
+    "no-categories": "No categories",
+    "listings": "Listings",
+    "verified": "Verified",
+    "view-details": "View Details",
+    "contact-seller": "Contact seller",
+    "sort-by": "Sort by",
+    "sort-newest": "Newest",
+    "sort-oldest": "Oldest",
+    "no-listings": "No verified listings match your filters.",
+    "revenue": "Revenue"
+  },
+  "singleService": {
+    "financial-overview": "Financial Overview",
+    "monthly-revenue": "Monthly Revenue",
+    "monthly-expenses": "Monthly Expenses",
+    "net-profit": "Net Profit",
+    "profitable": "Profitable",
+    "not-profitable": "Not Profitable",
+    "about-listing": "About This Listing",
+    "income-sources": "Income Sources",
+    "revenue-proof": "Revenue Proof",
+    "view-proof-document": "View proof document",
+    "seller-info": "Seller Information",
+    "interested-cta": "Interested in this listing? Reveal seller contact to get in touch.",
+    "show-contact": "I'm interested — Show contact",
+    "send-email": "Send Email"
+  }
 }

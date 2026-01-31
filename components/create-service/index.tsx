@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useAuthStore } from "@/context/user"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -78,7 +79,7 @@ export const CreateService = () => {
 
     const onSubmit = async (data: FormSchema) => {
 
-        const token = localStorage.getItem('access_token')
+        const token = useAuthStore.getState().accessToken
 
         try {
             console.log(data)

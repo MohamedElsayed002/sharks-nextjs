@@ -51,7 +51,6 @@ export const Navbar = () => {
   const handleLogout = () => {
     setOpen(false)
     user.clearUser()
-    localStorage.clear()
     router.push(`/${locale}`)
   }
 

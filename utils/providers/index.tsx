@@ -1,6 +1,7 @@
 import { NextIntlClientProvider, useLocale, useMessages, useNow, useTimeZone } from "next-intl"
 import { Toaster } from "sonner"
 import ReactQueryProvider from "./query-provider"
+import { AuthHydration } from "@/components/auth/AuthHydration"
 
 interface Props {
     children: React.ReactNode
@@ -21,6 +22,7 @@ export default function Providers({ children }: Props) {
             locale={locale}
         >
             <ReactQueryProvider>
+                <AuthHydration />
                 {children}
                 <Toaster />
             </ReactQueryProvider>

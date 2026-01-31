@@ -3,8 +3,10 @@
 import { LoginAction } from "@/actions/login"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
+import { useAuthStore } from "@/context/user"
 
 export default function useLogin() {
+    const setToken = useAuthStore((state) => state.setToken)
 
     const {mutate, error, isPending} = useMutation({
         mutationFn: async ({email,password}: {email: string,password: string}) => {
@@ -16,7 +18,7 @@ export default function useLogin() {
             throw new Error(result.message)
         },
         onSuccess: (data) => {
-            localStorage.setItem("access_token",data.access_token)
+            setToken(data.access_token)
             toast.success("Login successful")
         },
         onError: (error) => {

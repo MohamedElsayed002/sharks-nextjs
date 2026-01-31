@@ -91,5 +91,38 @@
   "hero-cta-desc": "أنشئ حسابك واستكشف العروض الموثوقة.",
   "hero-cta-button": "ابدأ مجانًا / أنشئ حسابًا",
   "profile": "صفحه الشخصيه",
-  "hello": "مرحبا,"
+  "hello": "مرحبا,",
+  "browseListing": {
+    "search-by-title": "البحث بالعنوان",
+    "search-placeholder": "البحث في العروض...",
+    "filters": "الفلاتر",
+    "clear-all": "مسح الكل",
+    "category": "الفئة",
+    "no-categories": "لا توجد فئات",
+    "listings": "عروض",
+    "verified": "موثق",
+    "view-details": "عرض التفاصيل",
+    "contact-seller": "تواصل مع البائع",
+    "sort-by": "ترتيب حسب",
+    "sort-newest": "الأحدث",
+    "sort-oldest": "الأقدم",
+    "no-listings": "لا توجد عروض موثقة تطابق الفلاتر.",
+    "revenue": "الإيرادات"
+  },
+  "singleService": {
+    "financial-overview": "نظرة مالية",
+    "monthly-revenue": "الإيراد الشهري",
+    "monthly-expenses": "المصروفات الشهرية",
+    "net-profit": "صافي الربح",
+    "profitable": "مربح",
+    "not-profitable": "غير مربح",
+    "about-listing": "عن هذا العرض",
+    "income-sources": "مصادر الدخل",
+    "revenue-proof": "إثبات الإيرادات",
+    "view-proof-document": "عرض المستند",
+    "seller-info": "معلومات البائع",
+    "interested-cta": "مهتم بهذا العرض؟ أظهر معلومات الاتصال للتواصل.",
+    "show-contact": "أنا مهتم — عرض الاتصال",
+    "send-email": "إرسال بريد"
+  }
 }
