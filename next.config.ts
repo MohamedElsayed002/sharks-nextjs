@@ -6,9 +6,12 @@ const nextConfig: NextConfig = {
         ignoreBuildErrors: true
     },
     images: {
-        domains: ['x00zgx6o26.ufs.sh', 'utfs.io', 'oaidalleapiprodscus.blob.core.windows.net']
-
-    }
+        remotePatterns: [
+            { protocol: "https", hostname: "x00zgx6o26.ufs.sh", pathname: "/**" },
+            { protocol: "https", hostname: "utfs.io", pathname: "/**" },
+            { protocol: "https", hostname: "oaidalleapiprodscus.blob.core.windows.net", pathname: "/**" },
+        ],
+    },
 };
 
 const withNextIntl = createNextIntlPlugin();

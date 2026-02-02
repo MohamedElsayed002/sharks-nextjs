@@ -51,6 +51,7 @@ export const Navbar = () => {
   const handleLogout = () => {
     setOpen(false)
     user.clearUser()
+    fetch("/api/auth/clear-token", { method: "POST" }).catch(() => { })
     router.push(`/${locale}`)
   }
 
