@@ -58,7 +58,13 @@ export const Navbar = () => {
   return (
     <header className="max-w-7xl mx-auto flex items-center justify-between py-5 px-4 md:px-0">
       <Link href={`/${locale}`} className="flex items-center">
-        <Image src="/sharkmkt-logo.png" width={220} height={72} alt="Logo" />
+        <Image
+          src="/sharkmkt-logo.png"
+          width={220}
+          height={72}
+          alt="Logo"
+          unoptimized
+        />
       </Link>
 
       {/* Desktop nav */}
@@ -148,7 +154,13 @@ export const Navbar = () => {
             <div className="flex flex-col h-full">
               <SheetHeader className="flex items-center justify-between px-6 py-4 border-b">
                 <div className="flex items-center gap-3">
-                  <Image src="/sharkmkt-logo.png" width={120} height={36} alt="Logo" />
+                  <Image
+                    src="/sharkmkt-logo.png"
+                    width={120}
+                    height={36}
+                    alt="Logo"
+                    unoptimized
+                  />
                 </div>
                 <button
                   aria-label="Close menu"
