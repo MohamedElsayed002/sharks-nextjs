@@ -95,9 +95,13 @@ export const Navbar = () => {
             <DropdownMenuContent>
               <DropdownMenuGroup>
                 {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-                <DropdownMenuItem>
-                  <Link href={`/${locale}/user/admin`}>Admin</Link>
-                </DropdownMenuItem>
+                {
+                  user.user.role === 'Admin' && (
+                    <DropdownMenuItem>
+                      <Link href={`/${locale}/user/admin`}>Admin</Link>
+                    </DropdownMenuItem>
+                  )
+                }
                 <DropdownMenuItem>
                   <Link href={`/${locale}/user/profile`}>{t("profile")}</Link>
                 </DropdownMenuItem>

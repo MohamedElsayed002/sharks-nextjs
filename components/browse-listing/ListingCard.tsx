@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle2 } from "lucide-react"
-import type { Product } from "@/actions"
+import { Product } from "@/types"
 
 interface ListingCardProps {
   product: Product

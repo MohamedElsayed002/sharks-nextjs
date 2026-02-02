@@ -1,6 +1,8 @@
 "use client";
 
 import useLogin from "@/hooks/use-login";
+import { getMe } from "@/actions/auth";
+import { useAuthStore } from "@/context/user";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 
 
@@ -38,13 +40,17 @@ const LoginPage = () => {
     },
   });
 
+  const setUser = useAuthStore((state) => state.setUser)
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     mutate(data, {
-      onSuccess: () => {
-        router.push(`/${locale}`)
+      onSuccess: async (loginData) => {
+        const user = await getMe(loginData.access_token)
+        if (user?._id) setUser(user)
+        router.replace("/")
       },
-    });
-  };
+    })
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-foreground flex items-center justify-center px-4">
@@ -68,7 +74,7 @@ const LoginPage = () => {
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="name@example.com" 
+                        placeholder="name@example.com"
                         autoComplete="email"
                         {...field}
                       />
