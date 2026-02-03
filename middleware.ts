@@ -5,25 +5,33 @@ import { routing } from "./i18n/routing";
 const intlMiddleware = createMiddleware(routing)
 
 export function middleware(req: NextRequest) {
-    const token = req.cookies.get("access_token")?.value || req.headers.get("Authorization")?.replace("Bearer ", "");
+    const { pathname } = req.nextUrl
 
-    const { pathname } = req.nextUrl // get current url
+    // Let static files (images, fonts, etc.) and /placeholders be served directly from public
+    if (
+        pathname.startsWith("/placeholders") ||
+        /\.(png|svg|ico|jpg|jpeg|gif|webp|woff2?|css|js)$/i.test(pathname)
+    ) {
+        return NextResponse.next()
+    }
+
+    const token = req.cookies.get("access_token")?.value || req.headers.get("Authorization")?.replace("Bearer ", "");
 
     const localeMatch = pathname.match(/^\/(ar|en)\//);
     const locale = localeMatch ? localeMatch[1] : "en"
 
     const protectedRoutes = ["/admin"];
 
-    const authRoutes = ["/login","/register","forgot-password"]
+    const authRoutes = ["/login", "/register", "forgot-password"]
 
     // Prevent authenticated users from accessing auth routes 
-    if(token && authRoutes.some(route => pathname.includes(route))) {
-        return NextResponse.redirect(new URL(`/${locale}`,req.url))
+    if (token && authRoutes.some(route => pathname.includes(route))) {
+        return NextResponse.redirect(new URL(`/${locale}`, req.url))
     }
 
     // Redirect unauthenticated users trying to access protected routes
-    if(!token && protectedRoutes.some(route => pathname.includes(route))) {
-        return NextResponse.redirect(new URL(`/${locale}/login`,req.url))
+    if (!token && protectedRoutes.some(route => pathname.includes(route))) {
+        return NextResponse.redirect(new URL(`/${locale}/login`, req.url))
     }
 
     return intlMiddleware(req)
