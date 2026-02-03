@@ -3,7 +3,6 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useLocale, useTranslations } from "next-intl"
-import { Globe, Bell, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type ProjectCard = {
@@ -26,7 +25,7 @@ const SALES_HISTORY_CARDS: ProjectCard[] = [
     id: "arctic-store",
     titleKey: "card-arctic-title",
     subtitleKey: "card-arctic-subtitle",
-    imageSrc: "/montagat.pngc",
+    imageSrc: "/image.png",
     imageAltKey: "card-arctic-alt",
   },
   
