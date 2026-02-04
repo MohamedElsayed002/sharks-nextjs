@@ -129,11 +129,12 @@
     "card-sportswear-alt": "Sportswear project"
   },
   "heroMarketplace": {
-    "headline1": "The First Technology",
-    "headline2": "Projects Marketplace",
+    "headline1": "Settle in digital projects.",
+    "headline2": "Shark Market.",
     "subline1": "Search now for your suitable opportunity among",
-    "subline2": "hundreds of successful electronic projects",
-    "cta": "See available opportunities",
+    "subline2": "hundreds of verified digital assets.",
+    "cta": "Browse listings",
+    "cta-partner": "Find partner",
     "logo-woocommerce": "WooCommerce",
     "logo-wordpress": "WordPress",
     "logo-shopify": "Shopify",

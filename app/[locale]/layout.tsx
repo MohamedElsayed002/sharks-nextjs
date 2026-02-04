@@ -8,26 +8,26 @@ import { cn } from "@/lib/utils";
 import Providers from "@/utils/providers";
 
 type LayoutProps = {
-    params: { locale: "en" | "ar" }
-    children: React.ReactNode
+  params: { locale: "en" | "ar" }
+  children: React.ReactNode
 }
 
 const inter = Inter({
-    subsets: ["latin"],
-    weight: ["400", "500", "600", "700", "800", "900"],
-    variable: "--font-inter"
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-inter"
 });
 
 const roboto = Roboto({
-    subsets: ["latin"],
-    weight: ["400", "500", "700", "900"],
-    variable: "--font-roboto"
+  subsets: ["latin"],
+  weight: ["400", "500", "700", "900"],
+  variable: "--font-roboto"
 });
 
 
 export const metadata: Metadata = {
-    title: "Sharks",
-    description: "Shark Store - Your One-Stop Shop for Everything Shark!",
+  title: "Sharks",
+  description: "Shark Store - Your One-Stop Shop for Everything Shark!",
 };
 
 // export function generateStaticParams() {
@@ -54,7 +54,7 @@ export default async function LocaleLayout(props: LayoutProps) {
           inter.variable,
           roboto.variable,
           inter.className,
-          "antialiased"
+          "antialiased m-0 min-h-screen p-0"
         )}
       >
         <Providers>

@@ -2,7 +2,6 @@
 
 import Footer from "@/components/home/footer";
 import { FeaturedProjects } from "@/components/home/featured-projects";
-import { Hero } from "@/components/home/hero";
 import { HeroMarketplace } from "@/components/home/hero-marketplace";
 import { HeroCTA } from "@/components/home/hero-cta";
 import { Services } from "@/components/home/services";
@@ -11,10 +10,9 @@ import { WhySharkMarket } from "@/components/home/why-shark-market";
 
 const DashboardPage = () => {
   return (
-    <div>
+    <div className="">
       <HeroMarketplace />
       <FeaturedProjects />
-      <Hero />
       <Services />
       <WhySharkMarket />
       <TrustProtection />
