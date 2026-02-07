@@ -142,6 +142,7 @@
     "logo-zid": "Zid",
     "logo-salla": "Salla"
   },
+  "needHelp":{"title":"Need Help?","description":"We understand that buying or selling a digital business isn't easy. If you have any questions or require assistance, feel free to contact us anytime.","supportTitle":"Contact Customer Support","supportDesc":"View our policies, terms, and privacy information.","helpCenterLink":"Go to Shark Help Center"},
   "singleService": {
     "financial-overview": "Financial Overview",
     "monthly-revenue": "Monthly Revenue",

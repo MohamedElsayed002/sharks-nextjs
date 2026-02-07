@@ -1,28 +1,32 @@
+"use client"
+
+import Link from "next/link"
 import { Phone } from "lucide-react"
+import { useLocale, useTranslations } from "next-intl"
 
 export const NeedHelp = () => {
-    return (
-        <div className="space-y-3 max-w-7xl mx-auto my-20">
-            <h1 className="text-3xl font-bold">Need Help?</h1>
-            <p className="text-gray-500 text-sm">We understand that buying or selling a digital business isn&apos;t easy. if you have any questions or require assistance, feel free to contact us anytime.</p>
-            <div className="flex  gap-10 mt-8">
-                <div className="flex gap-6">
-                    <Phone className="text-blue-500 border border-blue-500 rounded-full w-8 h-8 p-1"/>
-                    <div>
-                        <h1 className="text-xl font-semibold">Contact Customer Support</h1>
-                        <p className="text-sm text-gray-500">Search our knowledge base for answers to common questions.</p>
-                        <p className="text-sm text-blue-500 underline">Go to Sharks Help Center</p>
-                    </div>
-                </div>
-                 <div className="flex gap-6">
-                    <Phone className="text-blue-500 border border-blue-500 rounded-full w-8 h-8 p-1"/>
-                   <div>
-                        <h1 className="text-xl font-semibold">Contact Customer Support</h1>
-                        <p className="text-sm text-gray-500">Search our knowledge base for answers to common questions.</p>
-                        <p className="text-sm text-blue-500 underline">Go to Sharks Help Center</p>
-                    </div>
-                </div>
-            </div>
+  const locale = useLocale()
+  const t = useTranslations("needHelp")
+
+  return (
+    <div className="mx-auto my-20 max-w-7xl space-y-3">
+      <h1 className="text-3xl font-bold">{t("title")}</h1>
+      <p className="text-sm text-gray-500">{t("description")}</p>
+      <div className="mt-8 flex flex-wrap gap-10">
+        <div className="flex gap-6">
+          <Phone className="h-8 w-8 shrink-0 rounded-full border border-blue-500 p-1 text-blue-500" />
+          <div>
+            <h2 className="text-xl font-semibold">{t("supportTitle")}</h2>
+            <p className="text-sm text-gray-500">{t("supportDesc")}</p>
+            <Link
+              href={`/${locale}/help-center`}
+              className="text-sm text-blue-500 underline hover:text-blue-600"
+            >
+              {t("helpCenterLink")}
+            </Link>
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
