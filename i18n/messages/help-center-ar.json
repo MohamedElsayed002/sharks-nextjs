@@ -3,6 +3,23 @@
   "subtitle": "شروط الاستخدام، سياسة الضمان، وسياسة الخصوصية",
   "backToHome": "العودة للرئيسية",
   "onThisPage": "في هذه الصفحة",
+  "submitRequestTitle": "إرسال طلب",
+  "form": {
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "you@example.com",
+    "listingUrlLabel": "رابط عرض شارك",
+    "listingUrlPlaceholder": "https://...",
+    "subjectLabel": "الموضوع",
+    "subjectPlaceholder": "ملخص مختصر لطلبك",
+    "descriptionLabel": "الوصف",
+    "descriptionPlaceholder": "أدخل التفاصيل...",
+    "descriptionHelper": "يرجى إدخال تفاصيل طلبك. سيرد أحد موظفي الدعم في أقرب وقت ممكن.",
+    "attachmentsLabel": "المرفقات",
+    "addFile": "إضافة ملف",
+    "dropFiles": "أو اسحب الملفات هنا",
+    "submit": "إرسال",
+    "submitting": "جاري الإرسال..."
+  },
   "terms": {
     "title": "شروط الاستخدام",
     "lastUpdated": "آخر تحديث: [حط التاريخ]",

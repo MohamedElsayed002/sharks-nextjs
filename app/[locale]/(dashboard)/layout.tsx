@@ -1,3 +1,4 @@
+import Footer from "@/components/home/footer"
 import { Navbar } from "@/components/shared/navbar"
 
 
@@ -8,6 +9,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <main className="flex-1 flex flex-col p-0">
                 {children}
             </main>
+            <Footer/>
         </div>
     )
 }

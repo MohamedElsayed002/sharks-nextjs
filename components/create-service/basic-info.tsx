@@ -51,7 +51,7 @@ export const BasicInfo = ({ form }: Step1Props) => {
         </p>
 
         {/* English Details */}
-        <div className="border bg-gray-200 rounded-xl p-6 space-y-4">
+        <div className="border bg-gray-100/80 rounded-xl p-6 space-y-4">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
               <span className="text-blue-400 font-bold text-sm">EN</span>
@@ -99,7 +99,7 @@ export const BasicInfo = ({ form }: Step1Props) => {
         </div>
 
         {/* Arabic Details */}
-        <div className="bg-gray-200 rounded-xl p-6 space-y-4">
+        <div className="bg-gray-100/80 rounded-xl p-6 space-y-4">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
               <span className="text-emerald-400 font-bold text-sm">AR</span>

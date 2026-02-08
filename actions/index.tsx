@@ -57,14 +57,14 @@ export const getVerifiedServices = async () => {
 }
 
 export const deleteService = async (id: string) => {
-  const response = await fetch(`${process.env.BASE_URL}/services/${id}`,{
+  const response = await fetch(`${process.env.BASE_URL}/services/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
       // TODO: TOKEN
     }
   })
-  const data = await  response.json()
+  const data = await response.json()
   return data
 }
 

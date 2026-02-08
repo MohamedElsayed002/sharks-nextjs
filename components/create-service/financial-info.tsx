@@ -1,14 +1,15 @@
 "use client"
 
-import { UploadButton } from "@/utils/uploadthing";
-import { UseFormReturn } from "react-hook-form";
-import { FormSchema } from ".";
-import { Form, FormControl, FormLabel, FormMessage, FormItem, FormDescription, FormField } from "../ui/form";
-import { Input } from "../ui/input";
-import { Badge } from "../ui/badge";
-import { DollarSign, TrendingUp, TrendingDown, Wallet, X, Plus } from "lucide-react";
+import { UploadDropzone } from "@/utils/uploadthing"
+import { UseFormReturn } from "react-hook-form"
+import { FormSchema } from "."
+import { Form, FormControl, FormLabel, FormMessage, FormItem, FormDescription, FormField } from "../ui/form"
+import { Input } from "../ui/input"
+import { Badge } from "../ui/badge"
+import { X, Plus, FileText } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Button } from "../ui/button";
+import { Button } from "../ui/button"
+import { toast } from "sonner";
 
 interface FinancialInfoProps {
   form: UseFormReturn<FormSchema>
@@ -17,11 +18,11 @@ interface FinancialInfoProps {
 export const FinancialInfo = ({ form }: FinancialInfoProps) => {
 
   const [incomeSourceInput, setIncomeSourceInput] = useState("")
-  const [revenueProofFile, setRevenueProofFile] = useState<File | null>(null)
 
   const watchRevenue = form.watch("averageMonthlyExpenses")
   const watchExpenses = form.watch("averageMonthlyRevenue")
   const incomeSources = form.watch("incomeSources") || []
+  const revenueProofs = form.watch("revenueProofs") || []
 
   // Auto Calculate Net Profit 
   useEffect(() => {
@@ -46,17 +47,9 @@ export const FinancialInfo = ({ form }: FinancialInfoProps) => {
     form.setValue("incomeSources", currentSources.filter((_, i) => i !== index))
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setRevenueProofFile(file)
-      form.setValue("revenueProofs", {
-        fileUrl: URL.createObjectURL(file),
-        fileId: `file_${Date.now()}`,
-        fileType: file.type,
-        source: "manual_upload"
-      })
-    }
+  const removeRevenueProof = (index: number) => {
+    const next = revenueProofs.filter((_, i) => i !== index)
+    form.setValue("revenueProofs", next)
   }
 
   return (
@@ -203,48 +196,83 @@ export const FinancialInfo = ({ form }: FinancialInfoProps) => {
         {/* Revenue Proof Upload */}
         <FormField
           control={form.control}
-          name="revenueProofs.fileUrl"
-          render={({ field }) => (
+          name="revenueProofs"
+          render={() => (
             <FormItem>
               <FormLabel className="">Revenue Proof</FormLabel>
               <FormControl>
                 <div className="space-y-3">
-                  <div className='flex items-center justify-center w-full'>
-                    <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-700 border-dashed rounded-lg cursor-pointer bg-slate-800/30 hover:bg-slate-800/50 transition-colors">
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg className="w-10 h-10 mb-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        <p className="mb-2 text-sm text-slate-400">
-                          <span className="font-semibold">Click to upload</span> or drag and drop
-                        </p>
-                        <p className="text-xs text-slate-500">PDF, PNG, JPG or Excel (MAX. 10MB)</p>
-                      </div>
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept=".pdf,.png,.jpg,.jpeg,.xlsx,.xls"
-                        onChange={handleFileChange}
-                      />
-                    </label>
+                  <div className="flex items-center justify-center w-full rounded-lg border-2 border-dashed border-slate-700  p-6 transition-colors hover:bg-slate-800/50">
+                    <UploadDropzone
+                      endpoint="revenueProof"
+                      onClientUploadComplete={(res) => {
+                        if (res && res.length > 0) {
+                          const newProofs = res.map((f) => ({
+                            fileUrl: f.url,
+                            fileId: f.key,
+                            fileType: f.type || "application/octet-stream",
+                            source: "uploadthing",
+                          }))
+                          form.setValue("revenueProofs", [...revenueProofs, ...newProofs])
+                        }
+                      }}
+                      onUploadError={(error: Error) => {
+                        toast.error(error.message)
+                      }}
+                      appearance={{
+                        container: "border-none bg-transparent min-h-[100px]",
+                        uploadIcon: "text-slate-400",
+                        label: "text-slate-400 hover:text-slate-300",
+                        allowedContent: "text-slate-500 text-xs",
+                        button:
+                          "bg-blue-500 text-white ut-ready:from-violet-500 ut-ready:to-cyan-500 ",
+                      }}
+                      config={{ mode: "auto" }}
+                    />
                   </div>
 
-                  {revenueProofFile && (
-                    <div className="flex items-center gap-3 p-3 bg-gray-200 border rounded-lg">
-                      <div className='flex-1'>
-                        <p className='text-sm font-medium'>{revenueProofFile.name}</p>
-                        <p className="text-sm font-semibold">{(revenueProofFile.size / 1024 /1024).toFixed(2)} MB</p>
-                      </div>
-                      <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                        Uploaded
-                      </Badge>
-                    </div>
+                  {revenueProofs.length > 0 && (
+                    <ul className="flex flex-col gap-2">
+                      {revenueProofs.map((proof, index) => (
+                        <li
+                          key={proof.fileId}
+                          className="flex items-center justify-between gap-3 rounded-lg border border-slate-700 bg-white p-3"
+                        >
+                          <div className="flex min-w-0 flex-1 items-center gap-3">
+                            <FileText className="size-4 shrink-0 text-slate-400" />
+                            <div className="min-w-0">
+                              <a
+                                href={proof.fileUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="truncate text-sm font-medium text-blue-400 hover:underline"
+                              >
+                                {proof.fileUrl.split("/").pop() || `Document ${index + 1}`}
+                              </a>
+                              <p className="text-xs text-slate-500">{proof.fileType}</p>
+                            </div>
+                            <Badge className="shrink-0 bg-green-500/20 text-green-400 border-green-500/30">
+                              Uploaded
+                            </Badge>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeRevenueProof(index)}
+                            className="shrink-0 rounded p-1 text-slate-400 transition-colors hover:bg-slate-700 hover:text-destructive"
+                            aria-label="Remove file"
+                          >
+                            <X className="size-4" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   )}
                 </div>
               </FormControl>
               <FormDescription className="text-sm">
-                Upload proof revenue (bank statements, invoices, etc.)
+                Upload proof of revenue (bank statements, invoices, etc.). At least one file required.
               </FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />

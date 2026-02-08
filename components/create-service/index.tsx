@@ -33,12 +33,16 @@ export const formSchema = z.object({
     netProfit: z.number().nonnegative("Net profit must be >= 0"),
     incomeSources: z.array(z.string().min(1, "Income source cannot be empty"))
         .min(1, "At least one income source is required"),
-    revenueProofs: z.object({
-        fileUrl: z.string().url("Must be a valid file URL"),
-        fileId: z.string().min(1, "File ID is required"),
-        fileType: z.string().min(1, "File type is required"),
-        source: z.string().optional(),
-    }),
+    revenueProofs: z
+        .array(
+            z.object({
+                fileUrl: z.string().url("Must be a valid file URL"),
+                fileId: z.string().min(1, "File ID is required"),
+                fileType: z.string().min(1, "File type is required"),
+                source: z.string().optional(),
+            })
+        )
+        .min(1, "At least one revenue proof is required"),
 })
 
 export type FormSchema = z.infer<typeof formSchema>
@@ -70,19 +74,13 @@ export const CreateService = () => {
             incomeSources: [],
             isProfitable: false,
             netProfit: 0,
-            revenueProofs: {
-                fileUrl: "",
-                fileId: "",
-                fileType: "",
-                source: ""
-            }
+            revenueProofs: []
         },
     })
 
     const onSubmit = async (data: FormSchema) => {
 
         const token = useAuthStore.getState().accessToken
-
         try {
             const response = await fetch('/api/create-service', {
                 method: 'POST',

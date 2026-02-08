@@ -62,7 +62,33 @@ export const ourFileRouter = {
         .onUploadComplete(async ({ metadata }) => {
             console.log('Audio uploaded by', metadata)
             return { uploadedBy: metadata.userId }
+        }),
+
+    // Revenue proof documents (bank statements, invoices, etc.)
+    revenueProof: f({
+        image: { maxFileSize: "4MB", maxFileCount: 4 },
+        pdf: { maxFileSize: "8MB", maxFileCount: 4 },
+    })
+        .middleware(async () => {
+            const user = await auth()
+            if (!user) throw new UploadThingError("Unauthorized")
+            return { userId: user }
         })
+        .onUploadComplete(async ({ file }) => {
+            console.log("Revenue proof uploaded:", file.ufsUrl)
+            return { url: file.ufsUrl }
+        }),
+
+    // Support request attachments - no auth required (help center form)
+    supportAttachment: f({
+        image: { maxFileSize: "4MB", maxFileCount: 4 },
+        pdf: { maxFileSize: "8MB", maxFileCount: 4 },
+    })
+        .middleware(async () => ({}))
+        .onUploadComplete(async ({ file }) => {
+            console.log("Support attachment uploaded:", file.ufsUrl)
+            return { url: file.ufsUrl }
+        }),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter

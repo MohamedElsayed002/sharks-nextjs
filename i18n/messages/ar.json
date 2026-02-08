@@ -143,7 +143,7 @@
     "logo-salla": "سلة"
   },
   "interests":{"title":"ماذا تريد أن تفعل؟","buyCardTitle":"شراء وبيع من طرف إلى طرف","buyCardDesc":"اعرض مشروعك وتواصل وابع مع الاستشارة الكاملة عبر منصة شارك.","buyFeature1":"عروض موثوقة في المنطقة","buyFeature2":"استشارات احترافية ومعاملات آمنة","browseBusinesses":"تصفح العروض","sellNow":"بيع الآن","servicesCardTitle":"اختر خدمات لصفقتك","servicesCardDesc":"اختر خدمات منفصلة مثل الضمان أو العقود القانونية لإتمام معاملاتك.","servicesFeature1":"المدفوعات والضمان","servicesFeature2":"قانوني","servicesFeature3":"مالية","servicesFeature4":"تأمين","servicesFeature5":"التحقق والتقييم","viewServices":"عرض الخدمات","mockSearchPlaceholder":"عروض للبيع","viewListing":"عرض العرض","mockDueDiligence":"الفحص النافي للجهالة","mockLegal":"قانوني","mockInsurance":"تأمين","mockFinance":"مالية","mockPayments":"مدفوعات"},
-  "needHelp":{"title":"هل تحتاج مساعدة؟","description":"نفهم أن شراء أو بيع مشروع رقمي ليس سهلاً. إذا كان لديك أي أسئلة أو تحتاج مساعدة، لا تتردد في التواصل معنا في أي وقت.","supportTitle":"تواصل مع خدمة العملاء","supportDesc":"اطلع على السياسات والشروط ومعلومات الخصوصية.","helpCenterLink":"انتقل إلى مركز مساعدة شارك"},
+  "needHelp":{"title":"هل تحتاج مساعدة؟","description":"نفهم أن شراء أو بيع مشروع رقمي ليس سهلاً. إذا كان لديك أي أسئلة أو تحتاج مساعدة، لا تتردد في التواصل معنا في أي وقت.","supportTitle":"تواصل مع خدمة العملاء","supportDesc":"ابحث في قاعدة المعرفة عن إجابات للأسئلة الشائعة.","helpCenterLink":"انتقل إلى مركز مساعدة شارك","guideTitle":"اقرأ دليل عملاء شارك","guideDesc":"تعرف على كيفية مساعدتك في شراء وبيع المشاريع الرقمية.","learnMoreLink":"اعرف المزيد"},
   "singleService": {
     "financial-overview": "نظرة مالية",
     "monthly-revenue": "الإيراد الشهري",
@@ -161,5 +161,6 @@
     "send-email": "إرسال بريد"
   },
   "delete": "حذف",
-  "deleting": "يتم الحذف"
+  "deleting": "يتم الحذف",
+  "read-more": "اقرأ المزيد"
 }

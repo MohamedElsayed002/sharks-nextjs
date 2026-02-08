@@ -3,6 +3,23 @@
   "subtitle": "Terms of Service, Escrow Policy, and Privacy Policy",
   "backToHome": "Back to Home",
   "onThisPage": "On this page",
+  "submitRequestTitle": "Submit a request",
+  "form": {
+    "emailLabel": "Your email address",
+    "emailPlaceholder": "you@example.com",
+    "listingUrlLabel": "Shark Listing URL",
+    "listingUrlPlaceholder": "https://...",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Brief summary of your request",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Enter details...",
+    "descriptionHelper": "Please enter the details of your request. A member of our support staff will respond as soon as possible.",
+    "attachmentsLabel": "Attachments",
+    "addFile": "Add file",
+    "dropFiles": "or drop files here",
+    "submit": "Submit",
+    "submitting": "Submitting..."
+  },
   "terms": {
     "title": "Terms of Service",
     "lastUpdated": "Last Updated: [Insert Date]",

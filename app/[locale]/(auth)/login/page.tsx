@@ -24,7 +24,7 @@ import { useRouter } from "@/i18n/routing";
 
 const LoginPage = () => {
   const { mutate, isLoading, error } = useLogin();
-  const locale = useLocale()
+
   const router = useRouter()
   const t = useTranslations()
 

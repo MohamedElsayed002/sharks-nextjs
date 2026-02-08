@@ -1,4 +1,4 @@
-import Footer from "@/components/home/footer";
+import { getProducts } from "@/actions";
 import { FeaturedProjects } from "@/components/home/featured-projects";
 import { HeroMarketplace } from "@/components/home/hero-marketplace";
 import { HeroCTA } from "@/components/home/hero-cta";
@@ -8,20 +8,27 @@ import { WhySharkMarket } from "@/components/home/why-shark-market";
 import { Interests } from "@/components/home/interests";
 import { NeedHelp } from "@/components/home/need-help";
 
-const DashboardPage = () => {
+const LATEST_SERVICES_COUNT = 4;
+
+export default async function DashboardPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const allProducts = await getProducts(locale, { sort: "newest" });
+  const latestProducts = allProducts.slice(0, LATEST_SERVICES_COUNT);
+
   return (
     <div>
       <HeroMarketplace />
       <FeaturedProjects />
-      <Interests/>
-      <Services />
+      <Interests />
+      <Services products={latestProducts} locale={locale} />
       <WhySharkMarket />
       <TrustProtection />
       <HeroCTA />
-      <NeedHelp/>
-      <Footer />
+      <NeedHelp />
     </div>
   );
-};
-
-export default DashboardPage;
+}

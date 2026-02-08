@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Phone } from "lucide-react"
+import { Headphones, Lightbulb } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 
 export const NeedHelp = () => {
@@ -9,24 +9,61 @@ export const NeedHelp = () => {
   const t = useTranslations("needHelp")
 
   return (
-    <div className="mx-auto my-20 max-w-7xl space-y-3">
-      <h1 className="text-3xl font-bold">{t("title")}</h1>
-      <p className="text-sm text-gray-500">{t("description")}</p>
-      <div className="mt-8 flex flex-wrap gap-10">
-        <div className="flex gap-6">
-          <Phone className="h-8 w-8 shrink-0 rounded-full border border-blue-500 p-1 text-blue-500" />
-          <div>
-            <h2 className="text-xl font-semibold">{t("supportTitle")}</h2>
-            <p className="text-sm text-gray-500">{t("supportDesc")}</p>
+    <section className="mx-auto my-20 max-w-7xl px-4">
+      {/* Top: heading + intro */}
+      <div className="mb-10">
+        <h2 className="text-3xl font-bold text-foreground">{t("title")}</h2>
+        <p className="mt-3 max-w-2xl text-base text-muted-foreground leading-relaxed">
+          {t("description")}
+        </p>
+      </div>
+
+      {/* Bottom: two blocks side by side */}
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        {/* Contact Customer Support */}
+        <div className="flex gap-4">
+          <div className="shrink-0 text-blue-600">
+            <Headphones className="h-8 w-8" aria-hidden />
+          </div>
+          <div className="min-w-0 space-y-2">
+            <h3 className="text-lg font-semibold text-foreground">
+              {t("supportTitle")}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {t("supportDesc")}
+            </p>
             <Link
               href={`/${locale}/help-center`}
-              className="text-sm text-blue-500 underline hover:text-blue-600"
+              className="inline-flex items-center gap-1 text-sm font-normal text-blue-600 hover:underline"
             >
               {t("helpCenterLink")}
+              <span aria-hidden>&gt;</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Read Shark's Customer Guide */}
+        <div className="flex gap-4">
+          <div className="shrink-0 text-blue-600">
+            <Lightbulb className="h-8 w-8" aria-hidden />
+          </div>
+          <div className="min-w-0 space-y-2">
+            <h3 className="text-lg font-semibold text-foreground">
+              {t("guideTitle")}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {t("guideDesc")}
+            </p>
+            <Link
+              href={`/${locale}/learn-more`}
+              className="inline-flex items-center gap-1 text-sm font-normal text-blue-600 hover:underline"
+            >
+              {t("learnMoreLink")}
+              <span aria-hidden>&gt;</span>
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }

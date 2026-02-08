@@ -143,7 +143,7 @@
     "logo-salla": "Salla"
   },
   "interests":{"title":"What would you like to do?","buyCardTitle":"Buy & Sell End-to-End","buyCardDesc":"List, connect, and sell your business with end-to-end advisory through Shark's marketplace.","buyFeature1":"Verified listings in the region","buyFeature2":"Expert advisory & safe transactions","browseBusinesses":"Browse Listings","sellNow":"Sell Now","servicesCardTitle":"Select Services for Your Deal","servicesCardDesc":"Choose individual services like escrow payments, or legal contracts to complete your business transactions.","servicesFeature1":"Payments & Escrow","servicesFeature2":"Legal","servicesFeature3":"Finance","servicesFeature4":"Insurance","servicesFeature5":"Verification & Assessment","viewServices":"View Services","mockSearchPlaceholder":"Listings for sale","viewListing":"View Listing","mockDueDiligence":"Due Diligence","mockLegal":"Legal","mockInsurance":"Insurance","mockFinance":"Finance","mockPayments":"Payments"},
-  "needHelp":{"title":"Need Help?","description":"We understand that buying or selling a digital business isn't easy. If you have any questions or require assistance, feel free to contact us anytime.","supportTitle":"Contact Customer Support","supportDesc":"View our policies, terms, and privacy information.","helpCenterLink":"Go to Shark Help Center"},
+  "needHelp":{"title":"Need Help?","description":"We understand that buying or selling a digital business isn't easy. If you have any questions or require assistance, feel free to contact us anytime.","supportTitle":"Contact Customer Support","supportDesc":"Search our knowledge base for answers to common questions.","helpCenterLink":"Go to Shark Help Center","guideTitle":"Read Shark's Customer Guide","guideDesc":"Learn how we can help you buy and sell online businesses.","learnMoreLink":"Learn more"},
   "singleService": {
     "financial-overview": "Financial Overview",
     "monthly-revenue": "Monthly Revenue",
@@ -161,5 +161,6 @@
     "send-email": "Send Email"
   },
   "delete": "Delete",
-  "deleting": "Deleting"
+  "deleting": "Deleting",
+  "read-more": "Read more"
 }
