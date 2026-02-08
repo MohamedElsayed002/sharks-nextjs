@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Mail, Phone, MapPin, User } from "lucide-react"
+import { Mail, Phone, MapPin, User, MessageSquareText } from "lucide-react"
+import Link from "next/link"
+import { useAuthStore } from "@/context/user"
 
 interface Owner {
   _id: string
@@ -21,7 +23,8 @@ interface SellerCardProps {
 export function SellerCard({ owner }: SellerCardProps) {
   const t = useTranslations("singleService")
   const [showContact, setShowContact] = useState(false)
-
+  const locale = useLocale()
+  const user = useAuthStore(state => state.user)
   return (
     <Card className="sticky top-4">
       <CardHeader>
@@ -47,37 +50,29 @@ export function SellerCard({ owner }: SellerCardProps) {
               </div>
               <span className="font-medium">{owner.name}</span>
             </div>
-            <a
-              href={`mailto:${owner.email}`}
-              className="flex items-center gap-3 rounded-lg border p-3 transition-colors hover:bg-muted"
-            >
-              <Mail className="size-4 text-muted-foreground" />
-              <span className="text-sm">{owner.email}</span>
-            </a>
-            {owner.phone && (
-              <a
-                href={`tel:${owner.phone}`}
-                className="flex items-center gap-3 rounded-lg border p-3 transition-colors hover:bg-muted"
-              >
-                <Phone className="size-4 text-muted-foreground" />
-                <span className="text-sm">{owner.phone}</span>
-              </a>
-            )}
             {owner.location && (
               <div className="flex items-center gap-3 rounded-lg border p-3">
                 <MapPin className="size-4 text-muted-foreground" />
                 <span className="text-sm">{owner.location}</span>
               </div>
             )}
-            <Button variant="outline" className="w-full" asChild>
-              <a href={`mailto:${owner.email}`}>
-                <Mail className="mr-2 size-4" />
-                {t("send-email")}
-              </a>
-            </Button>
+          
+            {user ? (
+                <Button variant="outline" className="w-full" asChild>
+                <Link href={`/${locale}/chat/${owner._id}`}>
+                  <MessageSquareText className="mr-2 size-4" />
+                  {t("start-conversation")}
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" className="w-full" asChild>
+                <Link href={`/${locale}/login`}>{t("login-to-start-conversation")}</Link>
+              </Button>
+            )}
           </div>
         )}
       </CardContent>
     </Card>
   )
 }
+

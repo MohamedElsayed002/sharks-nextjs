@@ -36,6 +36,7 @@ function isImageMime(type: string): boolean {
 export function ServiceRevenueProofs({
   revenueProofs,
 }: ServiceRevenueProofsProps) {
+  const t = useTranslations("singleService")
   if (!revenueProofs?.length) return null
 
   return (

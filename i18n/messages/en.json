@@ -152,6 +152,8 @@
     "profitable": "Profitable",
     "not-profitable": "Not Profitable",
     "about-listing": "About This Listing",
+    "start-conversation": "Start Conversation",
+    "login-to-start-conversation": "Login to start conversation",
     "income-sources": "Income Sources",
     "revenue-proof": "Revenue Proof",
     "view-proof-document": "View proof document",
@@ -162,5 +164,6 @@
   },
   "delete": "Delete",
   "deleting": "Deleting",
-  "read-more": "Read more"
+  "read-more": "Read more",
+  "start-conversation": "Start Conversation"
 }

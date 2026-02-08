@@ -53,11 +53,11 @@ export const ServiceReview = ({ id }: { id: string }) => {
         }
     })
 
-    const { mutate : deleteServiceMutate, isPending: deletingService} = useMutation({
-        mutationFn: async ({id} : {id: string}) => {
+    const { mutate: deleteServiceMutate, isPending: deletingService } = useMutation({
+        mutationFn: async ({ id }: { id: string }) => {
             const data = await deleteService(id)
 
-            if("error" in data) {
+            if ("error" in data) {
                 throw new Error(data.message)
             }
 
@@ -65,8 +65,8 @@ export const ServiceReview = ({ id }: { id: string }) => {
         },
         onSuccess: (data) => {
             toast.success(data.message)
-            queryClient.invalidateQueries({queryKey: ['verified-services']})
-            queryClient.invalidateQueries({queryKey: ['pending-services']})
+            queryClient.invalidateQueries({ queryKey: ['verified-services'] })
+            queryClient.invalidateQueries({ queryKey: ['pending-services'] })
             router.push(`/${locale}/user/admin`)
         },
         onError: (error) => {
@@ -100,10 +100,10 @@ export const ServiceReview = ({ id }: { id: string }) => {
     }
 
     const handleDelete = (id: string) => {
-        deleteServiceMutate({id: id})
+        deleteServiceMutate({ id: id })
     }
 
-
+    console.log(service)
 
     return (
         <div className="max-w-7xl mx-auto py-6 space-y-6">
@@ -288,55 +288,81 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                     Revenue Proofs
                                 </CardTitle>
                                 <CardDescription>
-                                    {!!service.revenueProofs} document(s) submitted
+                                    {service.revenueProofs.length} document(s) submitted
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="space-y-3">
-                                    <div
-                                        key={service.revenueProofs[0].fileId}
-                                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <FileText className="h-5 w-5 text-muted-foreground" />
-                                            <div>
-                                                <p className="font-medium text-sm">
-                                                    {service.revenueProofs[0].source}
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {service.revenueProofs[0].fileType}
-                                                </p>
+                                <div className="space-y-4">
+                                    {service.revenueProofs.map((proof, index) => {
+                                        const isImage = proof.fileType?.startsWith("image/")
+                                        return (
+                                            <div
+                                                key={proof.fileId || index}
+                                                className="overflow-hidden rounded-lg border hover:bg-muted/50"
+                                            >
+                                                {isImage ? (
+                                                    <div className="flex flex-col sm:flex-row gap-3 p-3">
+                                                        <a
+                                                            href={proof.fileUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="block shrink-0"
+                                                        >
+                                                            <img
+                                                                src={proof.fileUrl}
+                                                                alt={`Revenue proof ${index + 1}`}
+                                                                className="h-40 w-auto max-w-full rounded-md object-contain border bg-muted"
+                                                            />
+                                                        </a>
+                                                        <div className="flex flex-1 flex-col justify-between gap-2">
+                                                            <div>
+                                                                <p className="font-medium text-sm">{proof.source}</p>
+                                                                <p className="text-xs text-muted-foreground">{proof.fileType}</p>
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <Button variant="outline" size="sm" asChild>
+                                                                    <a href={proof.fileUrl} target="_blank" rel="noopener noreferrer">
+                                                                        <ExternalLink className="h-4 w-4 mr-2" />
+                                                                        View
+                                                                    </a>
+                                                                </Button>
+                                                                <Button variant="outline" size="sm" asChild>
+                                                                    <a href={proof.fileUrl} download>
+                                                                        <Download className="h-4 w-4 mr-2" />
+                                                                        Download
+                                                                    </a>
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center justify-between p-3">
+                                                        <div className="flex items-center gap-3">
+                                                            <FileText className="h-5 w-5 text-muted-foreground" />
+                                                            <div>
+                                                                <p className="font-medium text-sm">{proof.source}</p>
+                                                                <p className="text-xs text-muted-foreground">{proof.fileType}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex gap-2">
+                                                            <Button variant="outline" size="sm" asChild>
+                                                                <a href={proof.fileUrl} target="_blank" rel="noopener noreferrer">
+                                                                    <ExternalLink className="h-4 w-4 mr-2" />
+                                                                    View
+                                                                </a>
+                                                            </Button>
+                                                            <Button variant="outline" size="sm" asChild>
+                                                                <a href={proof.fileUrl} download>
+                                                                    <Download className="h-4 w-4 mr-2" />
+                                                                    Download
+                                                                </a>
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                        <div className="flex gap-2">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                asChild
-                                            >
-                                                <a
-                                                    href={service.revenueProofs[0].fileUrl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <ExternalLink className="h-4 w-4 mr-2" />
-                                                    View
-                                                </a>
-                                            </Button>
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                asChild
-                                            >
-                                                <a
-                                                    href={service.revenueProofs[0].fileUrl}
-                                                    download
-                                                >
-                                                    <Download className="h-4 w-4" />
-                                                </a>
-                                            </Button>
-                                        </div>
-                                    </div>
+                                        )
+                                    })}
                                 </div>
                             </CardContent>
                         </Card>
@@ -383,7 +409,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                 </Button>
                             )}
                             <Button onClick={() => handleDelete(service._id)} variant="destructive" className="flex-1">
-                                {deletingService ? t("deleting"): t("delete")}
+                                {deletingService ? t("deleting") : t("delete")}
                             </Button>
                         </CardContent>
                     </Card>
