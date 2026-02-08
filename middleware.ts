@@ -3,6 +3,7 @@ import createMiddleware from "next-intl/middleware"
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing)
+const defaultLocale = routing.defaultLocale
 
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl
@@ -15,16 +16,24 @@ export function middleware(req: NextRequest) {
         return NextResponse.next()
     }
 
+    // If path has no locale prefix (e.g. /login, /register), redirect to defaultLocale + path
+    // so next-intl doesn't drop the path and send user to home
+    const hasLocalePrefix = /^\/(ar|en)(\/|$)/.test(pathname)
+    if (!hasLocalePrefix && (pathname === "/login" || pathname === "/register" || pathname === "/forgot-password")) {
+        const url = req.nextUrl.clone()
+        url.pathname = `/${defaultLocale}${pathname}`
+        return NextResponse.redirect(url)
+    }
+
     const token = req.cookies.get("access_token")?.value || req.headers.get("Authorization")?.replace("Bearer ", "");
 
-    const localeMatch = pathname.match(/^\/(ar|en)\//);
-    const locale = localeMatch ? localeMatch[1] : "en"
+    const localeMatch = pathname.match(/^\/(ar|en)(\/|$)/);
+    const locale = localeMatch ? localeMatch[1] : defaultLocale
 
     const protectedRoutes = ["/admin"];
+    const authRoutes = ["/login", "/register", "/forgot-password"]
 
-    const authRoutes = ["/login", "/register", "forgot-password"]
-
-    // Prevent authenticated users from accessing auth routes 
+    // Prevent authenticated users from accessing auth routes
     if (token && authRoutes.some(route => pathname.includes(route))) {
         return NextResponse.redirect(new URL(`/${locale}`, req.url))
     }
@@ -35,7 +44,6 @@ export function middleware(req: NextRequest) {
     }
 
     return intlMiddleware(req)
-
 }
 
 // export const confg = {
