@@ -10,10 +10,12 @@ import {
     Clock, 
     CheckCircle, 
     Users,
-    ChevronRight
+    ChevronRight,
+    HelpCircle
 } from "lucide-react"
+import { HelpCenter } from "./help-center"
 
-type NavOption = "approval" | "all-users" | "all-services"
+type NavOption = "approval" | "all-users" | "all-services" | "help-center"
 
 interface NavItem {
     id: NavOption
@@ -40,6 +42,12 @@ const NAV_ITEMS: NavItem[] = [
         label: "All Users",
         icon: <Users className="h-5 w-5" />,
         description: "Manage user accounts"
+    },
+    {
+        id: "help-center",
+        label: "Help Center",
+        icon: <HelpCircle className="h-5 w-5" />,
+        description: "View help center requests"
     }
 ]
 
@@ -53,7 +61,7 @@ export const Admin = () => {
     useEffect(() => {
         setIsClient(true)
         const stored = localStorage.getItem(STORAGE_KEY)
-        if (stored && ["approval", "all-users", "all-services"].includes(stored)) {
+        if (stored && ["approval", "all-users", "all-services", "help-center"].includes(stored)) {
             setActiveNavbar(stored as NavOption)
         }
     }, [])
@@ -127,6 +135,7 @@ export const Admin = () => {
                 {activeBar === "approval" && <ApprovalServices />}
                 {activeBar === "all-services" && <VerifiedServices />}
                 {activeBar === "all-users" && <AllUsers />}
+                {activeBar === "help-center" && <HelpCenter />}
             </div>
         </div>
     )

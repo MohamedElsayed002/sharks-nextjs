@@ -87,3 +87,22 @@ export const updateServiceStatus = async (id: string, verification: boolean) => 
   const data = await response.json()
   return data
 }
+
+export async function helpCenterCreate(data: Omit<HelpCenter, "_id" | "createdAt" | "updatedAt" | "__v">) {
+  const response = await fetch(`${process.env.BASE_URL}/help-center`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  const payload = await response.json()
+  return payload
+}
+
+export async function helpCenterGetAll() {
+  const response = await fetch(`${process.env.BASE_URL}/help-center`)
+  const payload = await response.json()
+  return payload
+}

@@ -21,13 +21,30 @@ import { Badge } from "@/components/ui/badge"
 import { UploadDropzone } from "@/utils/uploadthing"
 import { toast } from "sonner"
 import { Loader2, FileText, X } from "lucide-react"
+import { useMutation } from "@tanstack/react-query"
+import { helpCenterCreate } from "@/actions"
 
 
 
 
 export function SubmitRequestForm() {
   const t = useTranslations("helpCenter.form")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: async (values: SupportFormValues) => {
+      // @ts-ignore
+      const payload = await helpCenterCreate(values)
+      return payload
+    },
+    onSuccess: () => {
+      toast.success("Request submitted successfully")
+      form.reset()
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
 
   const supportFormSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -59,17 +76,11 @@ export function SubmitRequestForm() {
   }
 
   const onSubmit = async (values: SupportFormValues) => {
-    setIsSubmitting(true)
-    try {
-      const payload = {
-        ...values,
-        attachmentUrls: values.attachments.map((a) => a.url),
-      }
-      console.log(payload)
-      // TODO: call submitSupportRequest(payload)
-    } finally {
-      setIsSubmitting(false)
+    const payload = {
+      ...values,
+      attachmentUrls: values.attachments.map((a) => a.url),
     }
+    mutate(payload)
   }
 
   return (
@@ -228,13 +239,14 @@ export function SubmitRequestForm() {
             </FormItem>
           )}
         />
+        {error && <p className="text-red-500">{error.message}</p>}
 
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isPending}
           className="rounded-md bg-blue-600 hover:bg-blue-700 float-end -mt-3"
         >
-          {isSubmitting ? (
+          {isPending ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
               {t("submitting")}
