@@ -13,6 +13,7 @@ import { FinancialInfo } from "./financial-info"
 import { UploadImage } from "./image-upload"
 import { toast } from "sonner"
 import Confetti from "react-confetti"
+import { useRouter } from "next/navigation"
 
 
 
@@ -46,6 +47,7 @@ export type FormSchema = z.infer<typeof formSchema>
 export const CreateService = () => {
 
     const [currentStep, setCurrentStep] = useState(1)
+    const router = useRouter()
     const locale = useLocale()
     const t = useTranslations()
 
@@ -82,27 +84,26 @@ export const CreateService = () => {
         const token = useAuthStore.getState().accessToken
 
         try {
-            console.log(data)
-            // const response = await fetch('/api/create-service', {
-            //     method: 'POST',
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify({ token, data })
-            // })
+            const response = await fetch('/api/create-service', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ token, data })
+            })
 
-            // const responseData = await response.json()
-            // if (!responseData.success) {
-            //     throw new Error(responseData.message)
-            // }
+            const responseData = await response.json()
+            if (!responseData.success) {
+                throw new Error(responseData.message)
+            }
 
-            // console.log(responseData)
-            // toast.success("Service created successfully")
-            // setShowConfetti(true)
-            // confettiTimerRef.current = window.setTimeout(() => {
-            //     setShowConfetti(false)
-            //     confettiTimerRef.current = null
-            // }, 5000)
+            toast.success("Service created successfully / Wait for the approval")
+            setShowConfetti(true)
+            confettiTimerRef.current = window.setTimeout(() => {
+                setShowConfetti(false)
+                confettiTimerRef.current = null
+            }, 5000)
+            router.push(`/${locale}/`)
 
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : "An error occurred"

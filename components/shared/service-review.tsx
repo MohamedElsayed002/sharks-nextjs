@@ -1,6 +1,6 @@
 "use client"
 
-import { getSingleReviewService, updateServiceStatus } from "@/actions"
+import { deleteService, getSingleReviewService, updateServiceStatus } from "@/actions"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { notFound, useRouter } from "next/navigation"
@@ -24,16 +24,20 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import { toast } from "sonner"
+import { useLocale, useTranslations } from "next-intl"
 
 export const ServiceReview = ({ id }: { id: string }) => {
     const router = useRouter()
+    const t = useTranslations()
     const [adminNotes, setAdminNotes] = useState("")
     const queryClient = useQueryClient()
+    const locale = useLocale()
 
     const { data: service, error, isLoading } = useQuery<Services>({
         queryKey: ['review-service', id],
         queryFn: () => getSingleReviewService(id)
     })
+
 
     const { mutate: updateStatus, isPending } = useMutation({
         mutationFn: async ({ id, verification }: { id: string; verification: boolean }) => {
@@ -46,6 +50,27 @@ export const ServiceReview = ({ id }: { id: string }) => {
         },
         onError: (error) => {
             console.log(error)
+        }
+    })
+
+    const { mutate : deleteServiceMutate, isPending: deletingService} = useMutation({
+        mutationFn: async ({id} : {id: string}) => {
+            const data = await deleteService(id)
+
+            if("error" in data) {
+                throw new Error(data.message)
+            }
+
+            return data
+        },
+        onSuccess: (data) => {
+            toast.success(data.message)
+            queryClient.invalidateQueries({queryKey: ['verified-services']})
+            queryClient.invalidateQueries({queryKey: ['pending-services']})
+            router.push(`/${locale}/user/admin`)
+        },
+        onError: (error) => {
+            toast.error(error.message)
         }
     })
 
@@ -74,9 +99,8 @@ export const ServiceReview = ({ id }: { id: string }) => {
         updateStatus({ id: service._id, verification: true })
     }
 
-    const handleReject = () => {
-        if (!service?._id) return
-        updateStatus({ id: service._id, verification: false })
+    const handleDelete = (id: string) => {
+        deleteServiceMutate({id: id})
     }
 
 
@@ -344,40 +368,23 @@ export const ServiceReview = ({ id }: { id: string }) => {
                         <CardHeader>
                             <CardTitle>Review Actions</CardTitle>
                             <CardDescription>
-                                Approve or reject this service
+                                {service.platformVerificationRequested ? "delete the service" : "Approve or reject this service"}
                             </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-4">
-                            <Button
-                                className="w-full"
-                                onClick={handleApprove}
-                                disabled={isLoading}
-                            >
-                                <CheckCircle2 className="h-4 w-4 mr-2" />
-                                Approve Service
+                        <CardContent className="flex gap-3 space-y-4">
+                            {!service.platformVerificationRequested && (
+                                <Button
+                                    className="flex-1"
+                                    onClick={handleApprove}
+                                    disabled={isLoading}
+                                >
+                                    <CheckCircle2 className="h-4 w-4 mr-2" />
+                                    Approve Service
+                                </Button>
+                            )}
+                            <Button onClick={() => handleDelete(service._id)} variant="destructive" className="flex-1">
+                                {deletingService ? t("deleting"): t("delete")}
                             </Button>
-
-                            <Separator />
-
-                            {/* <div className="space-y-2">
-                                <Label>Rejection Reason</Label>
-                                <Textarea
-                                    placeholder="Provide a reason for rejection..."
-                                    value={rejectionReason}
-                                    onChange={(e) => setRejectionReason(e.target.value)}
-                                    rows={3}
-                                />
-                            </div> */}
-
-                            {/* <Button
-                                className="w-full"
-                                variant="destructive"
-                                onClick={handleReject}
-                                disabled={isLoading || !rejectionReason.trim()}
-                            >
-                                <XCircle className="h-4 w-4 mr-2" />
-                                Reject Service
-                            </Button> */}
                         </CardContent>
                     </Card>
 

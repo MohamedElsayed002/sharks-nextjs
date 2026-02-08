@@ -16,7 +16,7 @@ export const getProducts = async (
     { cache: "no-store" }
   )
   const data = await response.json()
-  let products: Product[] = Array.isArray(data) ? data : []
+  const products: Product[] = Array.isArray(data) ? data : []
   const sort = filters?.sort ?? "newest"
   products.sort((a, b) => {
     const da = new Date(a.createdAt).getTime()
@@ -32,45 +32,58 @@ export const getCategories = async (locale: string): Promise<string[]> => {
   return Array.from(set).sort()
 }
 
-export const getSingleServiceUser = async(id: string) => {
+export const getSingleServiceUser = async (id: string) => {
   const product = await fetch(`${process.env.BASE_URL}/services/single-service-users/${id}`)
   const data = await product.json()
   return data
 }
 
 export const getPendingServices = async () => {
-    const response = await fetch(`${process.env.BASE_URL}/services`)
-    const data = await response.json()
-    return data
+  const response = await fetch(`${process.env.BASE_URL}/services`)
+  const data = await response.json()
+  return data
 }
 
 export const getSingleReviewService = async (id: string) => {
-    const response = await fetch(`${process.env.BASE_URL}/services/single-service/${id}`)
-    const data = await response.json()
-    return data
+  const response = await fetch(`${process.env.BASE_URL}/services/single-service/${id}`)
+  const data = await response.json()
+  return data
 }
 
 export const getVerifiedServices = async () => {
-    const response = await fetch(`${process.env.BASE_URL}/services/verified-services`)
-    const data = await response.json()
-    return data
+  const response = await fetch(`${process.env.BASE_URL}/services/verified-services`)
+  const data = await response.json()
+  return data
 }
+
+export const deleteService = async (id: string) => {
+  const response = await fetch(`${process.env.BASE_URL}/services/${id}`,{
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+      // TODO: TOKEN
+    }
+  })
+  const data = await  response.json()
+  return data
+}
+
 
 export const getAllUsers = async () => {
-    const response = await fetch(`${process.env.BASE_URL}/user/all-users`)
-    const data = await response.json()
-    return data
+  const response = await fetch(`${process.env.BASE_URL}/user/all-users`)
+  const data = await response.json()
+  return data
 }
 
-export const updateServiceStatus = async(id: string,verification: boolean) => {
-    const response = await fetch(`${process.env.BASE_URL}/services/update-service-verification/${id}`,{
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({verification})
-    })
+export const updateServiceStatus = async (id: string, verification: boolean) => {
+  const response = await fetch(`${process.env.BASE_URL}/services/update-service-verification/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ verification })
+  })
 
-    const data = await response.json()
-    return data
+  const data = await response.json()
+  return data
 }

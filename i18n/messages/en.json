@@ -159,5 +159,7 @@
     "interested-cta": "Interested in this listing? Reveal seller contact to get in touch.",
     "show-contact": "I'm interested — Show contact",
     "send-email": "Send Email"
-  }
+  },
+  "delete": "Delete",
+  "deleting": "Deleting"
 }

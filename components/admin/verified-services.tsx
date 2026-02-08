@@ -99,7 +99,6 @@ export const VerifiedServices = () => {
         )
     }
 
-    console.log(data)
 
 
     return (
