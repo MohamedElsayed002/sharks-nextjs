@@ -81,7 +81,7 @@ export function SingleService({ serviceId }: { serviceId: string }) {
 
         <aside>
           {data.owner && typeof data.owner === "object" ? (
-            <SellerCard owner={data.owner} />
+            <SellerCard owner={data.owner} serviceId={data._id} />
           ) : null}
         </aside>
       </div>

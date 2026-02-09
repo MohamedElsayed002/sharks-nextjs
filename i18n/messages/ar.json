@@ -149,6 +149,7 @@
     "monthly-revenue": "الإيراد الشهري",
     "monthly-expenses": "المصروفات الشهرية",
     "start-conversation": "ابدأ المحادثة",
+    "starting-conversation": "جاري البدء…",
     "login-to-start-conversation": "تسجيل الدخول لبدء المحادثة",
     "net-profit": "صافي الربح",
     "profitable": "مربح",
@@ -164,5 +165,16 @@
   },
   "delete": "حذف",
   "deleting": "يتم الحذف",
-  "read-more": "اقرأ المزيد"
+  "read-more": "اقرأ المزيد",
+  "chat": {
+    "messages": "الرسائل",
+    "no-conversations": "لا توجد محادثات بعد. ابدأ من صفحة عرض.",
+    "login-required": "سجّل الدخول لعرض رسائلك.",
+    "go-to-login": "تسجيل الدخول",
+    "load-error": "فشل التحميل.",
+    "no-messages": "لا توجد رسائل بعد. قل مرحباً!",
+    "type-message": "اكتب رسالة…",
+    "send-error": "فشل إرسال الرسالة.",
+    "unknown-user": "غير معروف"
+  }
 }

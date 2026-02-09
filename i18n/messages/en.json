@@ -153,6 +153,7 @@
     "not-profitable": "Not Profitable",
     "about-listing": "About This Listing",
     "start-conversation": "Start Conversation",
+    "starting-conversation": "Starting…",
     "login-to-start-conversation": "Login to start conversation",
     "income-sources": "Income Sources",
     "revenue-proof": "Revenue Proof",
@@ -165,5 +166,16 @@
   "delete": "Delete",
   "deleting": "Deleting",
   "read-more": "Read more",
-  "start-conversation": "Start Conversation"
+  "start-conversation": "Start Conversation",
+  "chat": {
+    "messages": "Messages",
+    "no-conversations": "No conversations yet. Start one from a listing.",
+    "login-required": "Please log in to view your messages.",
+    "go-to-login": "Go to Login",
+    "load-error": "Failed to load.",
+    "no-messages": "No messages yet. Say hello!",
+    "type-message": "Type a message…",
+    "send-error": "Failed to send message.",
+    "unknown-user": "Unknown"
+  }
 }
