@@ -46,11 +46,18 @@ export function ChatRoom({ conversationId }: { conversationId: string }) {
     enabled: !!token && !!conversationId,
   })
 
+  useEffect(() => {
+    if (messagesData && conversationId) {
+      queryClient.invalidateQueries({ queryKey: ["unread-count"] })
+    }
+  }, [messagesData, conversationId, queryClient])
+
   const sendMutation = useMutation({
     mutationFn: (content: string) => sendMessage(token!, conversationId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["messages", conversationId] })
       queryClient.invalidateQueries({ queryKey: ["conversations"] })
+      queryClient.invalidateQueries({ queryKey: ["unread-count"] })
     },
     onError: (e) => {
       toast.error(e instanceof Error ? e.message : t("send-error"))

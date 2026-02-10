@@ -4,6 +4,15 @@ import { useEffect } from "react"
 import { useAuthStore } from "@/context/user"
 import { getMe } from "@/actions/auth"
 
+async function clearTokenAndUser() {
+  useAuthStore.getState().clearUser()
+  try {
+    await fetch("/api/auth/clear-token", { method: "POST" })
+  } catch {
+    // ignore
+  }
+}
+
 export function AuthHydration() {
   const { setUser, setHydrated } = useAuthStore()
 
@@ -14,16 +23,16 @@ export function AuthHydration() {
       const state = useAuthStore.getState()
       const token = state.accessToken
 
-      if (token && !state.user) {
+      if (token) {
         try {
           const data = await getMe(token)
           if (data && data._id) {
             setUser(data)
           } else {
-            useAuthStore.getState().clearUser()
+            await clearTokenAndUser()
           }
         } catch {
-          useAuthStore.getState().clearUser()
+          await clearTokenAndUser()
         }
       }
 

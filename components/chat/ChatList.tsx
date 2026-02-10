@@ -5,7 +5,8 @@ import { useLocale, useTranslations } from "next-intl"
 import Link from "next/link"
 import { useAuthStore } from "@/context/user"
 import { getConversations } from "@/lib/conversations-api"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { MessageSquare } from "lucide-react"
 
@@ -82,13 +83,31 @@ export function ChatList() {
           {list.map((conv) => {
             const other = conv.participants?.find((p) => p._id !== user._id)
             const name = other?.name ?? t("unknown-user")
+            const unread = (conv.unreadCount ?? 0) > 0
             return (
               <li key={conv._id}>
                 <Link href={`/${locale}/chat/${conv._id}`}>
-                  <Card className="transition-all hover:bg-muted/50 hover:shadow-md hover:border-primary/20">
+                  <Card
+                    className={cn(
+                      "transition-all hover:bg-muted/50 hover:shadow-md hover:border-primary/20",
+                      unread && "border-primary/30 bg-primary/5"
+                    )}
+                  >
                     <CardContent className="flex items-center justify-between gap-4 py-4 px-5">
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold truncate">{name}</p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className={cn("font-semibold truncate", unread && "text-foreground")}>
+                            {name}
+                          </p>
+                          {unread && (
+                            <span
+                              className="shrink-0 flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-xs font-bold"
+                              aria-label={`${conv.unreadCount} unread from ${name}`}
+                            >
+                              {conv.unreadCount! > 99 ? "99+" : conv.unreadCount}
+                            </span>
+                          )}
+                        </div>
                         {conv.lastMessagePreview && (
                           <p className="text-sm text-muted-foreground truncate mt-0.5">
                             {conv.lastMessagePreview}

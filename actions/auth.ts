@@ -6,5 +6,8 @@ export async function getMe(token: string) {
     cache: "no-store",
   })
   const data = await response.json()
+  if (!response.ok) {
+    throw new Error(data?.message ?? "Unauthorized")
+  }
   return data
 }

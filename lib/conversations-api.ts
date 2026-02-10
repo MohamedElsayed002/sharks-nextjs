@@ -15,6 +15,7 @@ export type Conversation = {
   serviceId?: { _id: string; category?: string } | null
   lastMessageAt: string | null
   lastMessagePreview: string
+  unreadCount?: number
   createdAt: string
   updatedAt: string
 }
@@ -67,6 +68,15 @@ export async function getConversations(token: string): Promise<Conversation[]> {
   const data = await res.json()
   if (!res.ok) throw new Error(data.message ?? "Failed to load conversations")
   return Array.isArray(data) ? data : []
+}
+
+export async function getUnreadCount(
+  token: string
+): Promise<{ count: number }> {
+  const res = await fetchWithAuth("/api/conversations/unread-count", token)
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.message ?? "Failed to load unread count")
+  return { count: typeof data.count === "number" ? data.count : 0 }
 }
 
 export async function getConversation(

@@ -17,6 +17,17 @@ export async function GET(
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
   }
   const { id } = await params
+  if (id === "unread-count") {
+    const res = await fetch(`${BASE}/conversations/unread-count`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    const data = await res.json().catch(() => ({ count: 0 }))
+    if (!res.ok) {
+      if (res.status === 404) return NextResponse.json({ count: 0 })
+      return NextResponse.json(data, { status: res.status })
+    }
+    return NextResponse.json(data)
+  }
   const res = await fetch(`${BASE}/conversations/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   })

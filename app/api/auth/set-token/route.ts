@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 const COOKIE_NAME = "access_token"
-const MAX_AGE = 60 * 60 * 24 * 7 // 7 days
+const MAX_AGE = 60 * 60 * 24 * 1 // 1 days
 
 export async function POST(req: NextRequest) {
   try {

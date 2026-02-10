@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { useAuthStore } from "@/context/user"
 import { useLocale, useTranslations } from "next-intl"
 import Image from "next/image"
@@ -8,6 +9,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "../ui/button"
 import LocaleToggle from "./toggle-locale"
+import { getUnreadCount } from "@/lib/conversations-api"
 import { cn } from "@/lib/utils"
 import {
   Sheet,
@@ -57,6 +59,16 @@ export const Navbar = () => {
 
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`
 
+  const token = useAuthStore((s) => s.accessToken)
+  const { data: unreadData } = useQuery({
+    queryKey: ["unread-count", token],
+    queryFn: () => getUnreadCount(token!),
+    enabled: !!token && !!user.user,
+  })
+  const unreadCount = unreadData?.count ?? 0
+
+  console.log(unreadCount)
+
   return (
     <header
       className={cn(
@@ -84,13 +96,15 @@ export const Navbar = () => {
             const fullPath = `/${locale}/${link.href}`
             const isActive =
               pathname === fullPath || (link.href === "" && pathname === `/${locale}`)
+            const isMessages = link.href === "chat"
+            const showUnread = isMessages && unreadCount > 0
 
             return (
               <Link
                 key={link.id}
                 href={fullPath}
                 className={cn(
-                  "font-semibold pb-1 transition-colors",
+                  "font-semibold pb-1 transition-colors relative inline-flex items-center gap-1",
                   isHome
                     ? isActive
                       ? "border-b-2 border-white text-white"
@@ -101,6 +115,17 @@ export const Navbar = () => {
                 )}
               >
                 {link.title}
+                {showUnread && (
+                  <span
+                    className={cn(
+                      "flex items-center justify-center min-w-[18px] h-[18px] rounded-full text-[10px] font-bold shrink-0",
+                      isHome ? "bg-red-500 text-white" : "bg-destructive text-destructive-foreground"
+                    )}
+                    aria-label={`${unreadCount} unread messages`}
+                  >
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
               </Link>
             )
           })}
@@ -204,20 +229,29 @@ export const Navbar = () => {
                     const isActive =
                       pathname === fullPath ||
                       (link.href === "" && pathname === `/${locale}`)
+                    const isMessages = link.href === "chat"
+                    const showUnreadMobile = isMessages && unreadCount > 0
 
                     return (
-                      // SheetClose with asChild will auto-close when the Link is clicked
                       <SheetClose asChild key={link.id}>
                         <Link
                           href={fullPath}
                           className={cn(
-                            "block w-full text-lg font-medium px-4 py-3 rounded-md transition-colors",
+                            "flex items-center justify-between w-full text-lg font-medium px-4 py-3 rounded-md transition-colors",
                             isActive
                               ? "bg-primary/10 text-primary"
                               : "hover:bg-gray-100 dark:hover:bg-neutral-800"
                           )}
                         >
                           {link.title}
+                          {showUnreadMobile && (
+                            <span
+                              className="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-xs font-bold"
+                              aria-label={`${unreadCount} unread messages`}
+                            >
+                              {unreadCount > 99 ? "99+" : unreadCount}
+                            </span>
+                          )}
                         </Link>
                       </SheetClose>
                     )

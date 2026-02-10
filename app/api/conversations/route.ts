@@ -17,10 +17,11 @@ export async function GET(req: NextRequest) {
     headers: { Authorization: `Bearer ${token}` },
   })
   const data = await res.json().catch(() => ({}))
-  console.log(data)
+
   if (!res.ok) {
     return NextResponse.json(data, { status: res.status })
   }
+  
   return NextResponse.json(data)
 }
 
