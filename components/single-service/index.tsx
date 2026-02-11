@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query"
 import { useLocale } from "next-intl"
+import { useMemo } from "react"
 import { getSingleServiceUser } from "@/actions"
 import { SingleServiceUser } from "@/types"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -11,6 +12,7 @@ import { ServiceDescription } from "./ServiceDescription"
 import { ServiceIncomeSources } from "./ServiceIncomeSources"
 import { ServiceRevenueProofs } from "./ServiceRevenueProofs"
 import { SellerCard } from "./SellerCard"
+import { ShareListing } from "./ShareListing"
 
 function getDetailForLocale(
   service: SingleServiceUser,
@@ -56,6 +58,10 @@ export function SingleService({ serviceId }: { serviceId: string }) {
   const detail = getDetailForLocale(data, locale)
   const title = detail?.title ?? ""
   const description = detail?.description ?? ""
+  const shareUrl = useMemo(() => {
+    if (typeof window === "undefined") return ""
+    return `${window.location.origin}/${locale}/browse-listing/${data._id}`
+  }, [locale, data._id])
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -79,7 +85,12 @@ export function SingleService({ serviceId }: { serviceId: string }) {
           <ServiceRevenueProofs revenueProofs={data.revenueProofs} />
         </main>
 
-        <aside>
+        <aside className="space-y-4">
+          <ShareListing
+            shareUrl={shareUrl}
+            title={title}
+            description={description}
+          />
           {data.owner && typeof data.owner === "object" ? (
             <SellerCard owner={data.owner} serviceId={data._id} />
           ) : null}
