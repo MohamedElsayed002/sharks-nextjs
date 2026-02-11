@@ -13,6 +13,7 @@ import { ServiceIncomeSources } from "./ServiceIncomeSources"
 import { ServiceRevenueProofs } from "./ServiceRevenueProofs"
 import { SellerCard } from "./SellerCard"
 import { ShareListing } from "./ShareListing"
+import { ExpertContactCard } from "./ExpertContactCard"
 
 function getDetailForLocale(
   service: SingleServiceUser,
@@ -29,6 +30,11 @@ export function SingleService({ serviceId }: { serviceId: string }) {
     queryKey: ["single-service", serviceId],
     queryFn: () => getSingleServiceUser(serviceId),
   })
+
+  const shareUrl = useMemo(() => {
+    if (typeof window === "undefined" || !data?._id) return ""
+    return `${window.location.origin}/${locale}/browse-listing/${data._id}`
+  }, [locale, data?._id])
 
   if (isLoading) {
     return (
@@ -58,10 +64,6 @@ export function SingleService({ serviceId }: { serviceId: string }) {
   const detail = getDetailForLocale(data, locale)
   const title = detail?.title ?? ""
   const description = detail?.description ?? ""
-  const shareUrl = useMemo(() => {
-    if (typeof window === "undefined") return ""
-    return `${window.location.origin}/${locale}/browse-listing/${data._id}`
-  }, [locale, data._id])
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -74,6 +76,12 @@ export function SingleService({ serviceId }: { serviceId: string }) {
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px] lg:gap-10">
         <main className="space-y-6">
+          <ExpertContactCard
+            serviceTitle={title}
+            serviceCategory={data.category}
+            serviceImageUrl={data.imageUrl}
+            serviceId={data._id}
+          />
           <ServiceStats
             averageMonthlyRevenue={data.averageMonthlyRevenue}
             averageMonthlyExpenses={data.averageMonthlyExpenses}

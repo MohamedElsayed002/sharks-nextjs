@@ -51,9 +51,7 @@ export function ShareListing({
       await navigator.clipboard.writeText(shareUrl)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // ignore
-    }
+    } catch { }
   }, [shareUrl])
 
   const displayUrl =
@@ -76,105 +74,108 @@ export function ShareListing({
         className="max-w-md rounded-2xl p-6"
         onPointerDownOutside={(e) => e.preventDefault()}
       >
-        <DialogHeader className="mb-4">
-          <DialogTitle className="text-xl font-bold">{t("share")}</DialogTitle>
-          <DialogDescription className="text-muted-foreground mt-1 text-sm">
-            {t("share-subtitle")}
-          </DialogDescription>
-        </DialogHeader>
+        {open ? (
+          <>
+            <DialogHeader className="mb-4">
+              <DialogTitle className="text-xl font-bold">{t("share")}</DialogTitle>
+              <DialogDescription className="text-muted-foreground mt-1 text-sm">
+                {t("share-subtitle")}
+              </DialogDescription>
+            </DialogHeader>
 
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={handleCopyLink}
-            className={cn(
-              btnBase,
-              "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
-            )}
-          >
-            <Link2 className="size-5 shrink-0" />
-            <span>{t("share-direct")}</span>
-          </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={handleCopyLink}
+                className={cn(
+                  btnBase,
+                  "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
+                )}
+              >
+                <Link2 className="size-5 shrink-0" />
+                <span>{t("share-direct")}</span>
+              </button>
 
-          <FacebookShareButton
-            url={shareUrl}
-            // quote={title}
-            hashtag="#SharkMarket"
-            beforeOnClick={() => setOpen(false)}
-            className={cn(
-              btnBase,
-              "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
-            )}
-          >
-            <FacebookIcon size={iconSize} round />
-            <span>{t("share-facebook")}</span>
-          </FacebookShareButton>
+              <FacebookShareButton
+                url={shareUrl}
+                hashtag="#SharkMarket"
+                beforeOnClick={() => setOpen(false)}
+                className={cn(
+                  btnBase,
+                  "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
+                )}
+              >
+                <FacebookIcon size={iconSize} round />
+                <span>{t("share-facebook")}</span>
+              </FacebookShareButton>
 
-          <TwitterShareButton
-            url={shareUrl}
-            title={title}
-            beforeOnClick={() => setOpen(false)}
-            className={cn(
-              btnBase,
-              "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
-            )}
-          >
-            <XIcon size={iconSize} round />
-            <span>{t("share-twitter")}</span>
-          </TwitterShareButton>
+              <TwitterShareButton
+                url={shareUrl}
+                title={title}
+                beforeOnClick={() => setOpen(false)}
+                className={cn(
+                  btnBase,
+                  "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
+                )}
+              >
+                <XIcon size={iconSize} round />
+                <span>{t("share-twitter")}</span>
+              </TwitterShareButton>
 
-          <LinkedinShareButton
-            url={shareUrl}
-            title={title}
-            summary={description}
-            beforeOnClick={() => setOpen(false)}
-            className={cn(
-              btnBase,
-              "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
-            )}
-          >
-            <LinkedinIcon size={iconSize} round />
-            <span>{t("share-linkedin")}</span>
-          </LinkedinShareButton>
+              <LinkedinShareButton
+                url={shareUrl}
+                title={title}
+                summary={description}
+                beforeOnClick={() => setOpen(false)}
+                className={cn(
+                  btnBase,
+                  "bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-950/50 dark:text-blue-200 dark:hover:bg-blue-900/50"
+                )}
+              >
+                <LinkedinIcon size={iconSize} round />
+                <span>{t("share-linkedin")}</span>
+              </LinkedinShareButton>
 
-          <WhatsappShareButton
-            url={shareUrl}
-            title={title}
-            separator=" "
-            beforeOnClick={() => setOpen(false)}
-            className={cn(
-              btnBase,
-              "col-span-2 bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-950/50 dark:text-green-200 dark:hover:bg-green-900/50"
-            )}
-          >
-            <WhatsappIcon size={iconSize} round />
-            <span>{t("share-whatsapp")}</span>
-          </WhatsappShareButton>
-        </div>
+              <WhatsappShareButton
+                url={shareUrl}
+                title={title}
+                separator=" "
+                beforeOnClick={() => setOpen(false)}
+                className={cn(
+                  btnBase,
+                  "col-span-2 bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-950/50 dark:text-green-200 dark:hover:bg-green-900/50"
+                )}
+              >
+                <WhatsappIcon size={iconSize} round />
+                <span>{t("share-whatsapp")}</span>
+              </WhatsappShareButton>
+            </div>
 
-        <div className="mt-4 flex items-center gap-2 rounded-xl bg-muted/60 px-3 py-2">
-          <span
-            className="min-w-0 flex-1 truncate text-sm text-muted-foreground"
-            title={shareUrl}
-          >
-            {displayUrl}
-          </span>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="shrink-0"
-            onClick={handleCopyLink}
-            disabled={!shareUrl}
-            aria-label={t("copy-link")}
-          >
-            {copied ? (
-              <Check className="size-4 text-green-600" />
-            ) : (
-              <Copy className="size-4" />
-            )}
-          </Button>
-        </div>
+            <div className="mt-4 flex items-center gap-2 rounded-xl bg-muted/60 px-3 py-2">
+              <span
+                className="min-w-0 flex-1 truncate text-sm text-muted-foreground"
+                title={shareUrl}
+              >
+                {displayUrl}
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="shrink-0"
+                onClick={handleCopyLink}
+                disabled={!shareUrl}
+                aria-label={t("copy-link")}
+              >
+                {copied ? (
+                  <Check className="size-4 text-green-600" />
+                ) : (
+                  <Copy className="size-4" />
+                )}
+              </Button>
+            </div>
+          </>
+        ) : null}
       </DialogContent>
     </Dialog>
   )

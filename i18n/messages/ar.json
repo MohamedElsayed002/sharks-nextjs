@@ -172,7 +172,25 @@
     "seller-info": "معلومات البائع",
     "interested-cta": "مهتم بهذا العرض؟ أظهر معلومات الاتصال للتواصل.",
     "show-contact": "أنا مهتم — عرض الاتصال",
-    "send-email": "إرسال بريد"
+    "send-email": "إرسال بريد",
+    "expertContact": {
+      "title": "تحدث مع خبير شارك",
+      "description": "لديك أسئلة حول هذا العرض؟ خبراؤنا جاهزون لمساعدتك في اتخاذ القرار المناسب وتقييم الفرصة بشكل احترافي.",
+      "cta": "تواصل مع خبير الآن",
+      "modal-title": "تواصل مع خبير",
+      "name": "الاسم",
+      "name-placeholder": "الاسم",
+      "email": "البريد الإلكتروني",
+      "email-placeholder": "البريد الإلكتروني",
+      "phone": "رقم الجوال",
+      "phone-placeholder": "رقم الجوال",
+      "message": "الرسالة",
+      "message-placeholder": "رسالة (اختياري)",
+      "send": "إرسال",
+      "stats-stores": "متجر تم تقييمه",
+      "stats-years": "سنوات خبرة",
+      "stats-support": "دعم متواصل"
+    }
   },
   "delete": "حذف",
   "deleting": "يتم الحذف",

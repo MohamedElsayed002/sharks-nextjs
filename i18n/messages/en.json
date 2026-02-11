@@ -172,7 +172,25 @@
     "seller-info": "Seller Information",
     "interested-cta": "Interested in this listing? Reveal seller contact to get in touch.",
     "show-contact": "I'm interested — Show contact",
-    "send-email": "Send Email"
+    "send-email": "Send Email",
+    "expertContact": {
+      "title": "Talk to a Shark expert",
+      "description": "Have questions about this listing? Our experts are ready to help you make the right decision and evaluate the opportunity professionally.",
+      "cta": "Contact an expert now",
+      "modal-title": "Contact an expert",
+      "name": "Name",
+      "name-placeholder": "Name",
+      "email": "Email",
+      "email-placeholder": "Email",
+      "phone": "Phone",
+      "phone-placeholder": "Phone number",
+      "message": "Message",
+      "message-placeholder": "Message (optional)",
+      "send": "Send",
+      "stats-stores": "Stores rated",
+      "stats-years": "Years of experience",
+      "stats-support": "Continuous support"
+    }
   },
   "delete": "Delete",
   "deleting": "Deleting",
