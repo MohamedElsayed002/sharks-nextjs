@@ -99,6 +99,8 @@
       "content-description": "مدونة، دليل، مراجعات، منتدى/مجتمع",
       "saas-title": "SaaS",
       "saas-description": "بيع أي مشروع SaaS",
+      "business-url": "رابط المشروع",
+      "business-url-placeholder": "مثال: https://sallyswidgets.com",
       "ecommerce-title": "تجارة إلكترونية",
       "ecommerce-description": "بيع أي مشروع أو أصل تجارة إلكترونية",
       "mobile-app-title": "تطبيق جوال",
@@ -119,6 +121,8 @@
     "form": {
       "business-name": "اسم المشروع",
       "business-name-placeholder": "مثال: متجر سالي",
+      "business-url": "رابط المشروع",
+      "business-url-placeholder": "مثال: https://sallyswidgets.com",
       "operations-date": "متى بدأ مشروعك عملياته؟",
       "month-placeholder": "الشهر",
       "year-placeholder": "السنة",

@@ -67,7 +67,6 @@ export const Navbar = () => {
   })
   const unreadCount = unreadData?.count ?? 0
 
-  console.log(unreadCount)
 
   return (
     <header

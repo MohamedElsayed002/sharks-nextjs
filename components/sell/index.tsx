@@ -44,7 +44,7 @@ export function Sell() {
         tellUsForm: tellUsFormData,
         incomeSources: selected,
       }
-      console.log("Sell flow data (send to backend):", payload)
+      console.log(payload)
       // await fetch("/api/sell", { method: "POST", body: JSON.stringify(payload) })
     }
   }

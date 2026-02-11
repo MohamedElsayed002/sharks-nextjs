@@ -28,10 +28,11 @@ const YEARS = Array.from({ length: 21 }, (_, i) => 2026 - i)
 const COUNTRIES = ["Egypt", "Saudi Arabia", "UAE", "Jordan", "Kuwait", "Bahrain", "Oman", "Qatar"]
 const INDUSTRIES = ["E-commerce", "SaaS", "Content", "Education", "Health", "Finance", "Other"]
 const SITE_TYPES = ["Website", "Mobile App", "Marketplace", "Blog", "Directory", "Other"]
-const CURRENCIES = ["USD $", "EUR €", "GBP £", "SAR", "EGP","AED","QAR","KWD","BHD"]
+const CURRENCIES = ["USD $", "EUR €", "GBP £", "SAR", "EGP", "AED", "QAR", "KWD", "BHD"]
 
 const formSchema = z.object({
   businessName: z.string().min(1),
+  businessUrl: z.string().url(),
   startDateMonth: z.string(),
   startDateYear: z.string(),
   businessLocation: z.string(),
@@ -57,6 +58,7 @@ export function TellUsStep({ category, onBack, onContinue }: TellUsStepProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       businessName: "",
+      businessUrl: "",
       startDateMonth: "Jan",
       startDateYear: "2026",
       businessLocation: "Egypt",
@@ -94,6 +96,24 @@ export function TellUsStep({ category, onBack, onContinue }: TellUsStepProps) {
                   />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="businessUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{tf("business-url")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="url"
+                    placeholder={tf("business-url-placeholder")}
+                    className="rounded-md border"
+                    {...field}
+                  />
+                </FormControl>
               </FormItem>
             )}
           />

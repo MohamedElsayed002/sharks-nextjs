@@ -99,6 +99,8 @@
       "content-description": "Blog, Directory, Review, Forum/Community",
       "saas-title": "SaaS",
       "saas-description": "Sell any SaaS business",
+      "business-url": "Business URL",
+      "business-url-placeholder": "e.g. https://sallyswidgets.com",
       "ecommerce-title": "Ecommerce",
       "ecommerce-description": "Sell any Ecommerce Business or Asset",
       "mobile-app-title": "Mobile App",
@@ -119,6 +121,8 @@
     "form": {
       "business-name": "Business Name",
       "business-name-placeholder": "e.g. Sally's Widgets",
+      "business-url": "Business URL",
+      "business-url-placeholder": "e.g. https://sallyswidgets.com",
       "operations-date": "When did your business begin operations?",
       "month-placeholder": "Month",
       "year-placeholder": "Year",
