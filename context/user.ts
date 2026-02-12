@@ -5,12 +5,29 @@ export type User = {
   _id: string
   name: string
   email: string
-  codeExpiresAt: string
   createdAt: string
+  updatedAt: string
   gender: string
   location: string
   role: string
-  updatedAt: string
+  phone?: string
+  /** Only present when received from API; do not persist or display. */
+  password?: string
+  codeExpiresAt?: string
+  // Onboarding
+  onboardingCompleted?: boolean
+  accountType?: string | null
+  firstName?: string
+  lastName?: string
+  country?: string
+  partnerDescription?: string
+  companyName?: string
+  howHeard?: string
+  businessUrl?: string
+  category?: string
+  annualRevenue?: string
+  annualProfit?: string
+  businessesCount?: string
 }
 
 type AuthStore = {

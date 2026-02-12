@@ -69,9 +69,9 @@
   "hero-description": "The most trusted marketplace for verified digital assets in the Middle East",
   "search-placeholder": "Search for SaaS, E-commerce, Content websites...",
   "search": "Search",
-  "service-title": "News, Stories & Growth",
-  "service-description": "Read the latest news, growth stories, and practical insights in the digital business market",
-  "service-button": "Read latest news & stories",
+  "service-title": "Latest Services",
+  "service-description": "Explore the latest services available on Shark Market.",
+  "service-button": "Read latest services",
   "trust-strip-1": "Verified listings",
   "trust-strip-2": "Safe transactions",
   "trust-strip-3": "Built for the region",
@@ -220,7 +220,7 @@
     "logo-zid": "Zid",
     "logo-salla": "Salla"
   },
-  "interests":{"title":"What would you like to do?","buyCardTitle":"Buy & Sell End-to-End","buyCardDesc":"List, connect, and sell your business with end-to-end advisory through Shark's marketplace.","buyFeature1":"Verified listings in the region","buyFeature2":"Expert advisory & safe transactions","browseBusinesses":"Browse Listings","sellNow":"Sell Now","servicesCardTitle":"Select Services for Your Deal","servicesCardDesc":"Choose individual services like escrow payments, or legal contracts to complete your business transactions.","servicesFeature1":"Payments & Escrow","servicesFeature2":"Legal","servicesFeature3":"Finance","servicesFeature4":"Insurance","servicesFeature5":"Verification & Assessment","viewServices":"View Services","mockSearchPlaceholder":"Listings for sale","viewListing":"View Listing","mockDueDiligence":"Due Diligence","mockLegal":"Legal","mockInsurance":"Insurance","mockFinance":"Finance","mockPayments":"Payments"},
+  "interests":{"title":"What would you like to do?","sellCardTitle":"Sell Project","sellCardDesc":"Publish your listing with a step-by-step wizard and verified data.","sellCardCta":"Start Selling","browseCardTitle":"Browse Deals","browseCardDesc":"Compare high-quality opportunities with clear data and professional filters.","browseCardCta":"Browse Offers","partnerCardTitle":"Find a Partner","partnerCardDesc":"Connect with investors, co-founders, and operators across the region.","partnerCardCta":"Find Partner"},
   "needHelp":{"title":"Need Help?","description":"We understand that buying or selling a digital business isn't easy. If you have any questions or require assistance, feel free to contact us anytime.","supportTitle":"Contact Customer Support","supportDesc":"Search our knowledge base for answers to common questions.","helpCenterLink":"Go to Shark Help Center","guideTitle":"Read Shark's Customer Guide","guideDesc":"Learn how we can help you buy and sell online businesses.","learnMoreLink":"Learn more"},
   "singleService": {
     "financial-overview": "Financial Overview",
@@ -269,6 +269,25 @@
       "stats-years": "Years of experience",
       "stats-support": "Continuous support"
     }
+  },
+  "footer": {
+    "tagline": "A specialized platform for buying, selling, and investing in digital projects across the Middle East.",
+    "quickLinks": "Quick Links",
+    "resources": "Resources",
+    "legal": "Legal",
+    "browseListings": "Browse Listings",
+    "sellYourBusiness": "Sell Your Business",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "helpCenter": "Help Center",
+    "buyerGuide": "Buyer Guide",
+    "sellerGuide": "Seller Guide",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "escrowServices": "Escrow Services",
+    "contactUs": "Contact Us",
+    "copyright": "© {year} Shark Market. All rights reserved."
   },
   "delete": "Delete",
   "deleting": "Deleting",

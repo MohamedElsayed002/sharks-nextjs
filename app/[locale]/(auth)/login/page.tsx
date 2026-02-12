@@ -24,7 +24,7 @@ import { useRouter } from "@/i18n/routing";
 
 const LoginPage = () => {
   const { mutate, isLoading, error } = useLogin();
-
+  const locale = useLocale()
   const router = useRouter()
   const t = useTranslations()
 
@@ -46,11 +46,29 @@ const LoginPage = () => {
     mutate(data, {
       onSuccess: async (loginData) => {
         const user = await getMe(loginData.access_token)
-        if (user?._id) setUser(user)
-        router.replace("/")
+        if (user?._id) {
+          setUser(user)
+
+          // Ensure cookie is set before redirect so middleware sees the user
+          try {
+            await fetch("/api/auth/set-token", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ token: loginData.access_token }),
+            })
+          } catch {}
+
+          // next-intl router expects path without locale prefix
+          if (!user.onboardingCompleted) {
+            router.replace("/user/onboarding")
+          } else {
+            router.replace("/")
+          }
+        }
       },
     })
   }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-foreground flex items-center justify-center px-4">

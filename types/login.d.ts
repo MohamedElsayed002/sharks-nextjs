@@ -1,6 +1,7 @@
 
 declare type LoginSuccessful = {
     access_token: string
+    onboardingCompleted: boolean
 }
 
 declare type LoginError = {

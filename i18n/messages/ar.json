@@ -69,9 +69,9 @@
   "hero-description": "المنصة الأكثر موثوقية لبيع وشراء الأصول الرقمية الموثوقة في الشرق الأوسط",
   "search-placeholder": "ابحث عن مواقع SaaS أو التجارة الإلكترونية أو المحتوى...",
   "search": "بحث",
-  "service-title": "الأخبار، القصص، والنمو",
-  "service-description": "اطّلع على أحدث الأخبار، وقصص النمو، والرؤى العملية في سوق الأعمال الرقمية",
-  "service-button": "اقرأ أحدث الأخبار والقصص",
+  "service-title": "الخدمات الأحدث",
+  "service-description": "استكشف الخدمات الأحدث المتاحة على شارك ماركت.",
+  "service-button": "اقرأ أحدث الخدمات",
   "trust-strip-1": "عروض موثوقة",
   "trust-strip-2": "معاملات آمنة",
   "trust-strip-3": "مبني للمنطقة",
@@ -220,7 +220,7 @@
     "logo-zid": "زد",
     "logo-salla": "سلة"
   },
-  "interests":{"title":"ماذا تريد أن تفعل؟","buyCardTitle":"شراء وبيع من طرف إلى طرف","buyCardDesc":"اعرض مشروعك وتواصل وابع مع الاستشارة الكاملة عبر منصة شارك.","buyFeature1":"عروض موثوقة في المنطقة","buyFeature2":"استشارات احترافية ومعاملات آمنة","browseBusinesses":"تصفح العروض","sellNow":"بيع الآن","servicesCardTitle":"اختر خدمات لصفقتك","servicesCardDesc":"اختر خدمات منفصلة مثل الضمان أو العقود القانونية لإتمام معاملاتك.","servicesFeature1":"المدفوعات والضمان","servicesFeature2":"قانوني","servicesFeature3":"مالية","servicesFeature4":"تأمين","servicesFeature5":"التحقق والتقييم","viewServices":"عرض الخدمات","mockSearchPlaceholder":"عروض للبيع","viewListing":"عرض العرض","mockDueDiligence":"الفحص النافي للجهالة","mockLegal":"قانوني","mockInsurance":"تأمين","mockFinance":"مالية","mockPayments":"مدفوعات"},
+  "interests":{"title":"ماذا تريد أن تفعل؟","sellCardTitle":"بيع مشروع","sellCardDesc":"انشر إعلانك عبر معالج منظم مع قائمة بيانات موثقة.","sellCardCta":"ابدأ البيع","browseCardTitle":"تصفح الصفقات","browseCardDesc":"قارن فرصاً عالية الجودة ببيانات واضحة وفلاتر احترافية.","browseCardCta":"تصفح العروض","partnerCardTitle":"ابحث عن شريك","partnerCardDesc":"تواصل مع مستثمرين ومؤسسين مشاركين ومشغلين عبر مناطق مختلفة.","partnerCardCta":"ابحث عن شريك"},
   "needHelp":{"title":"هل تحتاج مساعدة؟","description":"نفهم أن شراء أو بيع مشروع رقمي ليس سهلاً. إذا كان لديك أي أسئلة أو تحتاج مساعدة، لا تتردد في التواصل معنا في أي وقت.","supportTitle":"تواصل مع خدمة العملاء","supportDesc":"ابحث في قاعدة المعرفة عن إجابات للأسئلة الشائعة.","helpCenterLink":"انتقل إلى مركز مساعدة شارك","guideTitle":"اقرأ دليل عملاء شارك","guideDesc":"تعرف على كيفية مساعدتك في شراء وبيع المشاريع الرقمية.","learnMoreLink":"اعرف المزيد"},
   "singleService": {
     "financial-overview": "نظرة مالية",
@@ -269,6 +269,25 @@
       "stats-years": "سنوات خبرة",
       "stats-support": "دعم متواصل"
     }
+  },
+  "footer": {
+    "tagline": "منصة متخصصة لشراء وبيع واستثمار المشاريع الرقمية في الشرق الأوسط.",
+    "quickLinks": "روابط سريعة",
+    "resources": "موارد",
+    "legal": "قانوني",
+    "browseListings": "تصفح العروض",
+    "sellYourBusiness": "بيع مشروعك",
+    "howItWorks": "كيف يعمل",
+    "pricing": "الأسعار",
+    "blog": "المدونة",
+    "helpCenter": "مركز المساعدة",
+    "buyerGuide": "دليل المشتري",
+    "sellerGuide": "دليل البائع",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "escrowServices": "خدمات الضمان",
+    "contactUs": "تواصل معنا",
+    "copyright": "© {year} سوق شارك. جميع الحقوق محفوظة."
   },
   "delete": "حذف",
   "deleting": "يتم الحذف",

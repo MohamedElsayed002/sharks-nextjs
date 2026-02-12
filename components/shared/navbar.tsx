@@ -156,11 +156,11 @@ export const Navbar = () => {
                   <DropdownMenuItem>
                     <Link href={`/${locale}/user/profile`}>{t("profile")}</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  {/* <DropdownMenuItem>
                     <Link href={`/${locale}/user/onboarding`}>Onboarding</Link>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuItem>
-                    <Link href={`/${locale}/add-service`}>Add Service</Link>
+                    <Link href={`/${locale}/sell`}>Add Service</Link>
                   </DropdownMenuItem>
                   {/* <DropdownMenuItem>Billing</DropdownMenuItem> */}
                 </DropdownMenuGroup>

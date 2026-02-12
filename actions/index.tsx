@@ -1,5 +1,7 @@
 "use server"
 
+import { cookies } from "next/headers"
+import { OnboardingFormValues } from "@/app/[locale]/(dashboard)/user/onboarding/page"
 import { Product, ProductFilters } from "@/types"
 
 
@@ -98,6 +100,31 @@ export async function helpCenterCreate(data: Omit<HelpCenter, "_id" | "createdAt
   })
 
   const payload = await response.json()
+  return payload
+}
+
+
+// Onboarding
+export async function onBoardingCreate(data: OnboardingFormValues) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get("access_token")?.value
+  if (!token) throw new Error("Unauthorized")
+
+  const response = await fetch(`${process.env.BASE_URL}/auth/onboarding`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+
+  const payload = await response.json()
+
+  if("error" in payload) {
+    throw new Error(payload.message)
+  }
+  
   return payload
 }
 

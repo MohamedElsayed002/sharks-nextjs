@@ -1,35 +1,35 @@
 "use client";
 
 import Link from "next/link";
-
-const footerLinks = {
-  quickLinks: [
-    { label: "Browse Listings", href: "#" },
-    { label: "Sell Your Business", href: "#" },
-    { label: "How It Works", href: "#" },
-    { label: "Pricing", href: "#" },
-  ],
-  resources: [
-    { label: "Blog", href: "#" },
-    { label: "Help Center", href: "#" },
-    { label: "Buyer Guide", href: "#" },
-    { label: "Seller Guide", href: "#" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Escrow Services", href: "#" },
-    { label: "Contact Us", href: "#" },
-  ],
-};
+import { useLocale, useTranslations } from "next-intl";
 
 export default function Footer() {
+  const locale = useLocale();
+  const t = useTranslations("footer");
+
+  const quickLinks = [
+    { label: t("browseListings"), href: `/${locale}/browse-listing` },
+    { label: t("sellYourBusiness"), href: `/${locale}/add-service` },
+    { label: t("howItWorks"), href: `/${locale}/learn-more` },
+    { label: t("pricing"), href: `/${locale}/pricing` },
+  ];
+  const resources = [
+    { label: t("blog"), href: `/${locale}/blog` },
+    { label: t("helpCenter"), href: `/${locale}/help-center` },
+    { label: t("buyerGuide"), href: "#" },
+    { label: t("sellerGuide"), href: "#" },
+  ];
+  const legal = [
+    { label: t("privacyPolicy"), href: "#" },
+    { label: t("termsOfService"), href: "#" },
+    { label: t("escrowServices"), href: "#" },
+    { label: t("contactUs"), href: "#" },
+  ];
+
   return (
     <footer className="bg-gradient-to-b from-slate-950 to-slate-900 text-slate-300">
       <div className="max-w-7xl mx-auto px-6 py-14">
-        {/* Top */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-slate-900 font-bold">
@@ -38,19 +38,17 @@ export default function Footer() {
               <span className="font-semibold text-white">SharkMarket</span>
             </div>
             <p className="text-sm max-w-sm leading-relaxed">
-              A specialized platform for buying, selling, and investing in digital projects across the Middle East.
+              {t("tagline")}
             </p>
           </div>
 
-          {/* Columns */}
-          <FooterColumn title="Quick Links" links={footerLinks.quickLinks} />
-          <FooterColumn title="Resources" links={footerLinks.resources} />
-          <FooterColumn title="Legal" links={footerLinks.legal} />
+          <FooterColumn title={t("quickLinks")} links={quickLinks} />
+          <FooterColumn title={t("resources")} links={resources} />
+          <FooterColumn title={t("legal")} links={legal} />
         </div>
 
-        {/* Divider */}
         <div className="border-t border-white/10 mt-12 pt-6 text-center text-xs text-slate-400">
-          © {new Date().getFullYear()} Shark Market. All rights reserved.
+          {t("copyright", { year: new Date().getFullYear() })}
         </div>
       </div>
     </footer>
