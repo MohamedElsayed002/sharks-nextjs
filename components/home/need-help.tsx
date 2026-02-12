@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Headphones, Lightbulb } from "lucide-react"
+  import { Headphones, Lightbulb, ArrowRight } from "lucide-react"
 import { useLocale, useTranslations } from "next-intl"
 
 export const NeedHelp = () => {
@@ -10,7 +10,6 @@ export const NeedHelp = () => {
 
   return (
     <section className="mx-auto my-20 max-w-7xl px-4">
-      {/* Top: heading + intro */}
       <div className="mb-10">
         <h2 className="text-3xl font-bold text-foreground">{t("title")}</h2>
         <p className="mt-3 max-w-2xl text-base text-muted-foreground leading-relaxed">
@@ -18,12 +17,10 @@ export const NeedHelp = () => {
         </p>
       </div>
 
-      {/* Bottom: two blocks side by side */}
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        {/* Contact Customer Support */}
-        <div className="flex gap-4">
-          <div className="shrink-0 text-blue-600">
-            <Headphones className="h-8 w-8" aria-hidden />
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="flex gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="shrink-0 rounded-xl bg-blue-50 p-3 text-blue-600">
+            <Headphones className="h-7 w-7" aria-hidden />
           </div>
           <div className="min-w-0 space-y-2">
             <h3 className="text-lg font-semibold text-foreground">
@@ -34,18 +31,17 @@ export const NeedHelp = () => {
             </p>
             <Link
               href={`/${locale}/help-center`}
-              className="inline-flex items-center gap-1 text-sm font-normal text-blue-600 hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:underline"
             >
               {t("helpCenterLink")}
-              <span aria-hidden>&gt;</span>
+              <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
         </div>
 
-        {/* Read Shark's Customer Guide */}
-        <div className="flex gap-4">
-          <div className="shrink-0 text-blue-600">
-            <Lightbulb className="h-8 w-8" aria-hidden />
+        <div className="flex gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="shrink-0 rounded-xl bg-amber-50 p-3 text-amber-600">
+            <Lightbulb className="h-7 w-7" aria-hidden />
           </div>
           <div className="min-w-0 space-y-2">
             <h3 className="text-lg font-semibold text-foreground">
@@ -56,10 +52,10 @@ export const NeedHelp = () => {
             </p>
             <Link
               href={`/${locale}/learn-more`}
-              className="inline-flex items-center gap-1 text-sm font-normal text-blue-600 hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:underline"
             >
               {t("learnMoreLink")}
-              <span aria-hidden>&gt;</span>
+              <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           </div>
         </div>

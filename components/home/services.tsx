@@ -110,17 +110,17 @@ export const Services = ({ products, locale }: ServicesProps) => {
   })
 
   return (
-    <section className="my-14 py-12">
+    <section className="bg-slate-50/70 py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row">
+        <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <h2 className="text-2xl font-semibold">{t("service-title")}</h2>
-            <p className="text-sm text-slate-500">{t("service-description")}</p>
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">{t("service-title")}</h2>
+            <p className="mt-2 text-sm text-slate-600 max-w-xl">{t("service-description")}</p>
           </div>
           <div>
             <Link
               href={`/${locale}/browse-listing`}
-              className="mt-0 inline-block rounded-full bg-slate-900 px-4 py-2 text-sm text-white shadow md:mt-5"
+              className="inline-flex items-center rounded-full bg-slate-900 px-5 py-2.5 text-sm font-medium text-white shadow-md transition hover:bg-slate-800 md:mt-0"
             >
               {t("service-button")}
             </Link>

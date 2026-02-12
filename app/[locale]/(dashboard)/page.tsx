@@ -1,10 +1,11 @@
 import { getProducts } from "@/actions";
-import { FeaturedProjects } from "@/components/home/featured-projects";
 import { HeroMarketplace } from "@/components/home/hero-marketplace";
-import { HeroCTA } from "@/components/home/hero-cta";
+import { TrustStrip } from "@/components/home/trust-strip";
 import { Services } from "@/components/home/services";
+import { WhoWeAre } from "@/components/home/who-we-are";
 import { WhySharkMarket } from "@/components/home/why-shark-market";
 import { Interests } from "@/components/home/interests";
+import { HeroCTA } from "@/components/home/hero-cta";
 import { NeedHelp } from "@/components/home/need-help";
 
 const LATEST_SERVICES_COUNT = 6;
@@ -19,13 +20,13 @@ export default async function DashboardPage({
   const latestProducts = allProducts.slice(0, LATEST_SERVICES_COUNT);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <HeroMarketplace />
-      <FeaturedProjects />
-      <Interests />
+      <TrustStrip />
       <Services products={latestProducts} locale={locale} />
+      <WhoWeAre />
       <WhySharkMarket />
-      {/* <TrustProtection /> */}
+      <Interests />
       <HeroCTA />
       <NeedHelp />
     </div>

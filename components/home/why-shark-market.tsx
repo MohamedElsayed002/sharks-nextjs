@@ -23,26 +23,26 @@ export const WhySharkMarket = () => {
   ];
 
   return (
-    <section className="py-16">
+    <section className="bg-white py-16 md:py-20">
       <div className="max-w-5xl mx-auto px-6 text-center">
-        <h3 className="text-xl font-semibold">{t("why-shark-market")}</h3>
-        <p className="text-xs text-slate-500 mt-2">{t("why-shark-market-desc")}</p>
+        <h3 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">{t("why-shark-market")}</h3>
+        <p className="mt-3 text-sm text-slate-600 max-w-xl mx-auto">{t("why-shark-market-desc")}</p>
 
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
           {FEATURES.map((f) => (
-            <Card key={f.id} className="p-4 shadow-md">
+            <Card key={f.id} className="p-5 shadow-lg border-slate-200/80 bg-white hover:shadow-xl transition-shadow rounded-xl">
               <CardHeader className="p-0">
-                <CardTitle className="text-sm font-semibold">{f.title}</CardTitle>
+                <CardTitle className="text-base font-semibold text-slate-900">{f.title}</CardTitle>
               </CardHeader>
-              <CardContent className="p-0 pt-1 -mt-5">
-                <p className="text-xs text-slate-500">{f.desc}</p>
+              <CardContent className="p-0 pt-3">
+                <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="mt-6">
-          <Link href="#" className="inline-block bg-slate-900 text-white px-4 py-2 rounded-full text-sm">
+        <div className="mt-10">
+          <Link href="#" className="inline-flex items-center rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-medium shadow-md transition hover:bg-slate-800">
             {t("start-now")}
           </Link>
         </div>
