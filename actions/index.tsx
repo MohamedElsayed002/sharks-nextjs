@@ -128,6 +128,30 @@ export async function onBoardingCreate(data: OnboardingFormValues) {
   return payload
 }
 
+export async function uploadImage(imageUrl: string) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get("access_token")?.value 
+  if (!token) throw new Error("Unauthorized")
+
+  const response = await fetch(`${process.env.BASE_URL}/auth/uploadImage`,{
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ imageUrl }),
+  })
+
+  const payload = await response.json()
+  
+  if("error" in payload) {
+    throw new Error(payload.message)
+  }
+
+  return payload
+
+}
+
 export async function helpCenterGetAll() {
   const response = await fetch(`${process.env.BASE_URL}/help-center`)
   const payload = await response.json()

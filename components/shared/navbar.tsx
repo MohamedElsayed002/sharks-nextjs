@@ -20,7 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { MenuIcon, X } from "lucide-react"
+import { ChevronDown, MenuIcon, X } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export const Navbar = () => {
   const locale = useLocale()
@@ -136,16 +137,48 @@ export const Navbar = () => {
           {user.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant={isHome ? "secondary" : "outline"}
-                  className={isHome ? "bg-white/15 text-white border-white/30 hover:bg-white/25" : ""}
+                <button
+                  aria-label={t("hello") + " " + user.user.name}
+                  className={cn(
+                    "flex items-center gap-2 rounded-full pl-0.5 pr-3 py-1 outline-none",
+                    "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    "border transition-shadow hover:shadow-md",
+                    isHome
+                      ? "bg-white/15 text-white border-white/30 hover:bg-white/25 focus-visible:ring-white/50"
+                      : "bg-background border-input hover:bg-accent/50 focus-visible:ring-primary"
+                  )}
                 >
-                  {t("hello")} {user.user.name}
-                </Button>
+                  <Avatar className="h-8 w-8">
+                    {user.user.imageUrl && (
+                      <AvatarImage src={user.user.imageUrl} alt={user.user.name} />
+                    )}
+                    <AvatarFallback className="text-sm font-medium bg-muted">
+                      {user.user.name?.charAt(0)?.toUpperCase() ?? "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium max-w-[120px] truncate">
+                    {user.user.name}
+                  </span>
+                  <ChevronDown className="h-4 w-4 shrink-0 opacity-70" aria-hidden />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="flex items-center gap-2 px-2 py-2 mb-1">
+                  <Avatar className="h-8 w-8">
+                    {user.user.imageUrl && (
+                      <AvatarImage src={user.user.imageUrl} alt={user.user.name} />
+                    )}
+                    <AvatarFallback className="text-xs">
+                      {user.user.name?.charAt(0)?.toUpperCase() ?? "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col truncate">
+                    <span className="text-sm font-medium">{user.user.name}</span>
+                    <span className="text-xs text-muted-foreground truncate">{user.user.email}</span>
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
                   {
                     user.user.role === 'Admin' && (
                       <DropdownMenuItem>
@@ -264,7 +297,17 @@ export const Navbar = () => {
                       <LocaleToggle />
                       {/* optional small user info */}
                       {user.user && (
-                        <div className="text-sm text-muted-foreground">{user.user.email}</div>
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-8 w-8">
+                            {user.user.imageUrl && (
+                              <AvatarImage src={user.user.imageUrl} alt={user.user.name} />
+                            )}
+                            <AvatarFallback className="text-xs">
+                              {user.user.name?.charAt(0)?.toUpperCase() ?? "?"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <span className="text-sm text-muted-foreground">{user.user.email}</span>
+                        </div>
                       )}
                     </div>
 

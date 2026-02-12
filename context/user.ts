@@ -28,6 +28,7 @@ export type User = {
   annualRevenue?: string
   annualProfit?: string
   businessesCount?: string
+  imageUrl?: string
 }
 
 type AuthStore = {
