@@ -8,11 +8,20 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { Input } from "../ui/input";
 import { Dispatch, SetStateAction } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { forgotPassword } from "@/actions";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 
-export const SendEmail = ({setStep}: {setStep: Dispatch<SetStateAction<number>>}) => {
+export const SendEmail = ({setStep, setEmail}: {setStep: Dispatch<SetStateAction<number>>, setEmail: Dispatch<SetStateAction<string>>}) => {
 
     const t = useTranslations()
+
+
+    const { mutate, isPending} = useMutation({
+        mutationFn: (email: string) => forgotPassword(email)
+    })
 
     const formSchema = z.object({
         email: z.string().email(t("emailInvalid"))
@@ -26,8 +35,16 @@ export const SendEmail = ({setStep}: {setStep: Dispatch<SetStateAction<number>>}
     })
 
     const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data)
-        setStep(2)
+        mutate(data.email,{
+            onSuccess: () => {
+                setEmail(data.email)
+                setStep(2)
+                toast.success("Verification code sent to your email")
+            },
+            onError: (error) => {
+                toast.error(error.message)
+            }
+        })
     }
 
     return (
@@ -57,8 +74,9 @@ export const SendEmail = ({setStep}: {setStep: Dispatch<SetStateAction<number>>}
                 <Button
                     type='submit'
                     className="w-full mt-2 bg-blue-500"
+                    disabled={isPending}
                 >
-                    {t("send-email")}
+                    {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : t("send-email")}
                 </Button>
             </form>
         </Form>

@@ -4,16 +4,26 @@ import { Dispatch, SetStateAction } from "react"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useTranslations } from "next-intl";
+import { string, z } from "zod";
+import { useLocale, useTranslations } from "next-intl";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { completeReset } from "@/actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 
-export const NewPassword = ({ setStep }: { setStep: Dispatch<SetStateAction<number>> }) => {
+export const NewPassword = ({ email, setStep }: { email: string, setStep: Dispatch<SetStateAction<number>> }) => {
 
-
+    const router = useRouter()
+    const locale = useLocale()
     const t = useTranslations()
+
+    const { mutate, isPending} = useMutation({
+        mutationFn: ({email,password}: {email: string, password: string}) => completeReset(email,password)
+    })
 
     const newPasswordSchema = z
         .object({
@@ -46,9 +56,15 @@ export const NewPassword = ({ setStep }: { setStep: Dispatch<SetStateAction<numb
     })
 
     const onSubmit = (data: z.infer<typeof newPasswordSchema>) => {
-        console.log(data)
-        console.log('tmam')
-        // setStep(3)
+        mutate({email,password:data.newPassword},{
+            onSuccess: () => {
+                toast.success("Password reset successfully")
+                router.push(`/${locale}/login`)
+            },
+            onError: (error) => {
+                toast.error(error.message)
+            }
+        })
     }
 
     return (
@@ -92,8 +108,8 @@ export const NewPassword = ({ setStep }: { setStep: Dispatch<SetStateAction<numb
                     )}
                 />
 
-                <Button className="bg-blue-500 w-full" type='submit'>
-                    {t("submit")}
+                <Button disabled={isPending} className="bg-blue-500 w-full" type='submit'>
+                    {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : t("submit")}
                 </Button>
             </form>
         </Form>

@@ -157,3 +157,78 @@ export async function helpCenterGetAll() {
   const payload = await response.json()
   return payload
 }
+
+
+
+export async function forgotPassword(email: string) {
+  const response = await fetch(`${process.env.BASE_URL}/user/forgot-password`,{
+    method:"POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  })
+
+  if(!response.ok) {
+    throw new Error("Failed to send verification email")
+  }
+
+  const payload = await response.json()
+  
+  return payload
+}
+
+export async function verifyCode(email: string, code: string) {
+  const response = await fetch(`${process.env.BASE_URL}/user/verify-code`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, code })
+  })
+
+  const payload = await response.json()
+
+  if("error" in payload) {
+    throw new Error(payload.message)
+  }
+
+  return payload
+}
+
+export async function completeReset(email:string, password: string) {
+  const response = await fetch(`${process.env.BASE_URL}/user/complete-reset`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  })
+
+  const payload = await response.json()
+
+  if("error" in payload) {
+    throw new Error(payload.message)
+  }
+
+  return payload
+}
+
+
+export async function getUserType(type: "seller" | "buyer" | "find_partner") {
+  const response = await fetch(`${process.env.BASE_URL}/user/user-type?type=${type}`)
+  const data = await response.json()
+  return data
+}
+
+export async function getUserFindPartner(id: string) {
+  const response = await fetch(`${process.env.BASE_URL}/user/single-user/find-partner/${id}`)
+
+  const data = await response.json()
+
+  if("error" in data) {
+    throw new Error(data.message)
+  }
+  
+  return data
+}

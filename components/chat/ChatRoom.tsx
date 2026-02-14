@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ArrowLeft, Send } from "lucide-react"
 import { toast } from "sonner"
+import { ChatSidebar } from "./ChatSidebar"
 
 function formatMessageTime(dateStr: string) {
   return new Date(dateStr).toLocaleTimeString(undefined, {
@@ -111,24 +112,52 @@ export function ChatRoom({ conversationId }: { conversationId: string }) {
   }
 
   const other = conversation?.participants?.find((p) => p._id !== user._id)
-  const otherName = other?.name ?? t("unknown-user")
+  const otherName =
+    ((other?.firstName && other?.lastName
+      ? [other.firstName, other.lastName].filter(Boolean).join(" ")
+      : null) || other?.name) ?? t("unknown-user")
 
   return (
-    <div className="flex flex-col w-full h-[calc(100vh-6rem)] min-h-[400px] rounded-xl border bg-card shadow-sm overflow-hidden">
-      {/* Sticky header */}
-      <div className="flex items-center gap-3 shrink-0 px-4 py-3 border-b bg-muted/30">
-        <Button variant="ghost" size="icon" className="shrink-0" asChild>
-          <Link href={`/${locale}/chat`}>
-            <ArrowLeft className="size-5" />
-          </Link>
-        </Button>
-        <div className="min-w-0 flex-1">
-          <h1 className="text-lg font-semibold truncate">{otherName}</h1>
-        </div>
+    <div className="grid w-full grid-cols-12 gap-4 lg:gap-6 grid-rows-[auto_1fr] lg:grid-rows-none h-[calc(100dvh-5rem)] sm:h-[calc(100vh-6rem)] min-h-[320px] mb-6">
+      {/* Card 1: Info / context (3 cols) - capped height on mobile so chat gets space */}
+      <div className="col-span-12 lg:col-span-3 min-h-0 order-1 max-h-[38vh] lg:max-h-none overflow-y-auto">
+        {conversation && (
+          <div className="lg:sticky lg:top-4">
+            <ChatSidebar conversation={conversation} currentUserId={user._id} />
+          </div>
+        )}
       </div>
 
-      {/* Message area - full width, scrollable */}
-      <div className="flex-1 flex flex-col min-h-0 bg-muted/20">
+      {/* Card 2: Messages (9 cols) - takes remaining space on mobile */}
+      <Card className="col-span-12 flex flex-col overflow-hidden lg:col-span-9 order-2 min-h-0">
+        {/* Sticky header */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0 px-3 py-2 sm:px-4 sm:py-3 border-b bg-muted/30">
+          <Button variant="ghost" size="icon" className="shrink-0 h-9 w-9" asChild>
+            <Link href={`/${locale}/chat`} aria-label="Back to messages">
+              <ArrowLeft className="size-5" />
+            </Link>
+          </Button>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-base sm:text-lg font-semibold truncate">{otherName}</h1>
+            <p className="text-xs text-muted-foreground mt-0.5 truncate">
+              {t("talking-about")}:{" "}
+              {conversation?.serviceId && typeof conversation.serviceId === "object" && conversation.serviceId._id ? (
+                <Link
+                  href={`/${locale}/browse-listing/${conversation.serviceId._id}`}
+                  className="text-primary hover:underline"
+                >
+                  {t("talking-about-listing")}
+                  {conversation.serviceId.category ? ` (${conversation.serviceId.category})` : ""}
+                </Link>
+              ) : (
+                <span>{t("talking-about-find-partner")}</span>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Message area - scrollable */}
+        <div className="flex-1 flex flex-col min-h-0 bg-muted/20">
         {messagesLoading ? (
           <div className="flex-1 flex items-center justify-center p-6">
             <Skeleton className="w-full max-w-md h-48 rounded-xl" />
@@ -138,7 +167,7 @@ export function ChatRoom({ conversationId }: { conversationId: string }) {
             <p className="text-sm">{t("no-messages")}</p>
           </div>
         ) : (
-          <ul className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 max-w-4xl mx-auto w-full">
+          <ul className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 max-w-4xl mx-auto w-full">
             {messages.map((msg) => {
               const senderId = typeof msg.senderId === "object" && msg.senderId && "_id" in msg.senderId
                 ? (msg.senderId as { _id: string })._id
@@ -150,7 +179,7 @@ export function ChatRoom({ conversationId }: { conversationId: string }) {
                   className={`flex ${isMe ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-2.5 shadow-sm ${
+                    className={`max-w-[90%] sm:max-w-[85%] md:max-w-[70%] rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 shadow-sm ${
                       isMe
                         ? "bg-primary text-primary-foreground rounded-br-md"
                         : "bg-card border rounded-bl-md text-foreground"
@@ -177,27 +206,28 @@ export function ChatRoom({ conversationId }: { conversationId: string }) {
         {/* Input bar - full width */}
         <form
           onSubmit={handleSubmit}
-          className="shrink-0 p-4 bg-card border-t"
+          className="shrink-0 p-2 sm:p-4 bg-card border-t"
         >
-          <div className="flex gap-3 max-w-4xl mx-auto w-full">
+          <div className="flex gap-2 sm:gap-3 max-w-4xl mx-auto w-full min-w-0">
             <Input
               ref={inputRef}
               placeholder={t("type-message")}
-              className="flex-1 rounded-xl h-12 px-4 text-base border-2 focus-visible:ring-2"
+              className="flex-1 min-w-0 rounded-xl h-10 sm:h-12 px-3 sm:px-4 text-sm sm:text-base border-2 focus-visible:ring-2"
               maxLength={4000}
               disabled={sendMutation.isPending}
             />
             <Button
               type="submit"
               size="icon"
-              className="h-12 w-12 rounded-xl shrink-0"
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl shrink-0"
               disabled={sendMutation.isPending}
             >
-              <Send className="size-5" />
+              <Send className="size-4 sm:size-5" />
             </Button>
           </div>
         </form>
-      </div>
+        </div>
+      </Card>
     </div>
   )
 }

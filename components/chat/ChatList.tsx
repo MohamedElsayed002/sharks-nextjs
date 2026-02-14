@@ -108,6 +108,11 @@ export function ChatList() {
                             </span>
                           )}
                         </div>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {conv.serviceId && typeof conv.serviceId === "object" && conv.serviceId._id
+                            ? t("talking-about-listing")
+                            : t("talking-about-find-partner")}
+                        </p>
                         {conv.lastMessagePreview && (
                           <p className="text-sm text-muted-foreground truncate mt-0.5">
                             {conv.lastMessagePreview}

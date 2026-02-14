@@ -3,16 +3,29 @@
  * Pass the token from useAuthStore.getState().accessToken.
  */
 
+export type ServiceDetailItem = { _id?: string; lang: string; title: string }
+
 export type ConversationParticipant = {
   _id: string
   name: string
   email?: string
+  imageUrl?: string
+  location?: string
+  country?: string
+  partnerDescription?: string
+  firstName?: string
+  lastName?: string
 }
 
 export type Conversation = {
   _id: string
   participants: ConversationParticipant[]
-  serviceId?: { _id: string; category?: string } | null
+  serviceId?: {
+    _id: string
+    category?: string
+    imageUrl?: string
+    details?: ServiceDetailItem[]
+  } | null
   lastMessageAt: string | null
   lastMessagePreview: string
   unreadCount?: number

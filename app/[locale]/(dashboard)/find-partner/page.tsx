@@ -1,13 +1,10 @@
+import { FindPartnerComponent } from "@/components/find-partner"
 
 
 
 
 const Page = () => {
-    return (
-        <div>
-            Find Partner
-        </div>
-    )
+    return <FindPartnerComponent/>
 }
 
 export default Page

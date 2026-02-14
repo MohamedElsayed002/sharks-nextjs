@@ -46,7 +46,7 @@ export const Navbar = () => {
     { id: 2, title: t("browse-listing"), href: "browse-listing" },
     { id: 3, title: t("chat.messages"), href: "chat" },
     { id: 4, title: t("find-partner"), href: "find-partner" },
-    { id: 5, title: t("pricing"), href: "pricing" },
+    // { id: 5, title: t("pricing"), href: "pricing" },
   ]
 
 

@@ -54,3 +54,17 @@ export interface ProductDetail {
     sort?: "newest" | "oldest"
   }
   
+
+  export type FindPartner = {
+    _id: string 
+    name: string 
+    email: string 
+    location: string 
+    phone: string 
+    gender: string 
+    firstName: string 
+    lastName: string 
+    country: string 
+    partnerDescription: string 
+    imageUrl: string
+  }
