@@ -28,7 +28,7 @@ import { useLocale, useTranslations } from "next-intl"
 
 export const ServiceReview = ({ id }: { id: string }) => {
     const router = useRouter()
-    const t = useTranslations()
+    const t = useTranslations("serviceReview")
     const [adminNotes, setAdminNotes] = useState("")
     const queryClient = useQueryClient()
     const locale = useLocale()
@@ -46,7 +46,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['review-service', id] })
             queryClient.invalidateQueries({ queryKey: ["pending-services"] })
-            toast.success("Service status updated successfully")
+            toast.success(t("statusUpdatedSuccess"))
         },
         onError: (error) => {
             console.log(error)
@@ -77,12 +77,13 @@ export const ServiceReview = ({ id }: { id: string }) => {
     if (!service) return
 
     const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+        const dateLocale = locale === "ar" ? "ar-SA" : "en-US"
+        return new Date(dateString).toLocaleDateString(dateLocale, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
         })
     }
 
@@ -90,7 +91,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
 
 
     if (!service.category) {
-        return <h1>Service Not found</h1>
+        return <h1>{t("serviceNotFound")}</h1>
     }
 
 
@@ -118,9 +119,9 @@ export const ServiceReview = ({ id }: { id: string }) => {
                         <ArrowLeft className="h-4 w-4" />
                     </Button>
                     <div>
-                        <h1 className="text-3xl font-bold">Service Review</h1>
+                        <h1 className="text-3xl font-bold">{t("title")}</h1>
                         <p className="text-muted-foreground">
-                            Review and approve service submission
+                            {t("subtitle")}
                         </p>
                     </div>
                 </div>
@@ -135,21 +136,21 @@ export const ServiceReview = ({ id }: { id: string }) => {
                     {/* Service Details */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Service Information</CardTitle>
+                            <CardTitle>{t("serviceInformation")}</CardTitle>
                             <CardDescription>
-                                Basic details about the submitted service
+                                {t("serviceInformationDesc")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
-                                <Label className="text-muted-foreground">Service ID</Label>
+                                <Label className="text-muted-foreground">{t("serviceId")}</Label>
                                 <p className="font-mono text-sm">{service._id}</p>
                             </div>
 
                             <Separator />
 
                             <div>
-                                <Label className="text-muted-foreground">Category</Label>
+                                <Label className="text-muted-foreground">{t("category")}</Label>
                                 <div className="mt-1">
                                     <Badge variant="outline">{service.category}</Badge>
                                 </div>
@@ -158,7 +159,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                             <Separator />
 
                             <div>
-                                <Label className="text-muted-foreground">Owner</Label>
+                                <Label className="text-muted-foreground">{t("owner")}</Label>
                                 <p className="font-mono text-sm">{service.owner}</p>
                             </div>
 
@@ -168,12 +169,12 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                 <div className="flex items-center gap-2">
                                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                                     <span className="text-sm">
-                                        {service.isProfitable ? 'Profitable' : 'Not Profitable'}
+                                        {service.isProfitable ? t("profitable") : t("notProfitable")}
                                     </span>
                                 </div>
                                 {!service.platformVerificationRequested && (
                                     <Badge variant="default">
-                                        Verification Requested
+                                        {t("verificationRequested")}
                                     </Badge>
                                 )}
                             </div>
@@ -184,14 +185,14 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                 <div>
                                     <Label className="text-muted-foreground flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
-                                        Submitted
+                                        {t("submitted")}
                                     </Label>
                                     <p className="text-sm mt-1">{formatDate(service.createdAt)}</p>
                                 </div>
                                 <div>
                                     <Label className="text-muted-foreground flex items-center gap-2">
                                         <Calendar className="h-4 w-4" />
-                                        Last Updated
+                                        {t("lastUpdated")}
                                     </Label>
                                     <p className="text-sm mt-1">{formatDate(service.updatedAt)}</p>
                                 </div>
@@ -204,10 +205,10 @@ export const ServiceReview = ({ id }: { id: string }) => {
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <Globe className="h-5 w-5" />
-                                Service Descriptions
+                                {t("serviceDescriptions")}
                             </CardTitle>
                             <CardDescription>
-                                Available in {service.details.length} language(s)
+                                {t("availableInLanguages", { count: service.details.length })}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -229,14 +230,14 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                         className="space-y-4 mt-4"
                                     >
                                         <div>
-                                            <Label className="text-muted-foreground">Title</Label>
+                                            <Label className="text-muted-foreground">{t("titleLabel")}</Label>
                                             <p className="text-lg font-semibold mt-1">
                                                 {detail.title}
                                             </p>
                                         </div>
                                         <Separator />
                                         <div>
-                                            <Label className="text-muted-foreground">Description</Label>
+                                            <Label className="text-muted-foreground">{t("description")}</Label>
                                             <p className="text-sm mt-1 whitespace-pre-wrap">
                                                 {detail.description}
                                             </p>
@@ -251,9 +252,9 @@ export const ServiceReview = ({ id }: { id: string }) => {
                     {service.incomeSources && service.incomeSources.length > 0 && (
                         <Card>
                             <CardHeader>
-                                <CardTitle>Income Sources</CardTitle>
+                                <CardTitle>{t("incomeSources")}</CardTitle>
                                 <CardDescription>
-                                    Revenue streams for this service
+                                    {t("incomeSourcesDesc")}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -271,7 +272,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                     {service.imageUrl && (
                         <Card>
                             <CardHeader>
-                                <CardTitle>Cover Image Service</CardTitle>
+                                <CardTitle>{t("coverImage")}</CardTitle>
                                 <CardContent className="mx-auto mt-5">
                                     <Image src={service.imageUrl} width={700} height={500} alt={service.details[0].title} />
                                 </CardContent>
@@ -285,10 +286,10 @@ export const ServiceReview = ({ id }: { id: string }) => {
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
                                     <FileText className="h-5 w-5" />
-                                    Revenue Proofs
+                                    {t("revenueProofs")}
                                 </CardTitle>
                                 <CardDescription>
-                                    {service.revenueProofs.length} document(s) submitted
+                                    {t("documentsSubmitted", { count: service.revenueProofs.length })}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -310,7 +311,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                                         >
                                                             <img
                                                                 src={proof.fileUrl}
-                                                                alt={`Revenue proof ${index + 1}`}
+                                                                alt={t("revenueProofAlt", { index: index + 1 })}
                                                                 className="h-40 w-auto max-w-full rounded-md object-contain border bg-muted"
                                                             />
                                                         </a>
@@ -323,13 +324,13 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                                                 <Button variant="outline" size="sm" asChild>
                                                                     <a href={proof.fileUrl} target="_blank" rel="noopener noreferrer">
                                                                         <ExternalLink className="h-4 w-4 mr-2" />
-                                                                        View
+                                                                        {t("view")}
                                                                     </a>
                                                                 </Button>
                                                                 <Button variant="outline" size="sm" asChild>
                                                                     <a href={proof.fileUrl} download>
                                                                         <Download className="h-4 w-4 mr-2" />
-                                                                        Download
+                                                                        {t("download")}
                                                                     </a>
                                                                 </Button>
                                                             </div>
@@ -348,13 +349,13 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                                             <Button variant="outline" size="sm" asChild>
                                                                 <a href={proof.fileUrl} target="_blank" rel="noopener noreferrer">
                                                                     <ExternalLink className="h-4 w-4 mr-2" />
-                                                                    View
+                                                                    {t("view")}
                                                                 </a>
                                                             </Button>
                                                             <Button variant="outline" size="sm" asChild>
                                                                 <a href={proof.fileUrl} download>
                                                                     <Download className="h-4 w-4 mr-2" />
-                                                                    Download
+                                                                    {t("download")}
                                                                 </a>
                                                             </Button>
                                                         </div>
@@ -374,14 +375,14 @@ export const ServiceReview = ({ id }: { id: string }) => {
                     {/* Admin Notes */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Admin Notes</CardTitle>
+                            <CardTitle>{t("adminNotes")}</CardTitle>
                             <CardDescription>
-                                Internal notes (optional)
+                                {t("adminNotesDesc")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Textarea
-                                placeholder="Add any internal notes about this review..."
+                                placeholder={t("adminNotesPlaceholder")}
                                 value={adminNotes}
                                 onChange={(e) => setAdminNotes(e.target.value)}
                                 rows={4}
@@ -392,9 +393,9 @@ export const ServiceReview = ({ id }: { id: string }) => {
                     {/* Approval Actions */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Review Actions</CardTitle>
+                            <CardTitle>{t("reviewActions")}</CardTitle>
                             <CardDescription>
-                                {service.platformVerificationRequested ? "delete the service" : "Approve or reject this service"}
+                                {service.platformVerificationRequested ? t("reviewActionsDeleteOnly") : t("reviewActionsApproveOrReject")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="flex gap-3 space-y-4">
@@ -405,7 +406,7 @@ export const ServiceReview = ({ id }: { id: string }) => {
                                     disabled={isLoading}
                                 >
                                     <CheckCircle2 className="h-4 w-4 mr-2" />
-                                    Approve Service
+                                    {t("approveService")}
                                 </Button>
                             )}
                             <Button onClick={() => handleDelete(service._id)} variant="destructive" className="flex-1">
@@ -417,21 +418,21 @@ export const ServiceReview = ({ id }: { id: string }) => {
                     {/* Quick Stats */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Quick Stats</CardTitle>
+                            <CardTitle>{t("quickStats")}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Languages</span>
+                                <span className="text-muted-foreground">{t("languages")}</span>
                                 <span className="font-medium">{service.details.length}</span>
                             </div>
                             <Separator />
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Income Sources</span>
+                                <span className="text-muted-foreground">{t("incomeSources")}</span>
                                 <span className="font-medium">{service.incomeSources?.length || 0}</span>
                             </div>
                             <Separator />
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Revenue Proofs</span>
+                                <span className="text-muted-foreground">{t("revenueProofsCount")}</span>
                                 <span className="font-medium">{service.revenueProofs.length || 0}</span>
                             </div>
                         </CardContent>
