@@ -1,53 +1,65 @@
 "use client"
 
-import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
+import React from "react"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import Link from "next/link"
+import { useLocale, useTranslations } from "next-intl"
+import { Button } from "@/components/ui/button"
 
 type Feature = {
-  id: string;
-  title: string;
-  desc: string;
-};
-
+  id: string
+  title: string
+  desc: string
+}
 
 export const WhySharkMarket = () => {
-
   const t = useTranslations()
+  const locale = useLocale()
 
   const FEATURES: Feature[] = [
     { id: "f1", title: t("f1-title"), desc: t("f1-description") },
-    { id: "f2", title:  t("f2-title"), desc: t("f2-description")},
+    { id: "f2", title: t("f2-title"), desc: t("f2-description") },
     { id: "f3", title: t("f3-title"), desc: t("f3-description") },
-  ];
+  ]
 
   return (
-    <section className="bg-white py-16 md:py-20">
-      <div className="max-w-5xl mx-auto px-6 text-center">
-        <h3 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">{t("why-shark-market")}</h3>
-        <p className="mt-3 text-sm text-slate-600 max-w-xl mx-auto">{t("why-shark-market-desc")}</p>
+    <section className="bg-[#F9F8F4] border-t border-b py-16 md:py-20">
+      <div className="mx-auto max-w-5xl px-6 text-center">
+        <h3 className="text-2xl font-bold tracking-tight text-slate-800 md:text-3xl">
+          {t("why-shark-market")}
+        </h3>
+        <p className="mx-auto mt-3 max-w-xl text-base text-slate-600">
+          {t("why-shark-market-desc")}
+        </p>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           {FEATURES.map((f) => (
-            <Card key={f.id} className="p-5 shadow-lg border-slate-200/80 bg-white hover:shadow-xl transition-shadow rounded-xl">
+            <Card
+              key={f.id}
+              className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
+            >
               <CardHeader className="p-0">
-                <CardTitle className="text-base font-semibold text-slate-900">{f.title}</CardTitle>
+                <CardTitle className="text-base font-semibold text-slate-800">
+                  {f.title}
+                </CardTitle>
               </CardHeader>
               <CardContent className="p-0 pt-3">
-                <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+                <p className="text-sm leading-relaxed text-slate-600">{f.desc}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
         <div className="mt-10">
-          <Link href="#" className="inline-flex items-center rounded-full bg-slate-900 text-white px-5 py-2.5 text-sm font-medium shadow-md transition hover:bg-slate-800">
-            {t("start-now")}
-          </Link>
+          <Button
+            asChild
+            className="rounded-xl bg-[#C9A227] px-6 py-6 text-base font-semibold text-white shadow-lg transition-all hover:bg-[#B8921F] hover:shadow-xl"
+          >
+            <Link href={`/${locale}/browse-listing`}>{t("start-now")}</Link>
+          </Button>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 

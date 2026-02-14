@@ -68,50 +68,57 @@ export const NewPassword = ({ email, setStep }: { email: string, setStep: Dispat
     }
 
     return (
-        <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)} className="w-96 space-y-4 text-white">
-                <h1 className='text-3xl font-semibold tracking-tight text-white'>{t("reset-password")}</h1>
-                <FormField
-                    control={form.control}
-                    name='newPassword'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{t("new-password")}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="*********"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-800">{t("reset-password")}</h1>
+                    <FormField
+                        control={form.control}
+                        name="newPassword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-slate-800">{t("new-password")}</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder="*********"
+                                        className="border-slate-200 bg-white text-slate-800 placeholder:text-slate-400"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                <FormField
-                    control={form.control}
-                    name='rePassword'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{t("new-password-again")}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="password"
-                                    placeholder="*********"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="rePassword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-slate-800">{t("new-password-again")}</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder="*********"
+                                        className="border-slate-200 bg-white text-slate-800 placeholder:text-slate-400"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                <Button disabled={isPending} className="bg-blue-500 w-full" type='submit'>
-                    {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : t("submit")}
-                </Button>
-            </form>
-        </Form>
+                    <Button
+                        disabled={isPending}
+                        className="mt-2 w-full rounded-xl bg-[#C9A227] font-semibold text-white hover:bg-[#B8921F]"
+                        type="submit"
+                    >
+                        {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : t("submit")}
+                    </Button>
+                </form>
+            </Form>
+        </div>
     )
 }

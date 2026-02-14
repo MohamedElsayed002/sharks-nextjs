@@ -49,43 +49,47 @@ export const CodeVerification = ({ email, setStep }: { email: string, setStep: D
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-96 space-y-4 text-white">
-                <h1 className="text-3xl font-semibold tracking-tight text-white">
-                    {t("code-verification")}
-                </h1>
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-800">
+                        {t("code-verification")}
+                    </h1>
 
-                <FormField
-                    control={form.control}
-                    name="code"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>
-                                {t("verify")}
-                            </FormLabel>
-                            <FormControl>
-                                <InputOTP
-                                    autoFocus
-                                    id='code'
-                                    pattern={REGEXP_ONLY_DIGITS}
-                                    maxLength={6}
-                                    {...field}
-                                >
-                                    <InputOTPGroup>
-                                        {[...Array(6)].map((_, i) => (
-                                            <InputOTPSlot key={i} index={i} />
-                                        ))}
-                                    </InputOTPGroup>
-                                </InputOTP>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button disabled={isPending} className="bg-blue-500" type='submit'>
-                    {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : t("verify")}
-                </Button>
-            </form>
-        </Form>
+                    <FormField
+                        control={form.control}
+                        name="code"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-slate-800">{t("verify")}</FormLabel>
+                                <FormControl>
+                                    <InputOTP
+                                        autoFocus
+                                        id="code"
+                                        pattern={REGEXP_ONLY_DIGITS}
+                                        maxLength={6}
+                                        {...field}
+                                    >
+                                        <InputOTPGroup>
+                                            {[...Array(6)].map((_, i) => (
+                                                <InputOTPSlot key={i} index={i} />
+                                            ))}
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <Button
+                        disabled={isPending}
+                        className="mt-2 w-full rounded-xl bg-[#C9A227] font-semibold text-white hover:bg-[#B8921F]"
+                        type="submit"
+                    >
+                        {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : t("verify")}
+                    </Button>
+                </form>
+            </Form>
+        </div>
     )
 }

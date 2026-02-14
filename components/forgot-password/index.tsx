@@ -13,10 +13,10 @@ export const ForgotPassword = () => {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-foreground flex items-center justify-center px-4">
+        <div className="w-full max-w-md">
             {step === 1 && <SendEmail setEmail={setEmail} setStep={setStep} />}
-            {step === 2 && <CodeVerification email={email} setStep={setStep}/>}
-            {step === 3 && <NewPassword email={email} setStep={setStep}/>}
+            {step === 2 && <CodeVerification email={email} setStep={setStep} />}
+            {step === 3 && <NewPassword email={email} setStep={setStep} />}
         </div>
     )
 }

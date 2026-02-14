@@ -1,14 +1,15 @@
-"use client";
+"use client"
 
-import "react-phone-number-input/style.css";
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css"
+import React, { useState, useEffect, useMemo } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import PhoneInput from "react-phone-number-input"
+import { useTranslations } from "next-intl"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
   Form,
   FormControl,
@@ -16,72 +17,68 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import Link from "next/link";
-import { useLocale } from "next-intl";
-import { useAuthStore } from "@/context/user";
-import { useMutation } from "@tanstack/react-query";
-import { onBoardingCreate } from "@/actions";
-import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+} from "@/components/ui/select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardContent } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
+import Link from "next/link"
+import { useLocale } from "next-intl"
+import { useAuthStore } from "@/context/user"
+import { useMutation } from "@tanstack/react-query"
+import { onBoardingCreate } from "@/actions"
+import { toast } from "sonner"
+import { Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
 
-/* ---------------- SCHEMA ---------------- */
+function getOnboardingSchema(t: (key: string) => string) {
+  return z.object({
+    accountType: z.enum(["buyer", "seller", "find_partner"]),
+    firstName: z.string().min(1, t("firstNameRequired")),
+    lastName: z.string().min(1, t("lastNameRequired")),
+    country: z.string().min(1, t("countryRequired")),
+    phone: z.string().min(1, t("phoneRequired")),
+    agree: z.boolean().refine((v) => v === true, { message: t("agreeRequired") }),
+    partnerDescription: z.string().max(2000).optional(),
+    optional: z
+      .object({
+        companyName: z.string().optional(),
+        howHeard: z.string().optional(),
+        businessUrl: z
+          .string()
+          .optional()
+          .refine((v) => !v || /^https?:\/\//.test(v), { message: t("invalidUrl") }),
+        category: z.string().optional(),
+        annualRevenue: z.string().optional(),
+        annualProfit: z.string().optional(),
+        businessesCount: z.string().optional(),
+      })
+      .optional(),
+  })
+}
 
-const onboardingSchema = z.object({
-  accountType: z.enum(["buyer", "seller", "find_partner"]),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  country: z.string().min(1, "Country is required"),
-
-  phone: z.string().min(1, "Phone number is required"),
-
-  agree: z.boolean().refine((v) => v === true, {
-    message: "You must accept the terms",
-  }),
-
-  partnerDescription: z.string().max(2000).optional(),
-
-  optional: z
-    .object({
-      companyName: z.string().optional(),
-      howHeard: z.string().optional(),
-      businessUrl: z
-        .string()
-        .optional()
-        .refine((v) => !v || /^https?:\/\//.test(v), {
-          message: "Invalid URL (include http:// or https://)",
-        }),
-      category: z.string().optional(),
-      annualRevenue: z.string().optional(),
-      annualProfit: z.string().optional(),
-      businessesCount: z.string().optional(),
-    })
-    .optional(),
-});
-
-export type OnboardingFormValues = z.infer<typeof onboardingSchema>;
+export type OnboardingFormValues = z.infer<ReturnType<typeof getOnboardingSchema>>;
 
 /* ---------------- COMPONENT ---------------- */
 
 export default function OnboardingForm() {
-  const [showOptional, setShowOptional] = useState(false);
-  const user = useAuthStore((state) => state.user);
+  const t = useTranslations("onboarding")
+  const [showOptional, setShowOptional] = useState(false)
+  const user = useAuthStore((state) => state.user)
   const router = useRouter()
-  const locale = useLocale();
+  const locale = useLocale()
 
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: (data: OnboardingFormValues) => onBoardingCreate(data)
+  const onboardingSchema = useMemo(() => getOnboardingSchema(t), [t])
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: OnboardingFormValues) => onBoardingCreate(data),
   })
 
   const form = useForm<OnboardingFormValues>({
@@ -122,7 +119,7 @@ export default function OnboardingForm() {
   const onSubmit = (data: OnboardingFormValues) => {
     mutate(data, {
       onSuccess: () => {
-        toast.success("Onboarding successful")
+        toast.success(t("success"))
         setTimeout(() => {
           router.replace("/")
         }, 2000)
@@ -135,49 +132,59 @@ export default function OnboardingForm() {
   };
 
   return (
-    <div className="md:mt-10 w-full md:max-w-7xl mx-auto  p-6">
-      <Card className="shadow-md">
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="mb-4">
-                {/* <div className="text-sm text-muted-foreground">Step 1 of 3</div>  */}
-                <h2 className="text-2xl font-semibold">Let’s get you set up</h2>
-                <p className="text-sm text-muted-foreground">Tell us about yourself to personalize your experience.</p>
-              </div>
-              {/* ACCOUNT TYPE */}
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => form.setValue("accountType", "buyer")}
-                  className={`flex-1 min-w-[100px] rounded-md py-2 border ${accountTypeChecked === "buyer"
-                    ? "bg-white text-black border-black"
-                    : "bg-transparent text-muted-foreground"
-                    }`}
-                >
-                  Buyer
-                </button>
-                <button
-                  type="button"
-                  onClick={() => form.setValue("accountType", "seller")}
-                  className={`flex-1 min-w-[100px] rounded-md py-2 border ${accountTypeChecked === "seller"
-                    ? "bg-black text-white border-black"
-                    : "bg-transparent text-muted-foreground"
-                    }`}
-                >
-                  Seller
-                </button>
-                <button
-                  type="button"
-                  onClick={() => form.setValue("accountType", "find_partner")}
-                  className={`flex-1 min-w-[100px] rounded-md py-2 border ${accountTypeChecked === "find_partner"
-                    ? "bg-black text-white border-black"
-                    : "bg-transparent text-muted-foreground"
-                    }`}
-                >
-                  Find a partner
-                </button>
-              </div>
+    <div className="min-h-screen bg-[#F9F8F4] py-10 md:py-16">
+      <div className="mx-auto w-full max-w-2xl px-4">
+        <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <CardContent className="p-6 md:p-10">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6 [&_input]:border-slate-200 [&_input]:focus-visible:ring-[#C9A227] [&_label]:text-slate-800 [&_textarea]:border-slate-200 [&_textarea]:focus-visible:ring-[#C9A227]"
+              >
+                <div className="mb-6 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C9A227]">SHARKMKT</p>
+                  <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-800 md:text-3xl">{t("title")}</h2>
+                  <p className="mt-1 text-sm text-slate-600">{t("subtitle")}</p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => form.setValue("accountType", "buyer")}
+                    className={cn(
+                      "min-w-[100px] flex-1 rounded-xl border-2 py-2.5 font-medium transition-colors",
+                      accountTypeChecked === "buyer"
+                        ? "border-[#C9A227] bg-[#C9A227] text-white"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                    )}
+                  >
+                    {t("buyer")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => form.setValue("accountType", "seller")}
+                    className={cn(
+                      "min-w-[100px] flex-1 rounded-xl border-2 py-2.5 font-medium transition-colors",
+                      accountTypeChecked === "seller"
+                        ? "border-[#C9A227] bg-[#C9A227] text-white"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                    )}
+                  >
+                    {t("seller")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => form.setValue("accountType", "find_partner")}
+                    className={cn(
+                      "min-w-[100px] flex-1 rounded-xl border-2 py-2.5 font-medium transition-colors",
+                      accountTypeChecked === "find_partner"
+                        ? "border-[#C9A227] bg-[#C9A227] text-white"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                    )}
+                  >
+                    {t("findPartner")}
+                  </button>
+                </div>
 
               {/* MAIN INFO */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -186,9 +193,9 @@ export default function OnboardingForm() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel>{t("firstName")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Mohamed" {...field} />
+                        <Input placeholder={t("firstNamePlaceholder")} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -200,9 +207,9 @@ export default function OnboardingForm() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel>{t("lastName")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Elsayed" {...field} />
+                        <Input placeholder={t("lastNamePlaceholder")} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -214,9 +221,9 @@ export default function OnboardingForm() {
                   name="country"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Country</FormLabel>
+                      <FormLabel>{t("country")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Riyadh, Saudi Arabia" {...field} />
+                        <Input placeholder={t("countryPlaceholder")} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -228,15 +235,15 @@ export default function OnboardingForm() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone number</FormLabel>
+                      <FormLabel>{t("phone")}</FormLabel>
                       <FormControl>
                         <PhoneInput
                           international
                           defaultCountry="SA"
-                          placeholder="Enter phone number"
+                          placeholder={t("phonePlaceholder")}
                           value={field.value}
                           onChange={field.onChange}
-                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-within:ring-1 focus-within:ring-ring"
+                          className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm focus-within:ring-2 focus-within:ring-[#C9A227] focus-within:ring-offset-0"
                         />
                       </FormControl>
                       <FormMessage />
@@ -247,11 +254,9 @@ export default function OnboardingForm() {
 
               {/* FIND A PARTNER: description */}
               {showPartnerDescription && (
-                <div className="border rounded-md p-4 space-y-2">
-                  <h3 className="font-medium">What kind of partner are you looking for?</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Describe your project or the type of partner you want to work with.
-                  </p>
+                <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50/50 p-4">
+                  <h3 className="font-semibold text-slate-800">{t("partnerHeading")}</h3>
+                  <p className="text-sm text-slate-600">{t("partnerSubtitle")}</p>
                   <FormField
                     control={form.control}
                     name="partnerDescription"
@@ -259,7 +264,7 @@ export default function OnboardingForm() {
                       <FormItem>
                         <FormControl>
                           <Textarea
-                            placeholder="e.g. I'm looking for a technical co-founder for a SaaS in the HR space..."
+                            placeholder={t("partnerPlaceholder")}
                             className="min-h-[120px] resize-y"
                             maxLength={2000}
                             {...field}
@@ -274,33 +279,32 @@ export default function OnboardingForm() {
 
               {/* OPTIONAL - only for Buyer & Seller */}
               {showOptionalSection && (
-                <div className="border rounded-md p-4">
+                <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-medium">Optional</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Add extra details to improve your experience.
-                      </p>
+                      <h3 className="font-semibold text-slate-800">{t("optional")}</h3>
+                      <p className="text-sm text-slate-600">{t("optionalSubtitle")}</p>
                     </div>
                     <Button
                       variant="ghost"
                       type="button"
+                      className="text-slate-600 hover:bg-slate-100 hover:text-slate-800"
                       onClick={() => setShowOptional((s) => !s)}
                     >
-                      {showOptional ? "Hide" : "Add"}
+                      {showOptional ? t("hide") : t("add")}
                     </Button>
                   </div>
 
                   {showOptional && (
-                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                       <FormField
                         control={form.control}
                         name="optional.companyName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Company Name</FormLabel>
+                            <FormLabel>{t("companyName")}</FormLabel>
                             <FormControl>
-                              <Input placeholder="Aramco" {...field} />
+                              <Input placeholder={t("companyNamePlaceholder")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -312,19 +316,16 @@ export default function OnboardingForm() {
                         name="optional.howHeard"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>How did you hear about us?</FormLabel>
+                            <FormLabel>{t("howHeard")}</FormLabel>
                             <FormControl>
-                              <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                              >
-                                <SelectTrigger className="text-black w-full">
-                                  <SelectValue placeholder="Select" />
+                              <Select value={field.value} onValueChange={field.onChange}>
+                                <SelectTrigger className="w-full border-slate-200 text-slate-800 focus:ring-[#C9A227]">
+                                  <SelectValue placeholder={t("select")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="friend">Friend</SelectItem>
-                                  <SelectItem value="google">Google</SelectItem>
-                                  <SelectItem value="ad">Advertisement</SelectItem>
+                                  <SelectItem value="friend">{t("howHeardFriend")}</SelectItem>
+                                  <SelectItem value="google">{t("howHeardGoogle")}</SelectItem>
+                                  <SelectItem value="ad">{t("howHeardAd")}</SelectItem>
                                 </SelectContent>
                               </Select>
                             </FormControl>
@@ -338,19 +339,16 @@ export default function OnboardingForm() {
                         name="optional.category"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Business Category</FormLabel>
+                            <FormLabel>{t("businessCategory")}</FormLabel>
                             <FormControl>
-                              <Select
-                                value={field.value}
-                                onValueChange={field.onChange}
-                              >
-                                <SelectTrigger className="text-black w-full">
-                                  <SelectValue placeholder="Select" />
+                              <Select value={field.value} onValueChange={field.onChange}>
+                                <SelectTrigger className="w-full border-slate-200 text-slate-800 focus:ring-[#C9A227]">
+                                  <SelectValue placeholder={t("select")} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="ecommerce">E-commerce</SelectItem>
-                                  <SelectItem value="services">Services</SelectItem>
-                                  <SelectItem value="saas">SaaS</SelectItem>
+                                  <SelectItem value="ecommerce">{t("categoryEcommerce")}</SelectItem>
+                                  <SelectItem value="services">{t("categoryServices")}</SelectItem>
+                                  <SelectItem value="saas">{t("categorySaas")}</SelectItem>
                                 </SelectContent>
                               </Select>
                             </FormControl>
@@ -364,9 +362,9 @@ export default function OnboardingForm() {
                         name="optional.annualRevenue"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Annual Revenue</FormLabel>
+                            <FormLabel>{t("annualRevenue")}</FormLabel>
                             <FormControl>
-                              <Input placeholder="120,000 SAR" {...field} />
+                              <Input placeholder={t("annualRevenuePlaceholder")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -378,9 +376,9 @@ export default function OnboardingForm() {
                         name="optional.annualProfit"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Annual Profit</FormLabel>
+                            <FormLabel>{t("annualProfit")}</FormLabel>
                             <FormControl>
-                              <Input placeholder="500,000 SAR" {...field} />
+                              <Input placeholder={t("annualProfitPlaceholder")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -392,9 +390,9 @@ export default function OnboardingForm() {
                         name="optional.businessesCount"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>How many businesses do you own?</FormLabel>
+                            <FormLabel>{t("businessesCount")}</FormLabel>
                             <FormControl>
-                              <Input placeholder="e.g. 2" {...field} />
+                              <Input placeholder={t("businessesCountPlaceholder")} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -417,18 +415,16 @@ export default function OnboardingForm() {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <div className="text-sm leading-tight">
-                      <FormLabel className="font-normal">
-                        I agree to the{" "}
-                        <div className="inline-block">
-                          <Link href={`/${locale}/terms`} className="underline">
-                            Terms & Conditions
-                          </Link>{" "}
-                          and{" "}
-                          <Link href={`/${locale}/privacy`} className="underline">
-                            Privacy Policy
-                          </Link>
-                        </div>
+                    <div className="text-sm leading-tight text-slate-600">
+                      <FormLabel className="font-normal text-slate-600">
+                        {t("agreeTerms")}{" "}
+                        <Link href={`/${locale}/terms`} className="text-[#C9A227] underline hover:text-[#B8921F]">
+                          {t("termsAndConditions")}
+                        </Link>{" "}
+                        {t("and")}{" "}
+                        <Link href={`/${locale}/privacy`} className="text-[#C9A227] underline hover:text-[#B8921F]">
+                          {t("privacyPolicy")}
+                        </Link>
                       </FormLabel>
                       <FormMessage />
                     </div>
@@ -436,13 +432,18 @@ export default function OnboardingForm() {
                 )}
               />
 
-              <Button disabled={isPending} type="submit" className="w-full">
-                {isPending ? <Loader2 className="size-4 animate-spin" /> : "Save"}
+              <Button
+                disabled={isPending}
+                type="submit"
+                className="w-full rounded-xl bg-[#C9A227] font-medium text-white hover:bg-[#B8921F]"
+              >
+                {isPending ? <Loader2 className="size-4 animate-spin" /> : t("save")}
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

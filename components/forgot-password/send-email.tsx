@@ -48,37 +48,39 @@ export const SendEmail = ({setStep, setEmail}: {setStep: Dispatch<SetStateAction
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-96 space-y-4">
-                <h1 className="text-3xl font-semibold tracking-tight text-white">{t("forgot-password")}</h1>
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="text-white">{t("email")}</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="email"
-                                    placeholder="name@gmail.com"
-                                    autoComplete="email"
-                                    className='text-white'
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-800">{t("forgot-password")}</h1>
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="text-slate-800">{t("email")}</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="email"
+                                        placeholder="name@gmail.com"
+                                        autoComplete="email"
+                                        className="border-slate-200 bg-white text-slate-800 placeholder:text-slate-400"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                <Button
-                    type='submit'
-                    className="w-full mt-2 bg-blue-500"
-                    disabled={isPending}
-                >
-                    {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : t("send-email")}
-                </Button>
-            </form>
-        </Form>
+                    <Button
+                        type="submit"
+                        className="mt-2 w-full rounded-xl bg-[#C9A227] font-semibold text-white hover:bg-[#B8921F]"
+                        disabled={isPending}
+                    >
+                        {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : t("send-email")}
+                    </Button>
+                </form>
+            </Form>
+        </div>
     )
 }

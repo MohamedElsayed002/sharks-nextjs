@@ -110,7 +110,7 @@ export const Services = ({ products, locale }: ServicesProps) => {
   })
 
   return (
-    <section className="bg-slate-50/70 py-16 md:py-20">
+    <section className="bg-[#F9F8F4] py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>

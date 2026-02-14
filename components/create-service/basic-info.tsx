@@ -1,62 +1,60 @@
+"use client"
+
 import { UseFormReturn } from "react-hook-form"
 import { FormSchema } from "./index"
 import { Form, FormControl, FormLabel, FormField, FormMessage, FormItem, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Languages } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 interface Step1Props {
   form: UseFormReturn<FormSchema>
 }
 
 export const BasicInfo = ({ form }: Step1Props) => {
+  const t = useTranslations("addService")
+
   return (
     <Form {...form}>
-      <div className="space-y-6 text-black">
-        {/* Category Field */}
+      <div className="space-y-6 text-slate-800">
         <FormField
           control={form.control}
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-lg font-medium">Service Category</FormLabel>
+              <FormLabel className="text-base font-medium text-slate-800">{t("categoryLabel")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   type="text"
-                  placeholder="e.g., SaaS, E-commerce, Consulting"
-                  className="text-slate-500  placeholder:text-slate-500 focus:border-violet-500 focus:ring-violet-500/20"
+                  placeholder={t("categoryPlaceholder")}
+                  className="border-slate-200 placeholder:text-slate-400 focus-visible:ring-[#C9A227]"
                 />
               </FormControl>
-              <FormDescription className="text-slate-400 text-sm">
-                What category best describes your service?
-              </FormDescription>
-              <FormMessage className="text-red-400" />
+              <FormDescription className="text-sm text-slate-600">{t("categoryDescription")}</FormDescription>
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
 
-        {/* Divider */}
-        <div className="flex items-center gap-3 my-8">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
-          <div className="flex items-center gap-2 text-slate-400">
-            <Languages className="w-5 h-5" />
-            <span className="text-xl font-medium text-black">Bilingual Details</span>
+        <div className="my-8 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+          <div className="flex items-center gap-2 text-slate-600">
+            <Languages className="h-5 w-5" />
+            <span className="text-lg font-medium text-slate-800">{t("bilingualDetails")}</span>
           </div>
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
         </div>
 
-        <p className="text-slate-400 text-sm text-center -mt-4 mb-6">
-          Please provide information in both English and Arabic
-        </p>
+        <p className="-mt-4 mb-6 text-center text-sm text-slate-600">{t("provideBoth")}</p>
 
-        {/* English Details */}
-        <div className="border bg-gray-100/80 rounded-xl p-6 space-y-4">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-              <span className="text-blue-400 font-bold text-sm">EN</span>
+        <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-6 space-y-4">
+          <div className="mb-4 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600">
+              <span className="text-sm font-bold">EN</span>
             </div>
-            <h3 className="text-xl font-semibold text-black">English Details</h3>
+            <h3 className="text-lg font-semibold text-slate-800">{t("englishDetails")}</h3>
           </div>
 
           <FormField
@@ -64,16 +62,16 @@ export const BasicInfo = ({ form }: Step1Props) => {
             name="details.0.title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-black">Title (English)</FormLabel>
+                <FormLabel className="text-slate-800">{t("titleEnglish")}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="text"
-                    placeholder="Enter service title in English"
-                    className="border border-gray-200 placeholder:text-slate-500 focus:border-blue-500 focus:ring-blue-500/20"
+                    placeholder={t("titleEnglishPlaceholder")}
+                    className="border-slate-200 placeholder:text-slate-400 focus-visible:ring-[#C9A227]"
                   />
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -83,28 +81,27 @@ export const BasicInfo = ({ form }: Step1Props) => {
             name="details.0.description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="">Description (English)</FormLabel>
+                <FormLabel className="text-slate-800">{t("descriptionEnglish")}</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
                     rows={4}
-                    placeholder="Describe your service in English..."
-                    className=" placeholder:text-slate-500 focus:border-blue-500 focus:ring-blue-500/20 resize-none"
+                    placeholder={t("descriptionEnglishPlaceholder")}
+                    className="resize-none border-slate-200 placeholder:text-slate-400 focus-visible:ring-[#C9A227]"
                   />
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
         </div>
 
-        {/* Arabic Details */}
-        <div className="bg-gray-100/80 rounded-xl p-6 space-y-4">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
-              <span className="text-emerald-400 font-bold text-sm">AR</span>
+        <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-6 space-y-4">
+          <div className="mb-4 flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-slate-600">
+              <span className="text-sm font-bold">AR</span>
             </div>
-            <h3 className="text-xl font-semibold">Arabic Details</h3>
+            <h3 className="text-lg font-semibold text-slate-800">{t("arabicDetails")}</h3>
           </div>
 
           <FormField
@@ -112,17 +109,17 @@ export const BasicInfo = ({ form }: Step1Props) => {
             name="details.1.title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="">Title (Arabic)</FormLabel>
+                <FormLabel className="text-slate-800">{t("titleArabic")}</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="text"
-                    placeholder="أدخل عنوان الخدمة بالعربية"
+                    placeholder={t("titleArabicPlaceholder")}
                     dir="rtl"
-                    className=" placeholder:text-slate-500 focus:border-emerald-500 focus:ring-emerald-500/20"
+                    className="border-slate-200 placeholder:text-slate-400 focus-visible:ring-[#C9A227]"
                   />
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -132,17 +129,17 @@ export const BasicInfo = ({ form }: Step1Props) => {
             name="details.1.description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="">Description (Arabic)</FormLabel>
+                <FormLabel className="text-slate-800">{t("descriptionArabic")}</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
                     rows={4}
-                    placeholder="اكتب وصف الخدمة بالعربية..."
+                    placeholder={t("descriptionArabicPlaceholder")}
                     dir="rtl"
-                    className="border placeholder:text-slate-500 focus:border-emerald-500 focus:ring-emerald-500/20 resize-none"
+                    className="resize-none border-slate-200 placeholder:text-slate-400 focus-visible:ring-[#C9A227]"
                   />
                 </FormControl>
-                <FormMessage className="text-red-400" />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -151,4 +148,3 @@ export const BasicInfo = ({ form }: Step1Props) => {
     </Form>
   )
 }
-

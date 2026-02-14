@@ -4,64 +4,52 @@ import { useTranslations } from "next-intl"
 import { Check, ClipboardCheck, MessageCircle, Shield } from "lucide-react"
 
 const COLUMNS = [
-  {
-    key: "verifyData",
-    icon: ClipboardCheck,
-  },
-  {
-    key: "directSupport",
-    icon: MessageCircle,
-  },
-  {
-    key: "preserveRights",
-    icon: Shield,
-  },
+  { key: "preserveRights", icon: Shield },
+  { key: "directSupport", icon: MessageCircle },
+  { key: "verifyData", icon: ClipboardCheck },
 ] as const
 
 export function WhoWeAre() {
   const t = useTranslations("whoWeAre")
 
   return (
-    <section className="relative overflow-hidden bg-slate-900 py-16 text-slate-100">
-      {/* Optional subtle texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-800/50 via-transparent to-transparent" aria-hidden />
-
+    <section className="relative border-t overflow-hidden bg-[#F9F8F4] py-20">
       <div className="relative mx-auto max-w-6xl px-6">
-        <h2 className="text-center text-2xl font-bold md:text-3xl">
+        <h2 className="text-center text-3xl font-bold tracking-tight text-slate-800 md:text-4xl">
           {t("title")}
         </h2>
-        <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-relaxed text-slate-300 md:text-base">
+        <p className="mx-auto mt-5 max-w-3xl text-center text-base leading-relaxed text-slate-600 md:text-lg">
           {t("intro")}
         </p>
 
-        <div className="my-10 flex justify-center" aria-hidden>
-          <span className="text-slate-500">—</span>
+        <div className="my-12 flex justify-center" aria-hidden>
+          <span className="h-px w-12 bg-slate-300" />
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
           {COLUMNS.map(({ key, icon: Icon }) => (
             <div
               key={key}
-              className="flex flex-col items-center text-center"
+              className="flex flex-col items-center"
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-slate-600 bg-slate-800/50 text-slate-200">
-                <Icon className="h-6 w-6" />
+              <div className="mb-5 flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-600">
+                <Icon className="h-7 w-7" strokeWidth={1.8} />
               </div>
-              <h3 className="text-lg font-semibold">
+              <h3 className="text-center text-xl font-bold text-slate-800">
                 {t(`${key}-title`)}
               </h3>
-              <ul className="mt-4 space-y-3 text-start">
-                <li className="flex items-start gap-2 text-sm text-slate-300">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
-                  <span>{t(`${key}-1`)}</span>
+              <ul className="mt-5 w-full space-y-3 text-start">
+                <li className="flex items-start gap-3 text-slate-600">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" strokeWidth={2.5} />
+                  <span className="text-sm leading-relaxed md:text-base">{t(`${key}-1`)}</span>
                 </li>
-                <li className="flex items-start gap-2 text-sm text-slate-300">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
-                  <span>{t(`${key}-2`)}</span>
+                <li className="flex items-start gap-3 text-slate-600">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" strokeWidth={2.5} />
+                  <span className="text-sm leading-relaxed md:text-base">{t(`${key}-2`)}</span>
                 </li>
-                <li className="flex items-start gap-2 text-sm text-slate-300">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
-                  <span>{t(`${key}-3`)}</span>
+                <li className="flex items-start gap-3 text-slate-600">
+                  <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" strokeWidth={2.5} />
+                  <span className="text-sm leading-relaxed md:text-base">{t(`${key}-3`)}</span>
                 </li>
               </ul>
             </div>

@@ -52,6 +52,8 @@ export interface ProductDetail {
     search?: string
     category?: string
     sort?: "newest" | "oldest"
+    incomeSource?: string[]
+    profitable?: boolean
   }
   
 

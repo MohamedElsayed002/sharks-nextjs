@@ -5,7 +5,7 @@ import { Navbar } from "@/components/shared/navbar"
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col bg-[#FBFAF9]">
             {/* <Header/> */}
             <Navbar />
             <main className="flex-1 flex flex-col p-0">

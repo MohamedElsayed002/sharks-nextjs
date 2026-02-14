@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useAuthStore } from "@/context/user"
 import { useLocale, useTranslations } from "next-intl"
@@ -17,7 +17,6 @@ import {
   SheetContent,
   SheetFooter,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { ChevronDown, MenuIcon, X } from "lucide-react"
@@ -38,7 +37,6 @@ export const Navbar = () => {
   const user = useAuthStore((state) => state)
   const router = useRouter()
 
-  // control the sheet open state so we can close it programmatically
   const [open, setOpen] = useState(false)
 
   const links = [
@@ -46,7 +44,6 @@ export const Navbar = () => {
     { id: 2, title: t("browse-listing"), href: "browse-listing" },
     { id: 3, title: t("chat.messages"), href: "chat" },
     { id: 4, title: t("find-partner"), href: "find-partner" },
-    // { id: 5, title: t("pricing"), href: "pricing" },
   ]
 
 
@@ -58,7 +55,6 @@ export const Navbar = () => {
     router.push(`/${locale}`)
   }
 
-  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`
 
   const token = useAuthStore((s) => s.accessToken)
   const { data: unreadData } = useQuery({
@@ -70,28 +66,20 @@ export const Navbar = () => {
 
 
   return (
-    <header
-      className={cn(
-        "relative z-20 w-full transition-colors pt-10 md:pt-2",
-        isHome
-          ? "bg-transparent text-white"
-          : "bg-background text-foreground"
-      )}
-    >
-      <div className="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 md:px-8">
-        <Link href={`/${locale}`} className="flex items-center shrink-0">
+    <header className="relative z-20 w-full bg-[#F9F8F4] pt-10 transition-colors md:pt-2">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 md:px-8">
+        <Link href={`/${locale}`} className="flex shrink-0 items-center">
           <Image
             src="/sharkmkt-logo.png"
             width={120}
             height={72}
             alt="Logo"
-            unoptimized
-            className={cn("h-9 w-auto sm:h-10 md:h-[72px] md:w-[220px]", isHome && "invert")}
+            className="h-9 w-auto sm:h-10 md:h-[72px] md:w-[220px]"
           />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex gap-6 mr-6">
+        {/* Desktop nav – hero style: gold active, slate text */}
+        <nav className="mr-6 hidden md:flex gap-6">
           {links.map((link) => {
             const fullPath = `/${locale}/${link.href}`
             const isActive =
@@ -104,24 +92,17 @@ export const Navbar = () => {
                 key={link.id}
                 href={fullPath}
                 className={cn(
-                  "font-semibold pb-1 transition-colors relative inline-flex items-center gap-1",
-                  isHome
-                    ? isActive
-                      ? "border-b-2 border-white text-white"
-                      : "border-b-2 border-transparent text-white/90 hover:text-white hover:border-white/50"
-                    : isActive
-                      ? "border-b-2 border-primary text-primary"
-                      : "border-b-2 border-transparent hover:border-primary"
+                  "relative inline-flex items-center gap-1 pb-1 font-semibold transition-colors",
+                  isActive
+                    ? "border-b-2 border-[#C9A227] text-slate-800"
+                    : "border-b-2 border-transparent text-slate-600 hover:border-[#C9A227]/50 hover:text-slate-800"
                 )}
               >
                 {link.title}
                 {showUnread && (
                   <span
-                    className={cn(
-                      "flex items-center justify-center min-w-[18px] h-[18px] rounded-full text-[10px] font-bold shrink-0",
-                      isHome ? "bg-red-500 text-white" : "bg-destructive text-destructive-foreground"
-                    )}
-                    aria-label={`${unreadCount} unread messages`}
+                    className="flex h-[18px] min-w-[18px] shrink-0 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white"
+                    aria-label={t("unreadMessages", { count: unreadCount })}
                   >
                     {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
@@ -140,12 +121,8 @@ export const Navbar = () => {
                 <button
                   aria-label={t("hello") + " " + user.user.name}
                   className={cn(
-                    "flex items-center gap-2 rounded-full pl-0.5 pr-3 py-1 outline-none",
-                    "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                    "border transition-shadow hover:shadow-md",
-                    isHome
-                      ? "bg-white/15 text-white border-white/30 hover:bg-white/25 focus-visible:ring-white/50"
-                      : "bg-background border-input hover:bg-accent/50 focus-visible:ring-primary"
+                    "flex items-center gap-2 rounded-full border border-slate-200 bg-white pl-0.5 pr-3 py-1 outline-none transition-shadow hover:bg-slate-50 hover:shadow-sm",
+                    "focus-visible:ring-2 focus-visible:ring-[#C9A227] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F8F4]"
                   )}
                 >
                   <Avatar className="h-8 w-8">
@@ -179,23 +156,17 @@ export const Navbar = () => {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  {
-                    user.user.role === 'Admin' && (
-                      <DropdownMenuItem>
-                        <Link href={`/${locale}/user/admin`}>Admin</Link>
-                      </DropdownMenuItem>
-                    )
-                  }
-                  <DropdownMenuItem>
+                  {user.user.role === "Admin" && (
+                    <DropdownMenuItem asChild>
+                      <Link href={`/${locale}/user/admin`}>{t("admin")}</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem asChild>
                     <Link href={`/${locale}/user/profile`}>{t("profile")}</Link>
                   </DropdownMenuItem>
-                  {/* <DropdownMenuItem>
-                    <Link href={`/${locale}/user/onboarding`}>Onboarding</Link>
-                  </DropdownMenuItem> */}
-                  <DropdownMenuItem>
-                    <Link href={`/${locale}/sell`}>Add Service</Link>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/${locale}/add-service`}>{t("addServiceNav")}</Link>
                   </DropdownMenuItem>
-                  {/* <DropdownMenuItem>Billing</DropdownMenuItem> */}
                 </DropdownMenuGroup>
                 <DropdownMenuGroup>
                   <DropdownMenuSeparator />
@@ -206,10 +177,7 @@ export const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button
-              asChild
-              className={isHome ? "bg-white text-slate-900 hover:bg-white/95" : ""}
-            >
+            <Button asChild className="rounded-xl bg-[#C9A227] text-white hover:bg-[#B8921F]">
               <Link href={`/${locale}/login`}>{t("login-register")}</Link>
             </Button>
           )}
@@ -219,24 +187,20 @@ export const Navbar = () => {
         <div className="flex md:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              {/* icon button */}
               <button
-                aria-label="Open menu"
-                className={cn(
-                  "p-2 rounded-md",
-                  isHome ? "text-white hover:bg-white/15" : "hover:bg-gray-100 dark:hover:bg-neutral-800"
-                )}
+                aria-label={t("openMenu")}
+                className="rounded-md p-2 text-slate-700 hover:bg-slate-200"
                 onClick={() => setOpen(true)}
               >
-                <MenuIcon />
+                <MenuIcon className="h-6 w-6" />
               </button>
             </SheetTrigger>
 
             {/* Sheet content: right side, full-height style */}
-            <SheetContent side="right" className="w-[85vw] sm:w-[420px] p-0">
-              <div className="flex flex-col h-full">
-                <SheetHeader className="flex items-center justify-between px-6 py-4 border-b">
-                  <div className="flex items-center gap-3">
+            <SheetContent side="right" className="w-[85vw] border-slate-200 bg-white p-0 sm:w-[420px]">
+              <div className="flex h-full flex-col">
+                <SheetHeader className="flex items-center justify-between border-b border-slate-200 px-6 py-4 bg-[#F9F8F4]">
+                  <div className="flex items-center gap-3 [&_img]:mix-blend-lighten">
                     <Image
                       src="/sharkmkt-logo.png"
                       width={120}
@@ -246,16 +210,16 @@ export const Navbar = () => {
                     />
                   </div>
                   <button
-                    aria-label="Close menu"
+                    aria-label={t("closeMenu")}
                     onClick={() => setOpen(false)}
-                    className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 hidden"
+                    className="hidden rounded-md p-2 hover:bg-slate-200"
                   >
                     <X />
                   </button>
                 </SheetHeader>
 
                 {/* Links area (scrollable) */}
-                <div className="flex-grow overflow-auto px-6 py-6 space-y-3">
+                <div className="grow overflow-auto px-6 py-6 space-y-3">
                   {links.map((link) => {
                     const fullPath = `/${locale}/${link.href}`
                     const isActive =
@@ -269,17 +233,17 @@ export const Navbar = () => {
                         <Link
                           href={fullPath}
                           className={cn(
-                            "flex items-center justify-between w-full text-lg font-medium px-4 py-3 rounded-md transition-colors",
+                            "flex w-full items-center justify-between rounded-md px-4 py-3 text-lg font-medium transition-colors",
                             isActive
-                              ? "bg-primary/10 text-primary"
-                              : "hover:bg-gray-100 dark:hover:bg-neutral-800"
+                              ? "bg-[#C9A227]/10 text-slate-800"
+                              : "text-slate-700 hover:bg-slate-100"
                           )}
                         >
                           {link.title}
                           {showUnreadMobile && (
                             <span
-                              className="flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-destructive text-destructive-foreground text-xs font-bold"
-                              aria-label={`${unreadCount} unread messages`}
+                              className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-bold text-white"
+                              aria-label={t("unreadMessages", { count: unreadCount })}
                             >
                               {unreadCount > 99 ? "99+" : unreadCount}
                             </span>
@@ -290,8 +254,7 @@ export const Navbar = () => {
                   })}
                 </div>
 
-                {/* Footer pinned to bottom */}
-                <SheetFooter className="border-t px-6 py-4">
+                <SheetFooter className="border-t border-slate-200 bg-[#F9F8F4] px-6 py-4">
                   <div className="w-full">
                     <div className="flex items-center justify-between mb-3">
                       <LocaleToggle />
@@ -313,7 +276,7 @@ export const Navbar = () => {
 
                     {user.user ? (
                       <Button
-                        className="w-full"
+                        className="w-full rounded-xl bg-slate-800 text-white hover:bg-slate-700"
                         onClick={() => {
                           // ensure sheet closes and then logout/navigate
                           setOpen(false)
@@ -324,7 +287,7 @@ export const Navbar = () => {
                       </Button>
                     ) : (
                       <SheetClose asChild>
-                        <Button asChild className="w-full">
+                        <Button asChild className="w-full rounded-xl bg-[#C9A227] text-white hover:bg-[#B8921F]">
                           <Link href={`/${locale}/login`}>{t("login-register")}</Link>
                         </Button>
                       </SheetClose>

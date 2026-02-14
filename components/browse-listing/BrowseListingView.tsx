@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState, useEffect } from "react"
+import { useCallback, useState, useEffect, useMemo } from "react"
 import { useTranslations } from "next-intl"
 import { useRouter, usePathname } from "@/i18n/routing"
 import { useSearchParams } from "next/navigation"
@@ -14,18 +14,22 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
-import { Filters } from "./Filters"
+import { Filters, type FilterState, type DynamicFilterOptions } from "./Filters"
 import { ListingCard } from "./ListingCard"
-import type { Product } from "@/actions"
+import type { FilterParamKey } from "./filter-config"
+import type { Product } from "@/types"
 
 type SortOption = "newest" | "oldest"
 
 interface BrowseListingViewProps {
   products: Product[]
   categories: string[]
+  incomeSources: string[]
   locale: string
   initialSearch: string
   initialCategory: string
+  initialIncomeSource: string[]
+  initialProfitable: boolean
   initialSort: SortOption
 }
 
@@ -35,10 +39,15 @@ function getDetailForLocale(product: Product, locale: string) {
   return detail ?? product.details?.[0]
 }
 
-function updateSearchParams(
-  current: URLSearchParams,
-  updates: { search?: string; category?: string; sort?: string }
-) {
+interface ParamUpdates {
+  search?: string
+  category?: string
+  sort?: string
+  incomeSource?: string[]
+  profitable?: boolean
+}
+
+function updateSearchParams(current: URLSearchParams, updates: ParamUpdates) {
   const next = new URLSearchParams(current)
   if (updates.search !== undefined) {
     if (updates.search.trim()) next.set("search", updates.search.trim())
@@ -49,15 +58,26 @@ function updateSearchParams(
     else next.delete("category")
   }
   if (updates.sort !== undefined) next.set("sort", updates.sort)
+  if (updates.incomeSource !== undefined) {
+    if (updates.incomeSource.length) next.set("incomeSource", updates.incomeSource.join(","))
+    else next.delete("incomeSource")
+  }
+  if (updates.profitable !== undefined) {
+    if (updates.profitable) next.set("profitable", "true")
+    else next.delete("profitable")
+  }
   return next
 }
 
 export function BrowseListingView({
   products,
   categories,
+  incomeSources,
   locale,
   initialSearch,
   initialCategory,
+  initialIncomeSource,
+  initialProfitable,
   initialSort,
 }: BrowseListingViewProps) {
   const t = useTranslations("browseListing")
@@ -67,8 +87,25 @@ export function BrowseListingView({
   const [searchInput, setSearchInput] = useState(initialSearch)
   useEffect(() => setSearchInput(initialSearch), [initialSearch])
 
+  const filterState: FilterState = useMemo(
+    () => ({
+      category: initialCategory,
+      incomeSource: initialIncomeSource,
+      profitable: initialProfitable ? "true" : "",
+    }),
+    [initialCategory, initialIncomeSource, initialProfitable]
+  )
+
+  const dynamicOptions: DynamicFilterOptions = useMemo(
+    () => ({
+      category: categories,
+      incomeSource: incomeSources,
+    }),
+    [categories, incomeSources]
+  )
+
   const applyParams = useCallback(
-    (updates: { search?: string; category?: string; sort?: string }) => {
+    (updates: ParamUpdates) => {
       const next = updateSearchParams(searchParams, updates)
       router.push(`${pathname}?${next.toString()}`)
     },
@@ -80,9 +117,14 @@ export function BrowseListingView({
     applyParams({ search: searchInput })
   }
 
-  const handleCategorySelect = (category: string) => {
-    applyParams({ category: category || "" })
-  }
+  const handleFilterChange = useCallback(
+    (id: FilterParamKey, value: string | string[]) => {
+      if (id === "category") applyParams({ category: typeof value === "string" ? value : "" })
+      else if (id === "incomeSource") applyParams({ incomeSource: Array.isArray(value) ? value : [] })
+      else if (id === "profitable") applyParams({ profitable: value === "true" })
+    },
+    [applyParams]
+  )
 
   const handleSortChange = (value: string) => {
     applyParams({ sort: value })
@@ -90,16 +132,34 @@ export function BrowseListingView({
 
   const handleClearAll = () => {
     setSearchInput("")
-    applyParams({ search: "", category: "" })
+    applyParams({
+      search: "",
+      category: "",
+      incomeSource: [],
+      profitable: false,
+    })
   }
 
+  const filteredProducts = useMemo(() => {
+    return products.filter((p) => {
+      if (initialIncomeSource.length) {
+        const sources = p.incomeSources ?? []
+        const hasMatch = initialIncomeSource.some((s) =>
+          sources.some((src) => src.toLowerCase() === s.toLowerCase())
+        )
+        if (!hasMatch) return false
+      }
+      if (initialProfitable && !p.isProfitable) return false
+      return true
+    })
+  }, [products, initialIncomeSource, initialProfitable])
+
   return (
-    <div className="flex gap-6 w-full max-w-7xl mx-auto px-4 py-6">
-      {/* Left sidebar - Search & Filters */}
-      <aside className="w-full shrink-0 md:w-[280px] lg:w-[320px]">
-        <div className="sticky top-4 rounded-lg border bg-card p-4 shadow-sm space-y-4">
+    <div className="mx-auto w-full max-w-7xl flex flex-col gap-4 px-3 py-4 sm:gap-6 sm:px-4 sm:py-6 md:flex-row">
+      <aside className="w-full shrink-0 md:sticky md:top-4 md:h-fit md:w-[280px] lg:w-[320px]">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <form onSubmit={handleSearchSubmit} className="space-y-2">
-            <label className="text-sm font-medium" htmlFor="search-title">
+            <label className="text-sm font-medium text-slate-800" htmlFor="search-title">
               {t("search-by-title")}
             </label>
             <div className="flex gap-2">
@@ -109,33 +169,31 @@ export function BrowseListingView({
                 placeholder={t("search-placeholder")}
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="flex-1"
+                className="min-w-0 flex-1"
               />
-              <Button type="submit" size="icon" variant="secondary" aria-label={t("search-placeholder")}>
+              <Button type="submit" size="icon" variant="secondary" className="shrink-0" aria-label={t("search-placeholder")}>
                 <Search className="size-4" />
               </Button>
             </div>
           </form>
-          <Filters
-            categories={categories}
-            selectedCategory={initialCategory}
-            onCategorySelect={handleCategorySelect}
-            onClearAll={handleClearAll}
-          />
+          <div className="mt-4">
+            <Filters
+              filterState={filterState}
+              dynamicOptions={dynamicOptions}
+              onFilterChange={handleFilterChange}
+              onClearAll={handleClearAll}
+            />
+          </div>
         </div>
       </aside>
 
-      {/* Right column - Listings */}
-      <section className="flex-1 min-w-0">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <section className="min-w-0 flex-1">
+        <div className="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted-foreground">
-            {products.length} {t("listings")}
+            {filteredProducts.length} {t("listings")}
           </p>
-          <Select
-            value={initialSort}
-            onValueChange={handleSortChange}
-          >
-            <SelectTrigger className="w-[180px] text-black">
+          <Select value={initialSort} onValueChange={handleSortChange}>
+            <SelectTrigger className="w-full text-slate-800 sm:w-[180px]">
               <SelectValue placeholder={t("sort-by")} />
             </SelectTrigger>
             <SelectContent>
@@ -145,13 +203,13 @@ export function BrowseListingView({
           </Select>
         </div>
 
-        {products.length === 0 ? (
-          <div className="rounded-xl border bg-card p-12 text-center text-muted-foreground">
+        {filteredProducts.length === 0 ? (
+          <div className="rounded-xl border border-slate-200 bg-white p-8 text-center text-muted-foreground sm:p-12">
             {t("no-listings")}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {products.map((product) => {
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
+            {filteredProducts.map((product) => {
               const detail = getDetailForLocale(product, locale)
               const title = detail?.title ?? "—"
               const description = detail?.description ?? ""
